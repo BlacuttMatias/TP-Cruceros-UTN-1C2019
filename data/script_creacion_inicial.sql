@@ -624,6 +624,15 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_reserva] ADD CONSTRAINT FK_Reserva FO
 GO
 
 
+/****************************************MIGRACION DE DATOS********************************************************************/
+
+/**********************************Carga de Clientes**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Cliente](clie_nombre, clie_apellido, clie_dni, clie_direccion, clie_telefono, clie_mail, clie_fecha_nacimiento)
+select DISTINCT CLI_NOMBRE, CLI_APELLIDO, CLI_DNI, CLI_DIRECCION, CLI_TELEFONO,CLI_MAIL, CLI_FECHA_NAC  
+from gd_esquema.Maestra
+GO
 
 
 
