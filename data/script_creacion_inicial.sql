@@ -17,7 +17,7 @@ GO
 
 if exists (select * from dbo.sysobjects where id =
 object_id(N'[FIDEOS_CON_TUCO].[Rol_por_usuario]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Rol_uor_usuario]
+drop table [FIDEOS_CON_TUCO].[Rol_por_usuario]
 GO
 
 if exists (select * from dbo.sysobjects where id =
@@ -26,8 +26,44 @@ drop table [FIDEOS_CON_TUCO].[Rol]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Usuario]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Usuario]
+object_id(N'[FIDEOS_CON_TUCO].[Tramos_por_recorrido]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Tramos_por_recorrido]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Tramo]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Tramo]
+GO
+
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Cancelacion_reserva]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Cancelacion_reserva]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Reserva]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Reserva]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Registro_baja]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Registro_baja]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Pasaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Pasaje]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Viaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Viaje]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Recorrido]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Recorrido]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
@@ -41,23 +77,13 @@ drop table [FIDEOS_CON_TUCO].[Ciudad]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Tramo]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Tramo]
+object_id(N'[FIDEOS_CON_TUCO].[Cabina]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Cabina]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Tramo_por_recorrido]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Tramo_por_recorrido]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Recorrido]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Recorrido]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Viaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Viaje]
+object_id(N'[FIDEOS_CON_TUCO].[Tipo_cabina]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Tipo_cabina]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
@@ -76,33 +102,18 @@ drop table [FIDEOS_CON_TUCO].[Modelo]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Cabina]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Cabina]
+object_id(N'[FIDEOS_CON_TUCO].[Compra]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Compra]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Tipo_cabina]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Tipo_cabina]
+object_id(N'[FIDEOS_CON_TUCO].[Cliente]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Cliente]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Registro_baja]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Registro_baja]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Pasaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Pasaje]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Reserva]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Reserva]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Cancelacion_reserva]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Cancelacion_reserva]
+object_id(N'[FIDEOS_CON_TUCO].[Usuario]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Usuario]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
@@ -120,16 +131,6 @@ object_id(N'[FIDEOS_CON_TUCO].[Empresa_tarjeta]') and OBJECTPROPERTY(id, N'IsUse
 drop table [FIDEOS_CON_TUCO].[Empresa_tarjeta]
 GO
 
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Compra]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Compra]
-GO
-
-if exists(select * from dbo.sysobjects where id = 
-object_id(N'[FIDEOS_CON_TUCO].[Cliente]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-drop table [FIDEOS_CON_TUCO].[Cliente]
-GO
-
 
 /************************************************************************************************************/
 /******************************** ELIMINO SI EXISTE Y CREO EL SCHEMA ****************************************/
@@ -139,7 +140,7 @@ IF  EXISTS (SELECT * FROM sys.schemas WHERE name = N'FIDEOS_CON_TUCO')
 DROP SCHEMA [FIDEOS_CON_TUCO]
 GO
 
-CREATE SCHEMA [FIDEOS_CON_TUCO] AUTHORIZATION gd
+CREATE SCHEMA [FIDEOS_CON_TUCO] AUTHORIZATION gdCruceros2019
 GO
 
 
@@ -147,6 +148,21 @@ GO
 /*********************** CREO LAS TABLAS Y MIGRO LOS DATOS DE LA TABLA MAESTRA ******************************/
 /************************************************************************************************************/
 
+
+/********* <<USUARIO>> ***********/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Usuario](
+	[usua_codigo] int IDENTITY(1,1) NOT NULL,
+	[usua_username] [varchar](255),
+	[usua_contrasenia] [varbinary](MAX),
+	[usua_intentos_fallidos] int,
+	[usua_habilitado] [bit])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Usuario] ADD CONSTRAINT PK_USUARIO
+	PRIMARY KEY(usua_codigo)
+GO
 
 
 /***************<<ROL>>*************************/
@@ -164,7 +180,7 @@ GO
 
 CREATE TABLE FIDEOS_CON_TUCO.Rol_por_usuario ( 
 	rol_por_usua_rol [int] NOT NULL, 
-	rol_por_usua_usuario [varchar] (255) NOT NULL) 
+	rol_por_usua_usuario int NOT NULL) 
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Rol_por_usuario] ADD CONSTRAINT PK_USUA_ROL
@@ -198,7 +214,7 @@ GO
 ALTER TABLE FIDEOS_CON_TUCO.Funcionalidad_por_rol ADD CONSTRAINT FK_Funcionalidad FOREIGN KEY (func_por_rol_funcionalidad) REFERENCES FIDEOS_CON_TUCO.Funcionalidad(func_codigo)
 GO
 
-ALTER TABLE FIDEOS_CON_TUCO.Funcionalidad_por_rol ADD CONSTRAINT FK_Rol FOREIGN KEY (func_por_rol_rol) REFERENCES FIDEOS_CON_TUCO.Rol(rol_codigo)
+ALTER TABLE FIDEOS_CON_TUCO.Funcionalidad_por_rol ADD CONSTRAINT FK_Func_Rol FOREIGN KEY (func_por_rol_rol) REFERENCES FIDEOS_CON_TUCO.Rol(rol_codigo)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Funcionalidad_por_rol] ADD CONSTRAINT PK_FUNC_ROL
@@ -206,19 +222,16 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Funcionalidad_por_rol] ADD CONSTRAINT PK_FUNC_ROL
 GO
 
 
-/********* <<USUARIO>> ***********/
+/*********** <<CIUDAD>> ***************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Usuario](
-	[usua_codigo] int IDENTITY(1,1) NOT NULL,
-	[usua_username] [varchar](255),
-	[usua_contrasenia] [varbinary](MAX),
-	[usua_intentos_fallidos] int,
-	[usua_habilitado] [bit])
+CREATE TABLE [FIDEOS_CON_TUCO].[Ciudad](
+	[ciud_codigo] int IDENTITY(1,1) NOT NULL,
+	[ciud_descripcion] [varchar](255) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Usuario] ADD CONSTRAINT PK_USUARIO
-	PRIMARY KEY(usua_codigo)
+ALTER TABLE [FIDEOS_CON_TUCO].[Ciudad] ADD CONSTRAINT PK_CIUDAD
+	PRIMARY KEY(ciud_codigo)
 GO
 
 
@@ -238,19 +251,6 @@ GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Puerto] ADD CONSTRAINT [FK_Puerto_ciudad] FOREIGN KEY ([puer_ciudad])
 	REFERENCES [FIDEOS_CON_TUCO].[Ciudad]([ciud_codigo])
-GO
-
-
-/*********** <<CIUDAD>> ***************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Ciudad](
-	[ciud_codigo] int IDENTITY(1,1) NOT NULL,
-	[ciud_descripcion] [varchar](255) NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Ciudad] ADD CONSTRAINT PK_CIUDAD
-	PRIMARY KEY(ciud_codigo)
 GO
 
 
@@ -318,28 +318,29 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ADD CONSTRAINT FK_Recorrido
 GO 
 
 
-/************* <<VIAJE>> ****************/
+/************ <<MARCA>> *************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Viaje] (
-	[viaj_codigo] int IDENTITY(1,1) NOT NULL,
-	[viaj_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
-	[viaj_recorrido] int NOT NULL,
-	[viaj_fecha_inicio] [datetime] NOT NULL,
-	[viaj_fecha_finalizacion] [datetime] NOT NULL,
-	[viaj_fecha_finalizacion_estimada] [datetime] NOT NULL)
+CREATE TABLE [FIDEOS_CON_TUCO].[Marca](
+	[marc_codigo] int IDENTITY(1,1) NOT NULL,
+	[marc_descripcion] [varchar](255) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT PK_VIAJE 
-	PRIMARY KEY ([viaj_codigo])
+ALTER TABLE [FIDEOS_CON_TUCO].[Marca] ADD CONSTRAINT PK_MARCA 
+	PRIMARY KEY ([marc_codigo])
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Crucero FOREIGN KEY ([viaj_crucero])
-	REFERENCES [FIDEOS_CON_TUCO].[Crucero]([cruc_codigo])
+
+/********** <<MODELO>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Modelo](
+	[mode_codigo] int IDENTITY(1,1) NOT NULL,
+	[mode_descripcion] [varchar](255) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Recorrido FOREIGN KEY ([viaj_recorrido])
-	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_codigo])
+ALTER TABLE [FIDEOS_CON_TUCO].[Modelo] ADD CONSTRAINT PK_MODELO
+	PRIMARY KEY ([mode_codigo])
 GO
 
 
@@ -368,49 +369,21 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Crucero] ADD CONSTRAINT FK_Modelo FOREIGN KEY ([c
 GO
 
 
-/************ <<MARCA>> *************/
+/********** <<TIPO_CABINA>> ************/		
+
+/*****************************************************************************************/
+/***CAMBIO EN EL DER: CREO QUE LA ENTIDAD SERVICIO NO ES NECESARIA, POR ESO NO LA PUSE****/
+/*****************************************************************************************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Marca](
-	[marc_codigo] int IDENTITY(1,1) NOT NULL,
-	[marc_descripcion] [varchar](255) NOT NULL)
+CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_cabina](
+	[tipo_codigo] int IDENTITY(1,1) NOT NULL,
+	[tipo_descripcion] [varchar](255) NOT NULL,
+	[tipo_porcentaje_recargo] numeric(4,2) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Marca] ADD CONSTRAINT PK_MARCA 
-	PRIMARY KEY ([marc_codigo])
-GO
-
-
-/********** <<MODELO>> ************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Modelo](
-	[mode_codigo] int IDENTITY(1,1) NOT NULL,
-	[mode_descripcion] [varchar](255) NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Modelo] ADD CONSTRAINT PK_MODELO
-	PRIMARY KEY ([mode_codigo])
-GO
-
-
-/********** <<REGISTRO_BAJA>> ************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Registro_baja](
-	[regi_codigo] int IDENTITY(1,1) NOT NULL,
-	[regi_tipo] [varchar](25) NOT NULL CHECK([regi_tipo] IN('PERMANENTE','TEMPORAL')),	/*?? PODRIA CAMBIARSE POR A UNA ENTIDAD SEPARADA*/
-	[regi_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
-	[regi_fecha_de_baja] [datetime] NOT NULL,
-	[regi_fecha_de_alta] [datetime])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT PK_REGISTRO_BAJA
-	PRIMARY KEY ([regi_codigo])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT FK_Crucero FOREIGN KEY ([regi_crucero])
-	REFERENCES [FIDEOS_CON_TUCO].[Crucero]([cruc_codigo])
+ALTER TABLE [FIDEOS_CON_TUCO].[TipoCabina] ADD CONSTRAINT PK_TIPO_CABINA
+	PRIMARY KEY ([tipo_codigo])
 GO
 
 
@@ -438,21 +411,152 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Cabina] ADD CONSTRAINT FK_Cabi_Crucero FOREIGN KE
 GO
 
 
-/********** <<TIPO_CABINA>> ************/		
-
-/*****************************************************************************************/
-/***CAMBIO EN EL DER: CREO QUE LA ENTIDAD SERVICIO NO ES NECESARIA, POR ESO NO LA PUSE****/
-/*****************************************************************************************/
+/************* <<VIAJE>> ****************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_cabina](
-	[tipo_codigo] int IDENTITY(1,1) NOT NULL,
-	[tipo_descripcion] [varchar](255) NOT NULL,
-	[tipo_porcentaje_recargo] numeric(4,2) NOT NULL)
+CREATE TABLE [FIDEOS_CON_TUCO].[Viaje] (
+	[viaj_codigo] int IDENTITY(1,1) NOT NULL,
+	[viaj_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
+	[viaj_recorrido] int NOT NULL,
+	[viaj_fecha_inicio] [datetime] NOT NULL,
+	[viaj_fecha_finalizacion] [datetime] NOT NULL,
+	[viaj_fecha_finalizacion_estimada] [datetime] NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[TipoCabina] ADD CONSTRAINT PK_TIPO_CABINA
-	PRIMARY KEY ([tipo_codigo])
+ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT PK_VIAJE 
+	PRIMARY KEY ([viaj_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Crucero FOREIGN KEY ([viaj_crucero])
+	REFERENCES [FIDEOS_CON_TUCO].[Crucero]([cruc_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Recorrido FOREIGN KEY ([viaj_recorrido])
+	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_codigo])
+GO
+
+
+/********** <<REGISTRO_BAJA>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Registro_baja](
+	[regi_codigo] int IDENTITY(1,1) NOT NULL,
+	[regi_tipo] [varchar](25) NOT NULL CHECK([regi_tipo] IN('PERMANENTE','TEMPORAL')),	/*?? PODRIA CAMBIARSE POR A UNA ENTIDAD SEPARADA*/
+	[regi_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
+	[regi_fecha_de_baja] [datetime] NOT NULL,
+	[regi_fecha_de_alta] [datetime])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT PK_REGISTRO_BAJA
+	PRIMARY KEY ([regi_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT FK_Crucero FOREIGN KEY ([regi_crucero])
+	REFERENCES [FIDEOS_CON_TUCO].[Crucero]([cruc_codigo])
+GO
+
+
+/********** <<CLIENTE>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Cliente](
+	[clie_codigo] int IDENTITY(1,1) NOT NULL,
+	[clie_nombre] [varchar](255) NOT NULL,
+	[clie_apellido] [varchar](255) NOT NULL,
+	[clie_telefono] numeric(18,0) NOT NULL,
+	[clie_mail] [varchar](255) NOT NULL,
+	[clie_fecha_nacimiento] [datetime] NOT NULL,
+	[clie_direccion] [varchar](255) NOT NULL,
+	[clie_dni] numeric(18,0) NOT NULL,
+	[clie_usuario] int NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT PK_CLIENTE
+	PRIMARY KEY ([clie_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT FK_Clie_usuario FOREIGN KEY ([clie_usuario])
+	REFERENCES [FIDEOS_CON_TUCO].[Usuario]([usua_codigo])
+GO
+
+
+
+
+
+
+
+/********** <<EMPRESA_TARJETA>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta](
+	[empr_codigo] int IDENTITY(1,1) NOT NULL,
+	[empr_descripcion] [varchar](255) NOT NULL,
+	[empr_cantidad_de_cuotas] int NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta] ADD CONSTRAINT PK_EMPRESA_TARJETA
+	PRIMARY KEY ([empr_codigo])
+GO
+
+
+/********** <<TARJETA>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Tarjeta](
+	[tarj_numero] numeric(20,0) NOT NULL,
+	[tarj_empresa] int NOT NULL,
+	[tarj_codigo_verificador] int NOT NULL,
+	[tarj_tipo] [varchar] NOT NULL CHECK([tarj_tipo] IN('DEBITO', 'CREDITO')))
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT PK_TARJETA
+	PRIMARY KEY ([tarj_numero])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT FK_Empresa FOREIGN KEY ([tarj_empresa])
+	REFERENCES [FIDEOS_CON_TUCO].[Empresa_tarjeta]([empr_codigo])
+GO
+
+
+/********** <<MEDIO_DE_PAGO>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Medio_de_pago](
+	[medi_codigo] int IDENTITY(1,1) NOT NULL,
+	[medi_tipo] [varchar](50) NOT NULL CHECK([medi_tipo] IN('EFECTIVO', 'TARJETA')),
+	[medi_tarjeta] int)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT PK_MEDIO_DE_PAGO
+	PRIMARY KEY ([medi_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT FK_Tarjeta FOREIGN KEY ([medi_tarjeta])
+	REFERENCES [FIDEOS_CON_TUCO].[Tarjeta]([tarj_numero])
+GO
+
+
+/********** <<COMPRA>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Compra](
+	[comp_codigo] int IDENTITY(1,1) NOT NULL,
+	[comp_cliente] int NOT NULL,
+	[comp_medio_de_pago] int NOT NULL,
+	[comp_fecha] [datetime] NOT NULL,
+	[comp_monto_total] numeric(10,2) NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT PK_COMPRA
+	PRIMARY KEY ([comp_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT FK_Comp_Cliente FOREIGN KEY ([comp_cliente])
+	REFERENCES [FIDEOS_CON_TUCO].[Cliente]([clie_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT FK_Medio_de_pago FOREIGN KEY ([comp_medio_de_pago])
+	REFERENCES [FIDEOS_CON_TUCO].[Medio_de_pago]([medi_codigo])
 GO
 
 
@@ -485,30 +589,6 @@ GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Pasaje] ADD CONSTRAINT FK_Compra FOREIGN KEY ([pasa_compra])
 	REFERENCES [FIDEOS_CON_TUCO].[Compra]([comp_codigo])
-GO
-
-
-/********** <<CLIENTE>> ************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Cliente](
-	[clie_codigo] int IDENTITY(1,1) NOT NULL,
-	[clie_nombre] [varchar](255) NOT NULL,
-	[clie_apellido] [varchar](255) NOT NULL,
-	[clie_telefono] numeric(18,0) NOT NULL,
-	[clie_mail] [varchar](255) NOT NULL,
-	[clie_fecha_nacimiento] [datetime] NOT NULL,
-	[clie_direccion] [varchar](255) NOT NULL,
-	[clie_dni] numeric(18,0) NOT NULL,
-	[clie_usuario] int NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT PK_CLIENTE
-	PRIMARY KEY ([clie_codigo])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT FK_Clie_usuario FOREIGN KEY ([clie_usuario])
-	REFERENCES [FIDEOS_CON_TUCO].[Usuario]([usua_codigo])
 GO
 
 
@@ -549,76 +629,12 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_reserva] ADD CONSTRAINT FK_Reserva FO
 GO
 
 
-/********** <<COMPRA>> ************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Compra](
-	[comp_codigo] int IDENTITY(1,1) NOT NULL,
-	[comp_cliente] int NOT NULL,
-	[comp_medio_de_pago] int NOT NULL,
-	[comp_fecha] [datetime] NOT NULL,
-	[comp_monto_total] numeric(10,2) NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT PK_COMPRA
-	PRIMARY KEY ([comp_codigo])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT FK_Comp_Cliente FOREIGN KEY ([comp_cliente])
-	REFERENCES [FIDEOS_CON_TUCO].[Cliente]([clie_codigo])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Compra] ADD CONSTRAINT FK_Medio_de_pago FOREIGN KEY ([comp_medio_de_pago])
-	REFERENCES [FIDEOS_CON_TUCO].[Medio_de_pago]([medi_codigo])
-GO
 
 
-/********** <<MEDIO_DE_PAGO>> ************/
 
 
-CREATE TABLE [FIDEOS_CON_TUCO].[Medio_de_pago](
-	[medi_codigo] int IDENTITY(1,1) NOT NULL,
-	[medi_tipo] [varchar](50) NOT NULL CHECK([medi_tipo] IN('EFECTIVO', 'TARJETA')),
-	[medi_tarjeta] int)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT PK_MEDIO_DE_PAGO
-	PRIMARY KEY ([medi_codigo])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT FK_Tarjeta FOREIGN KEY ([medi_tarjeta])
-	REFERENCES [FIDEOS_CON_TUCO].[Tarjeta]([tarj_numero])
-GO
 
 
-/********** <<TARJETA>> ************/
 
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Tarjeta](
-	[tarj_numero] numeric(20,0) NOT NULL,
-	[tarj_empresa] int NOT NULL,
-	[tarj_codigo_verificador] int NOT NULL,
-	[tarj_tipo] [varchar] NOT NULL CHECK([tarj_tipo] IN('DEBITO', 'CREDITO')))
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT PK_TARJETA
-	PRIMARY KEY ([tarj_numero])
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT FK_Empresa FOREIGN KEY ([tarj_empresa])
-	REFERENCES [FIDEOS_CON_TUCO].[Empresa_tarjeta]([empr_codigo])
-GO
-
-
-/********** <<EMPRESA_TARJETA>> ************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta](
-	[empr_codigo] int IDENTITY(1,1) NOT NULL,
-	[empr_descripcion] [varchar](255) NOT NULL,
-	[empr_cantidad_de_cuotas] int NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta] ADD CONSTRAINT PK_EMPRESA_TARJETA
-	PRIMARY KEY ([empr_codigo])
-GO
