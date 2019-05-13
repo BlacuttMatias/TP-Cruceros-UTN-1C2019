@@ -382,7 +382,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_cabina](
 	[tipo_porcentaje_recargo] numeric(4,2) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[TipoCabina] ADD CONSTRAINT PK_TIPO_CABINA
+ALTER TABLE [FIDEOS_CON_TUCO].[Tipo_Cabina] ADD CONSTRAINT PK_TIPO_CABINA
 	PRIMARY KEY ([tipo_codigo])
 GO
 
@@ -403,7 +403,7 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Cabina] ADD CONSTRAINT PK_CABINA
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Cabina] ADD CONSTRAINT FK_Tipo FOREIGN KEY ([cabi_tipo])
-	REFERENCES [FIDEOS_CON_TUCO].[TipoCabina]([tipo_codigo])
+	REFERENCES [FIDEOS_CON_TUCO].[Tipo_Cabina]([tipo_codigo])
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Cabina] ADD CONSTRAINT FK_Cabi_Crucero FOREIGN KEY ([cabi_crucero])
@@ -468,7 +468,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Cliente](
 	[clie_fecha_nacimiento] [datetime] NOT NULL,
 	[clie_direccion] [varchar](255) NOT NULL,
 	[clie_dni] numeric(18,0) NOT NULL,
-	[clie_usuario] int NOT NULL)
+	[clie_usuario] int)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT PK_CLIENTE
@@ -478,11 +478,6 @@ GO
 ALTER TABLE [FIDEOS_CON_TUCO].[Cliente] ADD CONSTRAINT FK_Clie_usuario FOREIGN KEY ([clie_usuario])
 	REFERENCES [FIDEOS_CON_TUCO].[Usuario]([usua_codigo])
 GO
-
-
-
-
-
 
 
 /********** <<EMPRESA_TARJETA>> ************/
@@ -524,7 +519,7 @@ GO
 CREATE TABLE [FIDEOS_CON_TUCO].[Medio_de_pago](
 	[medi_codigo] int IDENTITY(1,1) NOT NULL,
 	[medi_tipo] [varchar](50) NOT NULL CHECK([medi_tipo] IN('EFECTIVO', 'TARJETA')),
-	[medi_tarjeta] int)
+	[medi_tarjeta] numeric(20,0))
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT PK_MEDIO_DE_PAGO
@@ -620,7 +615,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Cancelacion_reserva](
 	[canc_detalle] [varchar](255))
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_reserva] ADD CONSTRAINT
+ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_reserva] ADD CONSTRAINT PK_CANCELACION_RESERVA
 	PRIMARY KEY ([canc_codigo])
 GO
 
