@@ -642,3 +642,119 @@ GO
 
 
 
+
+
+
+
+
+
+
+
+
+/************************** STORED PROCEDURES **************************/
+
+/************* AGREGAR FUNCIONALIDAD A ROL *************/
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.AgregarFuncionalidadARol(@nombrerol varchar(255), @funcionalidad varchar(255)) 
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Funcionalidad_Por_Rol (func_por_rol_funcionalidad, func_por_rol_rol)
+VALUES ((SELECT func_codigo FROM FIDEOS_CON_TUCO.Funcionalidad WHERE func_descripcion = @funcionalidad),(SELECT rol_codigo FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @nombrerol))
+END
+GO
+
+/************* AGREGAR ROL *************/
+
+CREATE PROCEDURE agregarRol @rolAgregar varchar(255), @flag int output
+AS
+BEGIN
+	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
+		SET @flag = 0
+	else
+		SET @flag = 1;
+		INSERT INTO FIDEOS_CON_TUCO.Rol (rol_descripcion, rol_esta_habilitado) VALUES (@rolAgregar, 1);
+END
+GO
+
+/************* MODIFICAR ROL *************/
+
+CREATE PROCEDURE actualizarNombreRol @codigo int, @nombreRol varchar(255)
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Rol SET rol_descripcion = @nombreRol WHERE rol_codigo = @codigo;
+END
+GO
+
+CREATE PROCEDURE habilitarRol @codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 1 WHERE rol_codigo = @codigo
+END
+GO
+
+/************* DESHABILITAR ROL *************/
+
+CREATE PROCEDURE deshabilitarRol @codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 0 WHERE rol_codigo = @codigo;
+	DELETE FROM FIDEOS_CON_TUCO.Rol_Por_Usuario WHERE rol_por_usua_rol = @codigo;
+END
+GO
+
+/************* ELIMINAR RELACION FUNCIONALIDAD-ROL *************/
+
+CREATE PROCEDURE eliminarFuncionalidadARol @nombreFuncionalidad varchar(255), @codigoRol int
+AS
+BEGIN
+	DELETE FROM FIDEOS_CON_TUCO.Funcionalidad_Por_Rol WHERE func_por_rol_funcionalidad = (SELECT func_codigo
+																						  FROM FIDEOS_CON_TUCO.Funcionalidad
+																						  WHERE func_descripcion = @nombreFuncionalidad)
+													  AND func_por_rol_rol = @codigoRol
+END
+GO
+
+
+/************* MOSTRAR DATOS *************/
+
+CREATE PROCEDURE mostrarFuncionalidadesNoAgregadasARol @nombreRol varchar(255)
+AS
+BEGIN
+	SELECT func_descripcion FROM FIDEOS_CON_TUCO.Funcionalidad
+	WHERE func_codigo NOT IN (SELECT func_por_rol_funcionalidad FROM FIDEOS_CON_TUCO.Funcionalidad_por_rol, FIDEOS_CON_TUCO.Rol
+							  WHERE func_por_rol_rol = rol_codigo and rol_descripcion = @nombreRol)
+END
+GO
+
+CREATE PROCEDURE MostrarRoles
+AS
+BEGIN
+	SELECT rol_codigo AS Codigo, 
+	       rol_descripcion AS Descripcion, 
+		   CASE WHEN rol_esta_habilitado = 1 THEN 'SI'
+		        WHEN rol_esta_habilitado = 0 THEN 'NO'
+		   END AS Habilitado
+	FROM FIDEOS_CON_TUCO.Rol
+END
+GO
+
+CREATE PROCEDURE mostrarFuncionalidadesAgregadasARol @nombreRol varchar(255)
+AS
+BEGIN
+	SELECT func_descripcion FROM FIDEOS_CON_TUCO.Funcionalidad
+	WHERE func_codigo IN (SELECT func_por_rol_funcionalidad FROM FIDEOS_CON_TUCO.Funcionalidad_por_rol, FIDEOS_CON_TUCO.Rol
+						  where func_por_rol_rol = rol_codigo AND rol_descripcion = @nombreRol)
+END
+GO
+
+CREATE PROCEDURE mostrarRolesHabilitados
+AS
+BEGIN
+	SELECT rol_codigo AS Codigo, rol_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Rol
+	WHERE rol_esta_habilitado = 1
+END
+GO
+
+
+
