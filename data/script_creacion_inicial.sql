@@ -1,9 +1,64 @@
 USE [GD1C2019]
 GO
 
+
+/************************************************************************************************************/
+/*********************************** ELIMINO LAS STORED PROCEDURES SI YA EXISTEN ***************************************/
+
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[AgregarFuncionalidadARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[AgregarFuncionalidadARol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarRol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[actualizarNombreRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [actualizarNombreRol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[habilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [habilitarRol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[deshabilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [deshabilitarRol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[eliminarFuncionalidadARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [eliminarFuncionalidadARol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarFuncionalidadesNoAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarFuncionalidadesNoAgregadasARol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[MostrarRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [MostrarRoles]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarFuncionalidadesAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarFuncionalidadesAgregadasARol]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarRolesHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarRolesHabilitados]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
-/*************************Faltan los objetos, las tablas ya estan todas verificadas**************************/
+
 
 if exists (select * from dbo.sysobjects where id =
 object_id(N'[FIDEOS_CON_TUCO].[Funcionalidad_por_rol]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
@@ -391,7 +446,8 @@ GO
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Cabina](
-	[cabi_codigo] int NOT NULL,
+	[cabi_codigo] int IDENTITY(1,1) NOT NULL,
+	[cabi_numero] int NOT NULL,
 	[cabi_piso] int NOT NULL,
 	[cabi_tipo] int NOT NULL,
 	[cabi_crucero] [varchar](255) NOT NULL,				/*CAMBIO EN EL DER*/
@@ -636,6 +692,66 @@ GO
 
 
 
+/**********************************Carga de Modelos de cruceros**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Modelo](mode_descripcion)
+select DISTINCT CRUCERO_MODELO  
+from gd_esquema.Maestra
+GO
+
+
+/**********************************Carga de Marcas de cruceros**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Marca](marc_descripcion)
+select DISTINCT CRU_FABRICANTE
+FROM gd_esquema.Maestra
+GO
+
+
+/**********************************Carga de Tipos cabinas**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Tipo_cabina](tipo_descripcion, tipo_porcentaje_recargo)
+SELECT DISTINCT CABINA_TIPO, CABINA_TIPO_PORC_RECARGO
+FROM gd_esquema.Maestra
+GO
+
+
+/**********************************Carga de Cruceros**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Crucero](cruc_codigo, cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado)
+SELECT CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo, COUNT(DISTINCT CABINA_NRO), 1
+FROM gd_esquema.Maestra 
+JOIN [FIDEOS_CON_TUCO].[Marca] ON (CRU_FABRICANTE = marc_descripcion)
+JOIN [FIDEOS_CON_TUCO].[Modelo] ON (CRUCERO_MODELO = mode_descripcion)
+GROUP BY CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
+GO
+
+
+/**********************************Carga de Cabinas**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Cabina](cabi_numero, cabi_piso, cabi_tipo, cabi_crucero, cabi_esta_disponible)
+SELECT DISTINCT CABINA_NRO, CABINA_PISO, tipo_codigo, cruc_codigo, 1
+FROM gd_esquema.Maestra
+JOIN [FIDEOS_CON_TUCO].[Tipo_cabina] ON (CABINA_TIPO = tipo_descripcion)
+JOIN [FIDEOS_CON_TUCO].[Crucero] ON (CRUCERO_IDENTIFICADOR = cruc_codigo)
+GO
+
+
+/**********************************Carga de Puertos**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Puerto](puer_descripcion, puer_esta_habilitado)
+SELECT PUERTO_DESDE, 1
+FROM gd_esquema.Maestra
+UNION
+SELECT PUERTO_HASTA, 1
+FROM gd_esquema.Maestra
+GO
 
 
 
