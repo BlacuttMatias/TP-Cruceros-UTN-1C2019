@@ -295,7 +295,7 @@ GO
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Puerto](
 	[puer_codigo] int IDENTITY(1,1) NOT NULL,
-	[puer_descripcion] [varchar](255) NOT NULL,
+	[puer_descripcion] [varchar](255),
 	[puer_esta_habilitado] [bit] NOT NULL,
 	[puer_ciudad] int)
 GO
@@ -313,7 +313,8 @@ GO
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Recorrido](
-	[reco_codigo] int NOT NULL,
+	[reco_id] int IDENTITY(1,1) NOT NULL,
+	[reco_codigo] int,								/*CAMBIO EN EL DER*/
 	[reco_precio] numeric(10,2) NOT NULL,
 	[reco_puerto_origen] int NOT NULL,
 	[reco_puerto_destino] int NOT NULL,
@@ -321,7 +322,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Recorrido](
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Recorrido] ADD CONSTRAINT PK_RECORRIDO
-	PRIMARY KEY(reco_codigo)
+	PRIMARY KEY(reco_id)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Recorrido] ADD CONSTRAINT FK_Reco_Puerto_origen FOREIGN KEY ([reco_puerto_origen])
@@ -369,7 +370,7 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ADD CONSTRAINT FK_Tramo FOR
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ADD CONSTRAINT FK_Recorrido FOREIGN KEY ([tram_por_reco_recorrido])
-	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_codigo])
+	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_id])
 GO 
 
 
@@ -488,7 +489,7 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Crucero FOREIGN KEY
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Recorrido FOREIGN KEY ([viaj_recorrido])
-	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_codigo])
+	REFERENCES [FIDEOS_CON_TUCO].[Recorrido]([reco_id])
 GO
 
 
@@ -593,7 +594,7 @@ GO
 CREATE TABLE [FIDEOS_CON_TUCO].[Compra](
 	[comp_codigo] int IDENTITY(1,1) NOT NULL,
 	[comp_cliente] int NOT NULL,
-	[comp_medio_de_pago] int NOT NULL,
+	[comp_medio_de_pago] int,
 	[comp_fecha] [datetime] NOT NULL,
 	[comp_monto_total] numeric(10,2) NOT NULL)
 GO
@@ -753,6 +754,90 @@ SELECT PUERTO_HASTA, 1
 FROM gd_esquema.Maestra
 GO
 
+
+/**********************************Carga de Ciudades**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Ciudad](ciud_descripcion)
+SELECT PUERTO_DESDE
+FROM gd_esquema.Maestra
+UNION
+SELECT PUERTO_HASTA
+FROM gd_esquema.Maestra
+GO
+
+
+/**********************************Carga de Puertos**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Puerto](puer_esta_habilitado, puer_ciudad)
+SELECT 1, ciud_codigo
+FROM [FIDEOS_CON_TUCO].[Ciudad]
+GO
+
+
+
+/**********************************Carga de Tramos**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Tramo](tram_puerto_origen, tram_puerto_destino, tram_precio)
+SELECT DISTINCT p1.puer_codigo, p2.puer_codigo, RECORRIDO_PRECIO_BASE
+FROM gd_esquema.Maestra
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+GO
+
+
+/**********************************Carga de Recorridos**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Recorrido](reco_codigo, reco_puerto_origen, reco_puerto_destino, reco_precio, reco_esta_habilitado)
+SELECT DISTINCT RECORRIDO_CODIGO, p1.puer_codigo, p2.puer_codigo, RECORRIDO_PRECIO_BASE, 1
+FROM gd_esquema.Maestra
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+GO
+
+
+/**********************************Carga de Tramos por recorridos**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Tramos_por_recorrido](tram_por_reco_tramo, tram_por_reco_recorrido)
+SELECT tram_codigo, reco_id 
+FROM [FIDEOS_CON_TUCO].[Recorrido]
+JOIN [FIDEOS_CON_TUCO].[Tramo] ON (reco_puerto_origen = tram_puerto_origen AND reco_puerto_destino = tram_puerto_destino)
+GO
+
+
+/**********************************Carga de Viajes**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Viaje](viaj_recorrido, viaj_crucero, viaj_fecha_inicio, viaj_fecha_finalizacion, viaj_fecha_finalizacion_estimada)
+SELECT DISTINCT reco_id, CRUCERO_IDENTIFICADOR, FECHA_SALIDA, FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA
+FROM gd_esquema.Maestra
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_codigo = RECORRIDO_CODIGO 
+	AND reco_puerto_origen = p1.puer_codigo 
+	AND reco_puerto_destino = p2.puer_codigo)
+GO
+
+
+/**********************************Carga de Compra**************************************************************************/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Compra](comp_cliente, comp_monto_total, comp_fecha)
+SELECT clie_codigo, PASAJE_PRECIO, PASAJE_FECHA_COMPRA
+FROM gd_esquema.Maestra
+JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
+WHERE PASAJE_CODIGO IS NOT NULL
+GO
 
 
 
