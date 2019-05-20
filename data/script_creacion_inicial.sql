@@ -297,15 +297,11 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Puerto](
 	[puer_codigo] int IDENTITY(1,1) NOT NULL,
 	[puer_descripcion] [varchar](255),
 	[puer_esta_habilitado] [bit] NOT NULL,
-	[puer_ciudad] int)
+	[puer_ciudad] [varchar](255) NOT NULL)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Puerto] ADD CONSTRAINT PK_PUERTO
 	PRIMARY KEY(puer_codigo)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Puerto] ADD CONSTRAINT [FK_Puerto_ciudad] FOREIGN KEY ([puer_ciudad])
-	REFERENCES [FIDEOS_CON_TUCO].[Ciudad]([ciud_codigo])
 GO
 
 
@@ -746,33 +742,12 @@ GO
 /**********************************Carga de Puertos**************************************************************************/
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Puerto](puer_descripcion, puer_esta_habilitado)
-SELECT PUERTO_DESDE, 1
-FROM gd_esquema.Maestra
-UNION
-SELECT PUERTO_HASTA, 1
-FROM gd_esquema.Maestra
-GO
-
-
-/**********************************Carga de Ciudades**************************************************************************/
-
-
-INSERT INTO [FIDEOS_CON_TUCO].[Ciudad](ciud_descripcion)
-SELECT PUERTO_DESDE
-FROM gd_esquema.Maestra
-UNION
-SELECT PUERTO_HASTA
-FROM gd_esquema.Maestra
-GO
-
-
-/**********************************Carga de Puertos**************************************************************************/
-
-
 INSERT INTO [FIDEOS_CON_TUCO].[Puerto](puer_esta_habilitado, puer_ciudad)
-SELECT 1, ciud_codigo
-FROM [FIDEOS_CON_TUCO].[Ciudad]
+SELECT 1, PUERTO_DESDE
+FROM gd_esquema.Maestra
+UNION
+SELECT 1, PUERTO_HASTA
+FROM gd_esquema.Maestra
 GO
 
 
@@ -783,10 +758,8 @@ GO
 INSERT INTO [FIDEOS_CON_TUCO].[Tramo](tram_puerto_origen, tram_puerto_destino, tram_precio)
 SELECT DISTINCT p1.puer_codigo, p2.puer_codigo, RECORRIDO_PRECIO_BASE
 FROM gd_esquema.Maestra
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
 GO
 
 
@@ -796,10 +769,8 @@ GO
 INSERT INTO [FIDEOS_CON_TUCO].[Recorrido](reco_codigo, reco_puerto_origen, reco_puerto_destino, reco_precio, reco_esta_habilitado)
 SELECT DISTINCT RECORRIDO_CODIGO, p1.puer_codigo, p2.puer_codigo, RECORRIDO_PRECIO_BASE, 1
 FROM gd_esquema.Maestra
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
 GO
 
 
@@ -819,10 +790,8 @@ GO
 INSERT INTO [FIDEOS_CON_TUCO].[Viaje](viaj_recorrido, viaj_crucero, viaj_fecha_inicio, viaj_fecha_finalizacion, viaj_fecha_finalizacion_estimada)
 SELECT DISTINCT reco_id, CRUCERO_IDENTIFICADOR, FECHA_SALIDA, FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA
 FROM gd_esquema.Maestra
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c1 ON (c1.ciud_descripcion = PUERTO_DESDE)
-JOIN [FIDEOS_CON_TUCO].[Ciudad] c2 ON (c2.ciud_descripcion = PUERTO_HASTA)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = c1.ciud_codigo)
-JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = c2.ciud_codigo)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
 JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_codigo = RECORRIDO_CODIGO 
 	AND reco_puerto_origen = p1.puer_codigo 
 	AND reco_puerto_destino = p2.puer_codigo)
