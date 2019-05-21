@@ -924,6 +924,24 @@ GO
 
 /************************** STORED PROCEDURES **************************/
 
+/************************** ABM DE ROLES **************************/ 
+
+
+/******************** CREAR UN ROL ********************/
+
+/************* AGREGAR ROL *************/
+
+CREATE PROCEDURE agregarRol @rolAgregar varchar(255), @flag int output /* El flag está para devolver un mensaje según la situación que se presente*/
+AS
+BEGIN
+	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
+		SET @flag = 0
+	else
+		SET @flag = 1;
+		INSERT INTO FIDEOS_CON_TUCO.Rol (rol_descripcion, rol_esta_habilitado) VALUES (@rolAgregar, 1);
+END
+GO
+
 /************* AGREGAR FUNCIONALIDAD A ROL *************/
 
 
@@ -935,20 +953,10 @@ VALUES ((SELECT func_codigo FROM FIDEOS_CON_TUCO.Funcionalidad WHERE func_descri
 END
 GO
 
-/************* AGREGAR ROL *************/
 
-CREATE PROCEDURE agregarRol @rolAgregar varchar(255), @flag int output
-AS
-BEGIN
-	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
-		SET @flag = 0
-	else
-		SET @flag = 1;
-		INSERT INTO FIDEOS_CON_TUCO.Rol (rol_descripcion, rol_esta_habilitado) VALUES (@rolAgregar, 1);
-END
-GO
+/******************** MODIFICAR UN ROL ********************/
 
-/************* MODIFICAR ROL *************/
+/************* MODIFICAR NOMBRE *************/
 
 CREATE PROCEDURE actualizarNombreRol @codigo int, @nombreRol varchar(255)
 AS
@@ -957,24 +965,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE habilitarRol @codigo int
-AS
-BEGIN
-	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 1 WHERE rol_codigo = @codigo
-END
-GO
-
-/************* DESHABILITAR ROL *************/
-
-CREATE PROCEDURE deshabilitarRol @codigo int
-AS
-BEGIN
-	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 0 WHERE rol_codigo = @codigo;
-	DELETE FROM FIDEOS_CON_TUCO.Rol_Por_Usuario WHERE rol_por_usua_rol = @codigo;
-END
-GO
-
-/************* ELIMINAR RELACION FUNCIONALIDAD-ROL *************/
+/************* ELIMINAR UNA FUNCIONALIDAD DE UN ROL  *************/
 
 CREATE PROCEDURE eliminarFuncionalidadARol @nombreFuncionalidad varchar(255), @codigoRol int
 AS
@@ -986,17 +977,47 @@ BEGIN
 END
 GO
 
+/************* AGREGAR UNA FUNCIONALIDAD A UN ROL *************/
 
-/************* MOSTRAR DATOS *************/
+/* SP ya resuelto en CREAR UN ROL*/ 
+
+
+/******************** ELIMINAR UN ROL ********************/
+
+/************* DESHABILITAR UN ROL *************/
+
+CREATE PROCEDURE deshabilitarRol @codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 0 WHERE rol_codigo = @codigo;
+	DELETE FROM FIDEOS_CON_TUCO.Rol_Por_Usuario WHERE rol_por_usuario_rol = @codigo;
+END
+GO
+
+/************* HABILITAR UN ROL *************/
+
+CREATE PROCEDURE habilitarRol @codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 1 WHERE rol_codigo = @codigo
+END
+GO
+
+
+/******************** MOSTRAR DATOS PARA BAJA Y MODIFICACION DE ROLES ********************/
+
+/************* SP PARA MOSTRAR FUNCINALIDADES CANDIDATAS A SER AGREGADAS A UN ROL *************/
 
 CREATE PROCEDURE mostrarFuncionalidadesNoAgregadasARol @nombreRol varchar(255)
 AS
 BEGIN
 	SELECT func_descripcion FROM FIDEOS_CON_TUCO.Funcionalidad
 	WHERE func_codigo NOT IN (SELECT func_por_rol_funcionalidad FROM FIDEOS_CON_TUCO.Funcionalidad_por_rol, FIDEOS_CON_TUCO.Rol
-							  WHERE func_por_rol_rol = rol_codigo and rol_descripcion = @nombreRol)
+							  WHERE func_por_rol_rol = rol_codigo AND rol_descripcion = @nombreRol)
 END
 GO
+
+/************* SP PARA MOSTRAR TODOS LOS ROLES (SIRVE PARA ALTA Y BAJA DE ROLES YA CREADOS) *************/
 
 CREATE PROCEDURE MostrarRoles
 AS
@@ -1010,6 +1031,8 @@ BEGIN
 END
 GO
 
+/************* SP PARA MOSTRAR FUNCINALIDADES QUE PUEDEN SER ELIMINADAS DE UN ROL *************/
+
 CREATE PROCEDURE mostrarFuncionalidadesAgregadasARol @nombreRol varchar(255)
 AS
 BEGIN
@@ -1018,6 +1041,8 @@ BEGIN
 						  where func_por_rol_rol = rol_codigo AND rol_descripcion = @nombreRol)
 END
 GO
+
+/************* SP PARA MOSTRAR LOS ROLES QUE PUEDEN SER ELIMINADOS *************/
 
 CREATE PROCEDURE mostrarRolesHabilitados
 AS
@@ -1029,3 +1054,40 @@ GO
 
 
 
+/************************** LOGIN Y SEGURIDAD **************************/
+
+
+/******************** LOGUEO DE UN ADMINISTRADOR ********************/
+
+/************* SUMA DE INTENTOS FALLIDOS  *************/
+
+CREATE PROCEDURE sumaDeIntentosFallidos @username varchar(255), @intentos_fallidos int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Usuario SET usua_intentos_fallidos = usua_intentos_fallidos + 1 WHERE usua_username = @username
+	if(@intentos_fallidos = 2)
+	/*if((SELECT usua_intentos_fallidos FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username) = 3)*/
+		UPDATE FIDEOS_CON_TUCO.Usuario SET usua_esta_habilitado = 0 WHERE usua_username = @username	
+END
+GO
+
+/************* LOGIN  *************/
+
+CREATE PROCEDURE adminLogin @username varchar(255), @password varchar(255)
+AS
+DECLARE @usua_contrasenia varchar(255)
+DECLARE @usua_intentos_fallidos int
+SELECT  @usua_contrasenia = usua_contrasenia, @usua_intentos_fallido = usua_intentos_fallidos FROM	FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username
+/*IF POR SI NO ES LA CONTRASEÑA*/
+BEGIN
+	if(HASHBYTES('SHA2_256', @password) <> @usua_contrasenia)
+		EXEC sumaDeIntentosFallidos @username, @usua_intentos_fallidos
+END
+/*IF PARA VER SI ES LA CONTRASEÑA CORRECTA*/
+BEGIN
+	if(HASHBYTES('SHA2_256', @password) = @usua_contrasenia and @usua_intentos_fallidos < 3)
+		UPDATE	FIDEOS_CON_TUCO.Usuario SET	usua_intentos_fallidos = 0 WHERE usua_username = @username
+END
+/*SELECT PARA MOSTRAR EL USUARIO INGRESADO*/
+SELECT usua_username, usua_contrasenia, usua_esta_habilitado FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username and usua_contrasenia = HASHBYTES('SHA2_256', @password)
+GO
