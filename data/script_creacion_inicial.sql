@@ -612,7 +612,8 @@ GO
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Pasaje](
-	[pasa_codigo] int NOT NULL,
+	[pasa_codigo] int IDENTITY(1,1) NOT NULL,
+	[pasa_precio] numeric (10,0),
 	[pasa_cliente] int NOT NULL,
 	[pasa_viaje] int NOT NULL,
 	[pasa_cabina] int NOT NULL,
@@ -644,7 +645,7 @@ GO
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Reserva](
-	[rese_codigo] int NOT NULL,
+	[rese_codigo] int IDENTITY(1,1) NOT NULL,
 	[rese_fecha] [datetime] NOT NULL,
 	[rese_pasaje] int NOT NULL)
 GO
@@ -809,6 +810,106 @@ WHERE PASAJE_CODIGO IS NOT NULL
 GO
 
 
+/**********************************Carga de Pasajes Comprados**************************************************************************/
+
+
+SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Pasaje] ON
+GO
+
+INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_codigo, pasa_cliente, pasa_viaje, pasa_cabina, pasa_compra)
+SELECT PASAJE_CODIGO, clie_codigo, viaj_codigo, cabi_codigo, comp_codigo
+FROM gd_esquema.Maestra
+--obtengo el codigo del cliente
+JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
+--obtengo el codigo del recorrido para luego asociarlo al viaje
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo 
+	AND reco_puerto_destino = p2.puer_codigo)
+--obtengo el codigo de viaje
+JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
+	AND viaj_fecha_inicio = FECHA_SALIDA
+	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
+	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
+--obtengo la cabina
+JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
+	AND cabi_piso = CABINA_PISO
+	AND cabi_crucero = CRUCERO_IDENTIFICADOR)
+--obtengo la compra
+JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_cliente = clie_codigo
+	AND comp_monto_total = PASAJE_PRECIO
+	AND comp_fecha = PASAJE_FECHA_COMPRA)
+WHERE PASAJE_CODIGO IS NOT NULL
+GO
+
+SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Pasaje] OFF
+GO
+
+
+/**********************************Carga de Pasajes Posiblemente Cancelados**************************************************************************/
+--Son posiblemente cancelados porque hay pasajes "duplicados": uno cuando se hace la reserva y otro cuando se paga la reserva, y deberia ser el mismo
+--Los demas si son todos cancelados por no pagar la reserva
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_cliente, pasa_viaje, pasa_cabina)
+SELECT clie_codigo, viaj_codigo, cabi_codigo
+FROM gd_esquema.Maestra
+--obtengo el codigo del cliente
+JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
+--obtengo el codigo del recorrido para luego asiciarlo al viaje
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo 
+	AND reco_puerto_destino = p2.puer_codigo)
+--obtengo el codigo de viaje
+JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
+	AND viaj_fecha_inicio = FECHA_SALIDA
+	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
+	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
+--obtengo la cabina
+JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
+	AND cabi_piso = CABINA_PISO
+	AND cabi_crucero = CRUCERO_IDENTIFICADOR)
+WHERE PASAJE_CODIGO IS NULL
+GO
+
+
+/**********************************Carga de Reservas**************************************************************************/
+--Las vincula a pasajes que no tienen una compra hecha
+
+
+SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Reserva] ON
+GO
+
+INSERT INTO [FIDEOS_CON_TUCO].[Reserva](rese_codigo, rese_pasaje, rese_fecha)
+SELECT RESERVA_CODIGO, pasa_codigo, RESERVA_FECHA
+FROM gd_esquema.Maestra
+--obtego el cliente para luego obtener el pasaje
+JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
+--obtengo el codigo del recorrido para luego asiciarlo al viaje
+JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
+JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
+JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo 
+	AND reco_puerto_destino = p2.puer_codigo)
+--obtengo el viaje para luego obtener el pasaje
+JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
+	AND viaj_fecha_inicio = FECHA_SALIDA
+	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
+	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
+--obtengo la cabina para luego obtener el pasaje
+JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
+	AND cabi_piso = CABINA_PISO
+	AND cabi_crucero = CRUCERO_IDENTIFICADOR)
+--obtengo el pasaje
+JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_cliente = clie_codigo
+	AND pasa_viaje = viaj_codigo
+	AND pasa_cabina = cabi_codigo
+	AND pasa_compra IS NULL)
+WHERE RESERVA_CODIGO IS NOT NULL
+GO
+
+SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Reserva] OFF
+GO
 
 
 
