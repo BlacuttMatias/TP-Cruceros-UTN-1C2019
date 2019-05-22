@@ -66,6 +66,41 @@ object_id(N'[adminLogin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [adminLogin]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarPuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[modificarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [modificarPuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[habilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [habilitarPuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[deshabilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [deshabilitarPuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarPuertos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarPuertos]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarPuertosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarPuertosHabilitados]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarPuertosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarPuertosDeshabilitados]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
