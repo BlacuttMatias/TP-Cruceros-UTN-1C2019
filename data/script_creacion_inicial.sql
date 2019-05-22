@@ -912,6 +912,22 @@ SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Reserva] OFF
 GO
 
 
+/**********************Vinculo pasajes comprados que hayan sido reservados*******************************/
+
+UPDATE [FIDEOS_CON_TUCO].[Reserva] SET rese_pasaje = p2.pasa_codigo FROM [FIDEOS_CON_TUCO].[Reserva]
+JOIN [FIDEOS_CON_TUCO].[Pasaje] p1 ON (p1.pasa_codigo = rese_pasaje)
+JOIN [FIDEOS_CON_TUCO].[Pasaje] p2 ON (p2.pasa_cliente = p1.pasa_cliente AND p2.pasa_viaje = p1.pasa_viaje AND p2.pasa_cabina = p1.pasa_cabina AND p2.pasa_compra IS NOT NULL)
+JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = p2.pasa_compra)
+WHERE DATEDIFF(DAY, rese_fecha, comp_fecha) <= 3
+GO
+
+
+/**********************Elimino los pasajes "duplicados", aquellos que quedaron sin reservas ni compra**********************/
+
+
+DELETE p1 FROM [FIDEOS_CON_TUCO].[Pasaje] p1
+WHERE p1.pasa_compra IS NULL AND NOT EXISTS (SELECT rese_codigo FROM [FIDEOS_CON_TUCO].[Reserva] WHERE rese_pasaje = p1.pasa_codigo)
+GO
 
 
 
