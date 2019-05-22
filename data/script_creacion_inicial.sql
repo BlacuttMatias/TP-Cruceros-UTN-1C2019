@@ -212,7 +212,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Usuario](
 	[usua_username] [varchar](255),
 	[usua_contrasenia] [varbinary](MAX),
 	[usua_intentos_fallidos] int,
-	[usua_habilitado] [bit])
+	[usua_esta_habilitado] [bit])
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Usuario] ADD CONSTRAINT PK_USUARIO
@@ -930,8 +930,15 @@ WHERE p1.pasa_compra IS NULL AND NOT EXISTS (SELECT rese_codigo FROM [FIDEOS_CON
 GO
 
 
+/**********************************Carga de Cancelaciones de reservas**************************************************************************/
 
 
+INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
+SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
+FROM [FIDEOS_CON_TUCO].[Reserva]
+JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
+WHERE pasa_compra IS NULL
+GO
 
 
 
@@ -1006,7 +1013,7 @@ CREATE PROCEDURE deshabilitarRol @codigo int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 0 WHERE rol_codigo = @codigo;
-	DELETE FROM FIDEOS_CON_TUCO.Rol_Por_Usuario WHERE rol_por_usuario_rol = @codigo;
+	DELETE FROM FIDEOS_CON_TUCO.Rol_Por_Usuario WHERE rol_por_usua_rol = @codigo;
 END
 GO
 
@@ -1093,7 +1100,7 @@ CREATE PROCEDURE adminLogin @username varchar(255), @password varchar(255)
 AS
 DECLARE @usua_contrasenia varchar(255)
 DECLARE @usua_intentos_fallidos int
-SELECT  @usua_contrasenia = usua_contrasenia, @usua_intentos_fallido = usua_intentos_fallidos FROM	FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username
+SELECT  @usua_contrasenia = usua_contrasenia, @usua_intentos_fallidos = usua_intentos_fallidos FROM	FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username
 /*IF POR SI NO ES LA CONTRASEÑA*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) <> @usua_contrasenia)
