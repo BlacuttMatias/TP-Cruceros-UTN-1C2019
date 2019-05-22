@@ -1165,3 +1165,90 @@ EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Comprar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Reservar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Pagar reserva'
 GO
+
+
+/*######################## [04]::[ABM Puerto] ############################*/
+
+
+/************************** ALTA Puerto*******************************************/
+
+CREATE PROCEDURE agregarPuerto @ciudad varchar(255), @resultado int output, @descripcion varchar(255)= NULL
+AS 
+BEGIN
+	IF NOT EXISTS(SELECT * FROM [FIDEOS_CON_TUCO].[Puerto] WHERE puer_ciudad = @ciudad AND puer_descripcion = @descripcion)
+		BEGIN
+		INSERT INTO [FIDEOS_CON_TUCO].[Puerto](puer_descripcion, puer_ciudad, puer_esta_habilitado) VALUES (@descripcion, @ciudad, 1)
+		SET @resultado = 1
+		END
+	ELSE 
+		SET @resultado = 0
+END
+GO
+
+/************************** MODIFICACION Puerto*******************************************/
+
+CREATE PROCEDURE modificarPuerto @codigoPuerto int, @ciudad varchar(255), @descripcion varchar(255) = NULL
+AS
+BEGIN
+	UPDATE [FIDEOS_CON_TUCO].[Puerto] SET puer_ciudad = @ciudad, puer_descripcion = @descripcion WHERE puer_codigo = @codigoPuerto
+END
+GO
+
+/************************** BAJA LOGICA Puerto (DESHABILITAR)*******************************************/
+
+CREATE PROCEDURE deshabilitarPuerto @codigoPuerto int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 0 WHERE puer_codigo = @codigoPuerto
+	--deshabilito el recorrido que tuviese como origen o destino este puerto
+	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 0 FROM FIDEOS_CON_TUCO.Recorrido
+		WHERE reco_puerto_origen = @codigoPuerto OR reco_puerto_destino = @codigoPuerto
+END
+GO
+
+/************************** HABILITAR Puerto *******************************************/
+
+CREATE PROCEDURE habilitarPuerto @codigoPuerto int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 1 WHERE puer_codigo = @codigoPuerto
+	--Veo si al habilitar el puerto, habilita un recorrido 
+	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 1 FROM FIDEOS_CON_TUCO.Recorrido
+		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = reco_puerto_destino)
+		WHERE p1.puer_esta_habilitado = 1 AND p2.puer_esta_habilitado = 1
+END
+GO
+
+/************************** LISTADO Todos los Puertos *******************************************/
+
+CREATE PROCEDURE mostrarPuertos
+AS
+BEGIN
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion,
+		CASE WHEN puer_esta_habilitado = 1 THEN 'SI'
+			ELSE 'NO'
+		END AS Habilitado
+		FROM FIDEOS_CON_TUCO.Puerto
+END
+GO
+
+/************************** LISTADO Puertos habilitados *******************************************/
+
+CREATE PROCEDURE mostrarPuertosHabilitados 
+AS
+BEGIN
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Puerto
+		WHERE puer_esta_habilitado = 1
+END
+GO
+
+/************************** LISTADO Puertos deshabilitados *******************************************/
+
+CREATE PROCEDURE mostrarPuertosDeshabilitados 
+AS
+BEGIN
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Puerto
+		WHERE puer_esta_habilitado = 0
+END
+GO
