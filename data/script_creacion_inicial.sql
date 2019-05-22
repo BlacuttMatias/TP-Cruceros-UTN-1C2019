@@ -42,8 +42,8 @@ drop procedure [mostrarFuncionalidadesNoAgregadasARol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[MostrarRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [MostrarRoles]
+object_id(N'[mostrarRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarRoles]
 GO
 
 if exists (select * from dbo.sysobjects where id =
@@ -55,6 +55,17 @@ if exists (select * from dbo.sysobjects where id =
 object_id(N'[mostrarRolesHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [mostrarRolesHabilitados]
 GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[sumaDeIntentosFallidos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [sumaDeIntentosFallidos]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[adminLogin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [adminLogin]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1042,7 +1053,7 @@ GO
 
 /************* SP PARA MOSTRAR TODOS LOS ROLES (SIRVE PARA ALTA Y BAJA DE ROLES YA CREADOS) *************/
 
-CREATE PROCEDURE MostrarRoles
+CREATE PROCEDURE mostrarRoles
 AS
 BEGIN
 	SELECT rol_codigo AS Codigo, 
@@ -1113,4 +1124,44 @@ BEGIN
 END
 /*SELECT PARA MOSTRAR EL USUARIO INGRESADO*/
 SELECT usua_username, usua_contrasenia, usua_esta_habilitado FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username and usua_contrasenia = HASHBYTES('SHA2_256', @password)
+GO
+
+
+/*######################## CREACION DE ROLES Y FUNCIONALIDADES ############################*/
+
+
+INSERT INTO [FIDEOS_CON_TUCO].[Rol](rol_descripcion, rol_esta_habilitado) VALUES ('Administrativo', 1)
+INSERT INTO [FIDEOS_CON_TUCO].[Rol](rol_descripcion, rol_esta_habilitado) VALUES ('Cliente', 1)
+GO
+
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Login')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('ABM Roles')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('ABM Puertos')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('ABM Recorridos')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('ABM Cruceros')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Generar viaje')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Comprar viaje')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Reservar viaje')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Pagar reserva')
+INSERT INTO [FIDEOS_CON_TUCO].[Funcionalidad](func_descripcion) VALUES ('Listados estadisticos')
+GO
+
+/************************** RELACIONO Roles a sus respectivas funcionalidades *******************************************/
+
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Login'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'ABM Roles'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'ABM Puertos'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'ABM Recorridos'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'ABM Cruceros'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Generar viaje'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Comprar viaje'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Reservar viaje'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Pago reservas'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Listados estadisticos'
+GO
+
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Login'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Comprar viaje'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Reservar viaje'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Pagar reserva'
 GO
