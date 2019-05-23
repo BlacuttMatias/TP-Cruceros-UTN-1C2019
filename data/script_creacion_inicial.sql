@@ -101,6 +101,55 @@ object_id(N'[mostrarPuertosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedur
 drop procedure [mostrarPuertosDeshabilitados]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarTramoAUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarTramoAUnRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[modificarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [modificarRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[eliminarTramoDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [eliminarTramoDeUnRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[habilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [habilitarRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[deshabilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [deshabilitarRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarRecorridos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarRecorridos]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarRecorridosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarRecorridosHabilitados]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarRecorridosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarRecorridosDeshabilitados]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarTramosDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarTramosDeUnRecorrido]
+GO
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1272,5 +1321,138 @@ AS
 BEGIN
 	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Puerto
 		WHERE puer_esta_habilitado = 0
+END
+GO
+
+
+/*######################## [05]::[ABM Recorrido] ############################*/
+
+
+/************************** ALTA Recorrido*******************************************/
+
+--si el resultado fue exitoso, devuelve el id del recorrido ingresado
+CREATE PROCEDURE agregarRecorrido @ciudadPuertoOrigen varchar (255), @ciudadPuertoDestino varchar(255), @precio numeric (10,2), @resultado int output, @codigoRecorrido int = NULL
+AS
+BEGIN
+	DECLARE @codigoPuertoOrigen int
+	DECLARE @codigoPuertoDestino int
+	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
+	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
+	IF NOT EXISTS (SELECT reco_id FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_puerto_origen = @codigoPuertoOrigen AND reco_puerto_destino = @codigoPuertoDestino AND reco_precio = @precio)
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Recorrido(reco_puerto_origen, reco_puerto_destino, reco_precio, reco_esta_habilitado, reco_codigo) 
+			VALUES (@codigoPuertoOrigen, @codigoPuertoDestino, @precio, 1, @codigoRecorrido)
+		SET @resultado = SCOPE_IDENTITY()
+		END
+	ELSE
+		SET @resultado = 0
+END
+GO
+
+
+CREATE PROCEDURE agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @idRecorrido int
+AS
+BEGIN
+	DECLARE @codigoPuertoOrigen int
+	DECLARE @codigoPuertoDestino int
+	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
+	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
+	IF NOT EXISTS (SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino)
+		INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino) VALUES (@codigoPuertoOrigen, @codigoPuertoDestino)
+	DECLARE @codigoTramo int
+	SELECT @codigoTramo = tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino
+	INSERT INTO FIDEOS_CON_TUCO.Tramos_por_recorrido(tram_por_reco_tramo, tram_por_reco_recorrido) VALUES (@codigoTramo, @idRecorrido)
+END
+GO
+
+
+/************************** MODIFICACION Recorrido*******************************************/
+
+
+CREATE PROCEDURE modificarRecorrido @idRecorrido int, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @codigoRecorrido int = NULL
+AS
+BEGIN
+	DECLARE @codigoPuertoOrigen int
+	DECLARE @codigoPuertoDestino int
+	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
+	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
+	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_puerto_origen = @codigoPuertoOrigen,
+		reco_puerto_destino = @codigoPuertoDestino, reco_precio = @precio, reco_codigo = @codigoRecorrido 
+		WHERE reco_id = @idRecorrido
+END
+GO
+
+
+CREATE PROCEDURE eliminarTramoDeUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @idRecorrido int
+AS
+BEGIN
+	DECLARE @codigoPuertoOrigen int
+	DECLARE @codigoPuertoDestino int
+	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
+	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
+	DELETE FROM FIDEOS_CON_TUCO.Tramos_por_recorrido 
+		WHERE tram_por_reco_tramo = (SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE (tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino))
+		AND tram_por_reco_recorrido = @idRecorrido
+END
+GO
+
+
+/************************** BAJA LOGICA Recorrido (DESHABILITAR) *******************************************/
+
+CREATE PROCEDURE deshabilitarRecorrido @idRecorrido int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 0 WHERE reco_id = @idRecorrido
+END
+GO
+
+/************************** HABILITAR Recorrido *******************************************/
+
+CREATE PROCEDURE habilitarRecorrido @idRecorrido int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 1 WHERE reco_id = @idRecorrido
+END
+GO
+
+/************************** LISTADO Recorridos *******************************************/
+
+CREATE PROCEDURE mostrarRecorridos
+AS
+BEGIN
+	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, 
+		reco_puerto_destino AS Puerto_destino, reco_precio AS Precio, 
+		CASE WHEN reco_esta_habilitado = 1 THEN 'SI'
+			ELSE 'NO'
+		END AS Habilitado
+		FROM FIDEOS_CON_TUCO.Recorrido
+END
+GO
+
+CREATE PROCEDURE mostrarRecorridosHabilitados
+AS
+BEGIN
+	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, reco_puerto_destino AS Puerto_destino, reco_precio AS Precio
+		FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
+END
+GO
+
+CREATE PROCEDURE mostrarRecorridosDeshabilitados
+AS
+BEGIN
+	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, reco_puerto_destino AS Puerto_destino, reco_precio AS Precio
+		FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 0
+END
+GO
+
+/************************** LISTADO Tramos de un Recorrido *******************************************/
+
+CREATE PROCEDURE mostrarTramosDeUnRecorrido @idRecorrido int
+AS
+BEGIN
+	SELECT tram_codigo AS Codigo, tram_puerto_origen AS Puerto_origen, tram_puerto_destino AS Puerto_destino
+		FROM FIDEOS_CON_TUCO.Tramo
+		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
+		WHERE tram_codigo = tram_por_reco_tramo
 END
 GO
