@@ -839,8 +839,7 @@ SELECT DISTINCT reco_id, CRUCERO_IDENTIFICADOR, FECHA_SALIDA, FECHA_LLEGADA, FEC
 FROM gd_esquema.Maestra
 JOIN [FIDEOS_CON_TUCO].[Puerto] p1 ON (p1.puer_ciudad = PUERTO_DESDE)
 JOIN [FIDEOS_CON_TUCO].[Puerto] p2 ON (p2.puer_ciudad = PUERTO_HASTA)
-JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_codigo = RECORRIDO_CODIGO 
-	AND reco_puerto_origen = p1.puer_codigo 
+JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo 
 	AND reco_puerto_destino = p2.puer_codigo)
 GO
 
@@ -875,7 +874,6 @@ JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo
 --obtengo el codigo de viaje
 JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
 	AND viaj_fecha_inicio = FECHA_SALIDA
-	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
 	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
 --obtengo la cabina
 JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
@@ -910,7 +908,6 @@ JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo
 --obtengo el codigo de viaje
 JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
 	AND viaj_fecha_inicio = FECHA_SALIDA
-	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
 	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
 --obtengo la cabina
 JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
@@ -940,16 +937,10 @@ JOIN [FIDEOS_CON_TUCO].[Recorrido] ON (reco_puerto_origen = p1.puer_codigo
 --obtengo el viaje para luego obtener el pasaje
 JOIN [FIDEOS_CON_TUCO].[Viaje] ON (viaj_recorrido = reco_id
 	AND viaj_fecha_inicio = FECHA_SALIDA
-	AND viaj_fecha_finalizacion_estimada = FECHA_LLEGADA_ESTIMADA
 	AND viaj_crucero = CRUCERO_IDENTIFICADOR)
---obtengo la cabina para luego obtener el pasaje
-JOIN [FIDEOS_CON_TUCO].[Cabina] ON (cabi_numero = CABINA_NRO
-	AND cabi_piso = CABINA_PISO
-	AND cabi_crucero = CRUCERO_IDENTIFICADOR)
 --obtengo el pasaje
 JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_cliente = clie_codigo
 	AND pasa_viaje = viaj_codigo
-	AND pasa_cabina = cabi_codigo
 	AND pasa_compra IS NULL)
 WHERE RESERVA_CODIGO IS NOT NULL
 GO
@@ -962,7 +953,7 @@ GO
 
 UPDATE [FIDEOS_CON_TUCO].[Reserva] SET rese_pasaje = p2.pasa_codigo FROM [FIDEOS_CON_TUCO].[Reserva]
 JOIN [FIDEOS_CON_TUCO].[Pasaje] p1 ON (p1.pasa_codigo = rese_pasaje)
-JOIN [FIDEOS_CON_TUCO].[Pasaje] p2 ON (p2.pasa_cliente = p1.pasa_cliente AND p2.pasa_viaje = p1.pasa_viaje AND p2.pasa_cabina = p1.pasa_cabina AND p2.pasa_compra IS NOT NULL)
+JOIN [FIDEOS_CON_TUCO].[Pasaje] p2 ON (p2.pasa_cliente = p1.pasa_cliente AND p2.pasa_viaje = p1.pasa_viaje AND p2.pasa_compra IS NOT NULL)
 JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = p2.pasa_compra)
 WHERE DATEDIFF(DAY, rese_fecha, comp_fecha) <= 3
 GO
@@ -1191,11 +1182,10 @@ EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'ABM Cruceros'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Generar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Comprar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Reservar viaje'
-EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Pago reservas'
+EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Pagar reserva'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Administrativo', 'Listados estadisticos'
 GO
 
-EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Login'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Comprar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Reservar viaje'
 EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Pagar reserva'
