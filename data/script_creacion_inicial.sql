@@ -1237,7 +1237,9 @@ BEGIN
 	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 0 WHERE puer_codigo = @codigoPuerto
 	--deshabilito el recorrido que tuviese como origen o destino este puerto
 	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 0 FROM FIDEOS_CON_TUCO.Recorrido
-		WHERE reco_puerto_origen = @codigoPuerto OR reco_puerto_destino = @codigoPuerto
+		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
+		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
+		WHERE reco_id = tram_por_reco_recorrido
 END
 GO
 
@@ -1247,11 +1249,6 @@ CREATE PROCEDURE habilitarPuerto @codigoPuerto int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 1 WHERE puer_codigo = @codigoPuerto
-	--Veo si al habilitar el puerto, habilita un recorrido 
-	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 1 FROM FIDEOS_CON_TUCO.Recorrido
-		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = reco_puerto_origen)
-		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = reco_puerto_destino)
-		WHERE p1.puer_esta_habilitado = 1 AND p2.puer_esta_habilitado = 1
 END
 GO
 
