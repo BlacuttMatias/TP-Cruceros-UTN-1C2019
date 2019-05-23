@@ -1296,9 +1296,12 @@ GO
 CREATE PROCEDURE mostrarPuertos
 AS
 BEGIN
-	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion,
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
+		CASE WHEN puer_descripcion IS NULL THEN '-'
+				ELSE puer_descripcion
+		END AS Descripcion,
 		CASE WHEN puer_esta_habilitado = 1 THEN 'SI'
-			ELSE 'NO'
+				ELSE 'NO'
 		END AS Habilitado
 		FROM FIDEOS_CON_TUCO.Puerto
 END
@@ -1309,7 +1312,11 @@ GO
 CREATE PROCEDURE mostrarPuertosHabilitados 
 AS
 BEGIN
-	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Puerto
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
+		CASE WHEN puer_descripcion IS NULL THEN '-'
+			ELSE puer_descripcion
+		END AS Descripcion
+		FROM FIDEOS_CON_TUCO.Puerto
 		WHERE puer_esta_habilitado = 1
 END
 GO
@@ -1319,7 +1326,11 @@ GO
 CREATE PROCEDURE mostrarPuertosDeshabilitados 
 AS
 BEGIN
-	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, puer_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Puerto
+	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
+		CASE WHEN puer_descripcion IS NULL THEN '-'
+			ELSE puer_descripcion
+		END AS Descripcion
+		FROM FIDEOS_CON_TUCO.Puerto
 		WHERE puer_esta_habilitado = 0
 END
 GO
