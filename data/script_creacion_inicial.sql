@@ -1408,10 +1408,21 @@ GO
 
 /************************** HABILITAR Recorrido *******************************************/
 
-CREATE PROCEDURE habilitarRecorrido @idRecorrido int
+CREATE PROCEDURE habilitarRecorrido @idRecorrido int, @resultado int output
 AS
 BEGIN
-	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 1 WHERE reco_id = @idRecorrido
+	--Verifico que el recorrido que se desea habilitar no tenga un puerto deshabilitado
+	IF NOT EXISTS(SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo 
+			JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_tramo = tram_codigo AND tram_por_reco_recorrido = @idRecorrido)
+			JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = tram_puerto_origen)
+			JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = tram_puerto_destino)
+			WHERE puertoOrigen.puer_esta_habilitado = 0 OR puertoDestino.puer_esta_habilitado = 0)		
+		BEGIN
+		UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 1 WHERE reco_id = @idRecorrido 
+		SET @resultado = 1
+		END
+	ELSE
+		SET @resultado = 0
 END
 GO
 
