@@ -1431,28 +1431,36 @@ GO
 CREATE PROCEDURE mostrarRecorridos
 AS
 BEGIN
-	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, 
-		reco_puerto_destino AS Puerto_destino, reco_precio AS Precio, 
+	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, 
+		puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio, 
 		CASE WHEN reco_esta_habilitado = 1 THEN 'SI'
 			ELSE 'NO'
 		END AS Habilitado
 		FROM FIDEOS_CON_TUCO.Recorrido
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = reco_puerto_destino)
 END
 GO
 
 CREATE PROCEDURE mostrarRecorridosHabilitados
 AS
 BEGIN
-	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, reco_puerto_destino AS Puerto_destino, reco_precio AS Precio
-		FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
+	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio
+		FROM FIDEOS_CON_TUCO.Recorrido 
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = reco_puerto_destino)
+		WHERE reco_esta_habilitado = 1
 END
 GO
 
 CREATE PROCEDURE mostrarRecorridosDeshabilitados
 AS
 BEGIN
-	SELECT reco_id AS ID, reco_codigo AS Codigo, reco_puerto_origen AS Puerto_origen, reco_puerto_destino AS Puerto_destino, reco_precio AS Precio
-		FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 0
+	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio
+		FROM FIDEOS_CON_TUCO.Recorrido 
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = reco_puerto_destino)
+		WHERE reco_esta_habilitado = 0
 END
 GO
 
@@ -1461,9 +1469,11 @@ GO
 CREATE PROCEDURE mostrarTramosDeUnRecorrido @idRecorrido int
 AS
 BEGIN
-	SELECT tram_codigo AS Codigo, tram_puerto_origen AS Puerto_origen, tram_puerto_destino AS Puerto_destino
+	SELECT tram_codigo AS Codigo, puertoOrigen.puer_codigo AS Puerto_origen, puertoDestino.puer_codigo AS Puerto_destino
 		FROM FIDEOS_CON_TUCO.Tramo
 		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = tram_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = tram_puerto_destino)
 		WHERE tram_codigo = tram_por_reco_tramo
 END
 GO
