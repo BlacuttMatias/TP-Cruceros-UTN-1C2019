@@ -176,6 +176,11 @@ object_id(N'[mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]') and OBJE
 drop procedure [mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarLosCincoCrucerosConMasDiasFueraDeServicio]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarLosCincoCrucerosConMasDiasFueraDeServicio]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1634,5 +1639,70 @@ BEGIN
 		WHERE YEAR(viaj_fecha_inicio) = @anio AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal
 		GROUP BY reco_id, puertoOrigen.puer_ciudad, puertoDestino.puer_ciudad, reco_precio
 		ORDER BY 5 DESC
+END
+GO
+
+
+--TOP 5 DE LOS CRUCEROS CON MAS DÍAS FUERA DE SERVICIO
+CREATE PROCEDURE mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int
+AS
+BEGIN
+	DECLARE @mesInicial int
+	DECLARE @mesFinal int
+	DECLARE @fechaInicio datetime
+	DECLARE @fechaFin datetime
+	IF @semestre = 1
+		BEGIN
+		SET @mesInicial = 1
+		SET @mesFinal = 6
+		SET @fechaInicio = DATETIMEFROMPARTS(@anio, @mesInicial, 1, 0, 0, 0, 0)
+		SET @fechaFin = DATETIMEFROMPARTS(@anio, @mesFinal + 1, 1, 0, 0, 0, 0)
+
+		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
+			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
+				ELSE 'NO'
+			END AS Habilitado,
+			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(
+				SELECT 
+					CASE WHEN regi_fecha_de_baja < @fechaInicio AND YEAR(regi_fecha_de_alta) = @anio 
+						AND MONTH(regi_fecha_de_alta) <= @mesFinal THEN DATEDIFF(DAY, @fechaInicio, regi_fecha_de_alta)
+					WHEN YEAR(regi_fecha_de_baja) = @anio  AND MONTH(regi_fecha_de_baja) <= @mesFinal
+						AND regi_fecha_de_alta >= @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, @fechaFin)
+					WHEN regi_fecha_de_baja >= @fechaInicio AND regi_fecha_de_alta < @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, regi_fecha_de_alta)
+					END AS DiasFueraDeServicio
+				FROM FIDEOS_CON_TUCO.Registro_baja
+				WHERE regi_crucero = cruc_codigo AND regi_tipo = 'TEMPORAL'
+				) AS t1
+			), 0) AS Dias_fuera_de_servicio
+		FROM FIDEOS_CON_TUCO.Crucero
+		ORDER BY 6 DESC
+		END
+	IF @semestre = 2
+		BEGIN
+		SET @mesInicial = 7
+		SET @mesFinal = 12
+		SET @fechaInicio = DATETIMEFROMPARTS(@anio, @mesInicial, 1, 0, 0, 0, 0)
+		SET @fechaFin = DATETIMEFROMPARTS(@anio+1, 1, 1, 0, 0, 0, 0)
+
+		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
+			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
+				ELSE 'NO'
+			END AS Habilitado,
+			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(
+				SELECT 
+					CASE WHEN regi_fecha_de_baja < @fechaInicio AND YEAR(regi_fecha_de_alta) = @anio 
+						AND MONTH(regi_fecha_de_alta) <= @mesFinal THEN DATEDIFF(DAY, @fechaInicio, regi_fecha_de_alta)
+					WHEN YEAR(regi_fecha_de_baja) = @anio  AND MONTH(regi_fecha_de_baja) BETWEEN @mesInicial AND @mesFinal
+						AND regi_fecha_de_alta >= @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, @fechaFin)
+					WHEN regi_fecha_de_baja >= @fechaInicio AND regi_fecha_de_alta < @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, regi_fecha_de_alta)
+					END AS DiasFueraDeServicio
+				FROM FIDEOS_CON_TUCO.Registro_baja 
+				WHERE regi_crucero = cruc_codigo AND regi_tipo = 'TEMPORAL'
+				) AS t1
+			), 0) AS Dias_fuera_de_servicio
+
+		FROM FIDEOS_CON_TUCO.Crucero
+		ORDER BY 6 DESC
+		END
 END
 GO
