@@ -127,7 +127,6 @@ namespace FrbaCrucero.AbmRol
                     abm.agregarFuncionalidadARol(descripcion, a);
                 }
                 DialogResult result2 = MessageBox.Show("Rol:"+codigo+" "+this.textBox1.Text+ Environment.NewLine + "Funcionabilidades Obtenidas:" +imprimirAgregar+  Environment.NewLine+"Funcionabilidades Perdidas:"+ imprimirQuitar, "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Parent.Refresh();
             }
         }
     }
