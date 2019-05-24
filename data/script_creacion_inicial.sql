@@ -151,6 +151,22 @@ object_id(N'[mostrarTramosDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure'
 drop procedure [mostrarTramosDeUnRecorrido]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarUsuario]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarRolAUnUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarRolAUnUsuario]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[crearUsuariosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [crearUsuariosIniciales]
+GO
+
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1241,6 +1257,58 @@ EXEC FIDEOS_CON_TUCO.AgregarFuncionalidadARol 'Cliente', 'Pagar reserva'
 GO
 
 
+/*######################## CREACION USUARIOS ADMINISTRATIVOS ############################*/
+
+
+CREATE PROCEDURE agregarUsuario @username varchar(255), @contrasenia varchar(255), @resultado int output
+AS 
+BEGIN
+	IF NOT EXISTS(SELECT usua_username FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username)
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Usuario(usua_username, usua_contrasenia, usua_esta_habilitado, usua_intentos_fallidos) 
+			VALUES (@username, HASHBYTES('SHA2_256', @contrasenia), 1, 0) 
+		SET @resultado = 1
+		END
+	ELSE
+		SET @resultado = 0
+END
+GO
+
+
+CREATE PROCEDURE agregarRolAUnUsuario @nombreRol varchar(255), @username varchar(255)
+AS
+BEGIN
+	IF NOT EXISTS (SELECT rol_por_usua_rol FROM FIDEOS_CON_TUCO.Rol_por_usuario 
+			JOIN FIDEOS_CON_TUCO.Rol ON (rol_descripcion = @nombreRol)
+			JOIN FIDEOS_CON_TUCO.Usuario ON (usua_username = @username)
+			WHERE rol_por_usua_rol = rol_codigo AND rol_por_usua_usuario = usua_codigo)
+		INSERT INTO FIDEOS_CON_TUCO.Rol_por_usuario(rol_por_usua_rol, rol_por_usua_usuario) 
+			VALUES ((SELECT rol_codigo FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @nombreRol)
+			, (SELECT usua_codigo FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username))
+END
+GO
+
+CREATE PROCEDURE crearUsuariosIniciales
+AS
+BEGIN
+	DECLARE @resultado int
+	EXEC agregarUsuario 'admin', 'w23e', @resultado
+	EXEC agregarUsuario 'BlacuttMatias', 'w23e', @resultado
+	EXEC agregarUsuario 'MonjaLucas', 'w23e', @resultado
+	EXEC agregarUsuario 'MontiFederico', 'w23e', @resultado
+	EXEC agregarUsuario 'MauroGaston', 'w23e', @resultado
+	EXEC agregarRolAUnUsuario 'Administrativo', 'admin'
+	EXEC agregarRolAUnUsuario 'Administrativo', 'BlacuttMatias' 
+	EXEC agregarRolAUnUsuario 'Administrativo', 'MonjaLucas'
+	EXEC agregarRolAUnUsuario 'Administrativo', 'MontiFederico' 
+	EXEC agregarRolAUnUsuario 'Administrativo', 'MauroGaston' 
+END
+GO
+
+EXEC crearUsuariosIniciales
+GO
+
+
 /*######################## [04]::[ABM Puerto] ############################*/
 
 
@@ -1488,3 +1556,6 @@ BEGIN
 		WHERE tram_codigo = tram_por_reco_tramo
 END
 GO
+
+
+
