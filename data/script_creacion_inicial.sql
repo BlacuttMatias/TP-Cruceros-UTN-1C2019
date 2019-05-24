@@ -1579,7 +1579,7 @@ BEGIN
 		SET @mesInicial = 1
 		SET @mesFinal = 6
 		END
-	IF @semestre = 1
+	IF @semestre = 2
 		BEGIN
 		SET @mesInicial = 7
 		SET @mesFinal = 12
