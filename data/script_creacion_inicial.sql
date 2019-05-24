@@ -166,6 +166,11 @@ object_id(N'[crearUsuariosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 
 drop procedure [crearUsuariosIniciales]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarLosCincoRecorridosConMasPasajesComprados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarLosCincoRecorridosConMasPasajesComprados]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1561,4 +1566,36 @@ END
 GO
 
 
+/*######################## [10]::[LISTADOS ESTADISTICOS] ############################*/
 
+--TOP 5 DE LOS RECORRIDOS CON MAS PASAJES VENDIDOS
+CREATE PROCEDURE mostrarLosCincoRecorridosConMasPasajesComprados @anio int, @semestre int
+AS
+BEGIN
+	DECLARE @mesInicial int
+	DECLARE @mesFinal int
+	IF @semestre = 1
+		BEGIN
+		SET @mesInicial = 1
+		SET @mesFinal = 6
+		END
+	IF @semestre = 1
+		BEGIN
+		SET @mesInicial = 7
+		SET @mesFinal = 12
+		END
+
+	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, 
+		reco_precio AS Precio, COUNT(pasa_codigo) AS Pasajes_vendidos
+		
+		FROM FIDEOS_CON_TUCO.Recorrido
+		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
+		JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_viaje = viaj_codigo)
+		JOIN FIDEOS_CON_TUCO.Compra ON (comp_codigo = pasa_compra)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = reco_puerto_destino)
+		WHERE YEAR(comp_fecha) = @anio AND MONTH(comp_fecha) BETWEEN @mesInicial AND @mesFinal
+		GROUP BY reco_id, puertoOrigen.puer_ciudad, puertoDestino.puer_ciudad, reco_precio
+		ORDER BY COUNT(pasa_codigo) DESC
+END
+GO
