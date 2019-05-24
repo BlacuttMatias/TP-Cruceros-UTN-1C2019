@@ -74,12 +74,6 @@
     <Compile Include="AbmRol\frmAMBRolMain.Designer.cs">
       <DependentUpon>frmAMBRolMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\frmBajaRol.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmRol\frmBajaRol.Designer.cs">
-      <DependentUpon>frmBajaRol.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmRol\frmModificarRol.cs">
       <SubType>Form</SubType>
     </Compile>

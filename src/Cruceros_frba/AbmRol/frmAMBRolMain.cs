@@ -30,24 +30,29 @@ namespace FrbaCrucero.AbmRol
         private void btnAlta_Click(object sender, EventArgs e)
         {
             frmAltaRol frmAlta = new frmAltaRol();
-            frmAlta.Visible = true;
+            frmAlta.Show();
+            this.Hide();
+            frmAlta.FormClosing += frmAlta_Closing;
         }
-
         private void btnModificacion_Click(object sender, EventArgs e)
         {
             frmModificarRol frmModificacion = new frmModificarRol();
-            frmModificacion.Visible = true;
-        }
-
-        private void btnBaja_Click(object sender, EventArgs e)
-        {
-            frmBajaRol frmBaja = new frmBajaRol();
-            frmBaja.Visible = true;
+            frmModificacion.Show();
+            this.Hide();
+            frmModificacion.FormClosing += frmModificacion_Closing;
         }
 
         private void frmABMRolInicio_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
+        }
+        private void frmAlta_Closing(object sender, FormClosingEventArgs e)
+        {
+            this.Show();
+        }
+        private void frmModificacion_Closing(object sender, FormClosingEventArgs e)
+        {
+            this.Show();
         }
     }
 }

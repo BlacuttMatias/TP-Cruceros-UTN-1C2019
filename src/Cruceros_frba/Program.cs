@@ -18,7 +18,7 @@ namespace FrbaCrucero
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AbmRol.frmModificarRolSeleccionado());
+            Application.Run(new AbmRol.frmABMRolMain());
         }
     }
 }

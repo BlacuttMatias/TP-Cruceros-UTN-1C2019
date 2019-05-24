@@ -12,26 +12,44 @@ namespace FrbaCrucero.AbmRol
 {
     public partial class frmModificarRol : Form
     {
+        private string rol_Description = "";
+        private string rol_Codigo = "";
+        private string rol_esta_habilitado="";
         public frmModificarRol()
         {
             InitializeComponent();
         }
-
-        private void dataGridRoles_SelectionChanged(object sender, EventArgs e)
+        private void frmModificarRol_Load(object sender, EventArgs e)
         {
-
+            this.CenterToScreen();
+            Rol abm = new Rol();
+            this.dataGridRoles.DataSource = abm.mostrarRoles();
+            if (dataGridRoles.Rows.Count == 0)
+            {
+                MessageBox.Show("Actualmente no hay roles para modificar", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+            }
         }
-
-        private void btnLimpiar_Click(object sender, EventArgs e)
+        private void dataGridRoles_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            this.textBox1.Clear();
-            this.dataGridRoles.Dispose();
-        }
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow Fila = this.dataGridRoles.Rows[e.RowIndex];
 
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            //Deberia hacer un select con un rol_descipcion = textBox1.Text o algo asi
-            //y pasar los valores del dataset al dataGridRoles
+                rol_Codigo = Fila.Cells["Codigo"].Value.ToString();
+                rol_Description = Fila.Cells["Descripcion"].Value.ToString();
+                rol_esta_habilitado = Fila.Cells["Habilitado"].Value.ToString();
+                frmModificarRolSeleccionado frmRolSeleccionado = new frmModificarRolSeleccionado(rol_Codigo, rol_Description, rol_esta_habilitado);
+                frmRolSeleccionado.Show();
+                this.Hide();
+                frmRolSeleccionado.FormClosing += frmRolSeleccionado_Closing;
+
+            }
         }
+        private void frmRolSeleccionado_Closing(object sender, FormClosingEventArgs e)
+        {
+            this.Show();
+        }
+        
     }
 }

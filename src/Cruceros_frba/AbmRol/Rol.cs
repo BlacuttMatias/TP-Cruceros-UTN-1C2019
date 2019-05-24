@@ -40,18 +40,14 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.CommandType = CommandType.StoredProcedure;
 
                 #region rol_descripcion
-                SqlParameter descriptionRol = new SqlParameter();
-                descriptionRol.ParameterName = "@rolAgregar";
-                descriptionRol.SqlDbType = SqlDbType.VarChar;
-                descriptionRol.Size = 255;
-                descriptionRol.Value = nombre;
-                SqlCmd.Parameters.Add(descriptionRol);
+                SqlParameter rol_descripcion = new SqlParameter("@rolAgregar", SqlDbType.VarChar);
+                rol_descripcion.Size = 255;
+                rol_descripcion.Value = nombre;
+                SqlCmd.Parameters.Add(rol_descripcion);
                 #endregion
 
                 #region Retorno del Stoc Procedure?
-                SqlParameter resultado = new SqlParameter();
-                resultado.ParameterName = "@resultado";
-                resultado.SqlDbType = SqlDbType.Int;
+                SqlParameter resultado = new SqlParameter("@flag", SqlDbType.Int);
                 resultado.Direction = ParameterDirection.Output;
                 SqlCmd.Parameters.Add(resultado);
                 #endregion
@@ -87,12 +83,11 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.CommandText = "mostrarFuncionalidadesNoAgregadasARol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
 
-                SqlParameter rol = new SqlParameter();
-                rol.ParameterName = "@nombreRol";
-                rol.SqlDbType = SqlDbType.VarChar;
-                rol.Size = 255;
-                rol.Value = nombreRol;
-                SqlCmd.Parameters.Add(rol);
+                SqlParameter rol_descripcion = new SqlParameter("@nombreRol", SqlDbType.VarChar);
+                rol_descripcion.Size = 255;
+                rol_descripcion.Value = nombreRol;
+                SqlCmd.Parameters.Add(rol_descripcion);
+
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -122,13 +117,12 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.Connection = SqlCon;
                 SqlCmd.CommandText = "mostrarFuncionalidadesAgregadasARol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
+                
+                SqlParameter rol_descripcion = new SqlParameter("@nombreRol", SqlDbType.VarChar);
+                rol_descripcion.Size = 255;
+                rol_descripcion.Value = nombreRol;
+                SqlCmd.Parameters.Add(rol_descripcion);
 
-                SqlParameter rol = new SqlParameter();
-                rol.ParameterName = "@nombreRol";
-                rol.SqlDbType = SqlDbType.VarChar;
-                rol.Size = 255;
-                rol.Value = nombreRol;
-                SqlCmd.Parameters.Add(rol);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -159,19 +153,15 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.CommandText = "FIDEOS_CON_TUCO.AgregarFuncionalidadARol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
 
-                SqlParameter rol = new SqlParameter();
-                rol.ParameterName = "@nombrerol";
-                rol.SqlDbType = SqlDbType.VarChar;
-                rol.Size = 255;
-                rol.Value = nombreRol;
-                SqlCmd.Parameters.Add(rol);
+                SqlParameter rol_descripcion = new SqlParameter("@nombreRol", SqlDbType.VarChar);
+                rol_descripcion.Size = 255;
+                rol_descripcion.Value = nombreRol;
+                SqlCmd.Parameters.Add(rol_descripcion);
 
-                SqlParameter funcionalidad = new SqlParameter();
-                funcionalidad.ParameterName = "@funcionalidad";
-                funcionalidad.SqlDbType = SqlDbType.VarChar;
-                funcionalidad.Size = 255;
-                funcionalidad.Value = nombreFuncionalidad;
-                SqlCmd.Parameters.Add(funcionalidad);
+                SqlParameter func_descripcion = new SqlParameter("@funcionalidad", SqlDbType.VarChar);
+                func_descripcion.Size = 255;
+                func_descripcion.Value = nombreFuncionalidad;
+                SqlCmd.Parameters.Add(func_descripcion);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -200,19 +190,15 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.Connection = SqlCon;
                 SqlCmd.CommandText = "eliminarFuncionalidadARol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
+                
+                SqlParameter func_descripcion = new SqlParameter("@nombreFuncionalidad", SqlDbType.VarChar);
+                func_descripcion.Size = 255;
+                func_descripcion.Value = nombreFuncionalidad;
+                SqlCmd.Parameters.Add(func_descripcion);
 
-                SqlParameter funcionalidad = new SqlParameter();
-                funcionalidad.ParameterName = "@nombreFuncionalidad";
-                funcionalidad.SqlDbType = SqlDbType.VarChar;
-                funcionalidad.Size = 255;
-                funcionalidad.Value = nombreFuncionalidad;
-                SqlCmd.Parameters.Add(funcionalidad);
-
-                SqlParameter id = new SqlParameter();
-                id.ParameterName = "@idRol";
-                id.SqlDbType = SqlDbType.Int;
-                id.Value = idRol;
-                SqlCmd.Parameters.Add(id);
+                SqlParameter rol_codigo = new SqlParameter("@codigoRol", SqlDbType.Int);
+                rol_codigo.Value = idRol;
+                SqlCmd.Parameters.Add(rol_codigo);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -270,19 +256,15 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.Connection = SqlCon;
                 SqlCmd.CommandText = "actualizarNombreRol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
+                
+                SqlParameter rol_codigo = new SqlParameter("@codigo", SqlDbType.Int);
+                rol_codigo.Value = id;
+                SqlCmd.Parameters.Add(rol_codigo);
 
-                SqlParameter idRol = new SqlParameter();
-                idRol.ParameterName = "@id";
-                idRol.SqlDbType = SqlDbType.Int;
-                idRol.Value = id;
-                SqlCmd.Parameters.Add(idRol);
-
-                SqlParameter nombreRol = new SqlParameter();
-                nombreRol.ParameterName = "@nombreRol";
-                nombreRol.SqlDbType = SqlDbType.VarChar;
-                nombreRol.Size = 255;
-                nombreRol.Value = nombre;
-                SqlCmd.Parameters.Add(nombreRol);
+                SqlParameter rol_descripcion = new SqlParameter("@nombreRol", SqlDbType.VarChar);
+                rol_descripcion.Size = 255;
+                rol_descripcion.Value = nombre;
+                SqlCmd.Parameters.Add(rol_descripcion);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -312,12 +294,10 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.Connection = SqlCon;
                 SqlCmd.CommandText = "habilitarRol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
-
-                SqlParameter idRol = new SqlParameter();
-                idRol.ParameterName = "@idRol";
-                idRol.SqlDbType = SqlDbType.Int;
-                idRol.Value = id;
-                SqlCmd.Parameters.Add(idRol);
+                
+                SqlParameter rol_codigo = new SqlParameter("@codigo", SqlDbType.Int);
+                rol_codigo.Value = id;
+                SqlCmd.Parameters.Add(rol_codigo);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);
@@ -347,11 +327,9 @@ namespace FrbaCrucero.AbmRol
                 SqlCmd.CommandText = "deshabilitarRol";
                 SqlCmd.CommandType = CommandType.StoredProcedure;
 
-                SqlParameter idRol = new SqlParameter();
-                idRol.ParameterName = "@idRol";
-                idRol.SqlDbType = SqlDbType.Int;
-                idRol.Value = id;
-                SqlCmd.Parameters.Add(idRol);
+                SqlParameter rol_codigo = new SqlParameter("@codigo", SqlDbType.Int);
+                rol_codigo.Value = id;
+                SqlCmd.Parameters.Add(rol_codigo);
 
                 SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
                 SqlDat.Fill(DtResultado);

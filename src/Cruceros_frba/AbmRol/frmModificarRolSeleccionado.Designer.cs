@@ -33,7 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.FuncAgregadas = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.checkBoxHabilitado = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
@@ -48,12 +48,13 @@
             this.btnModificar.TabIndex = 0;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(75, 22);
+            this.textBox1.Location = new System.Drawing.Point(126, 22);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(325, 20);
+            this.textBox1.Size = new System.Drawing.Size(274, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -62,9 +63,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
+            this.label1.Size = new System.Drawing.Size(114, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Rol Nombre";
+            this.label1.Text = "Codigo:    Descripcion:";
             // 
             // groupBox1
             // 
@@ -81,7 +82,7 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.FuncAgregadas);
+            this.groupBox2.Controls.Add(this.listBox2);
             this.groupBox2.Controls.Add(this.listBox1);
             this.groupBox2.Location = new System.Drawing.Point(12, 72);
             this.groupBox2.Name = "groupBox2";
@@ -90,43 +91,23 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Agregar/Quitar Funcionalidad";
             // 
-            // FuncAgregadas
+            // listBox2
             // 
-            this.FuncAgregadas.FormattingEnabled = true;
-            this.FuncAgregadas.Location = new System.Drawing.Point(214, 19);
-            this.FuncAgregadas.Name = "FuncAgregadas";
-            this.FuncAgregadas.Size = new System.Drawing.Size(204, 264);
-            this.FuncAgregadas.TabIndex = 1;
-            this.FuncAgregadas.SelectedIndexChanged += new System.EventHandler(this.listBox2_SelectedIndexChanged);
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(214, 19);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(204, 264);
+            this.listBox2.TabIndex = 1;
+            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.FuncionalidadesExistentes_SelectedIndexChanged);
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "Aceituna",
-            "Anana",
-            "Banana",
-            "Calabaza",
-            "Coco",
-            "Fresa",
-            "Granada",
-            "Higo",
-            "Kiwi",
-            "Limon",
-            "Mandarina",
-            "Mango",
-            "Manzana",
-            "Melon",
-            "Peras",
-            "Piña",
-            "Pimiento",
-            "Tomate",
-            "Uva"});
             this.listBox1.Location = new System.Drawing.Point(9, 19);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(199, 264);
             this.listBox1.TabIndex = 0;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.FuncionalidadesFaltantes_SelectedIndexChanged);
             // 
             // checkBoxHabilitado
             // 
@@ -167,7 +148,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBoxHabilitado;
-        private System.Windows.Forms.ListBox FuncAgregadas;
+        private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.ListBox listBox1;
     }
 }
