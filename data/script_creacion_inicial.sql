@@ -832,11 +832,14 @@ GO
 
 
 INSERT INTO [FIDEOS_CON_TUCO].[Crucero](cruc_codigo, cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado)
-SELECT CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo, COUNT(DISTINCT CABINA_NRO), 1
-FROM gd_esquema.Maestra 
-JOIN [FIDEOS_CON_TUCO].[Marca] ON (CRU_FABRICANTE = marc_descripcion)
-JOIN [FIDEOS_CON_TUCO].[Modelo] ON (CRUCERO_MODELO = mode_descripcion)
-GROUP BY CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
+SELECT M1.CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
+, (SELECT COUNT(*) FROM (SELECT DISTINCT M2.CRUCERO_IDENTIFICADOR, M2.CABINA_NRO, M2.CABINA_PISO FROM gd_esquema.Maestra M2 
+	WHERE M1.CRUCERO_IDENTIFICADOR = M2.CRUCERO_IDENTIFICADOR) AS cabinas)
+, 1
+FROM gd_esquema.Maestra M1
+JOIN [FIDEOS_CON_TUCO].[Marca] ON (M1.CRU_FABRICANTE = marc_descripcion)
+JOIN [FIDEOS_CON_TUCO].[Modelo] ON (M1.CRUCERO_MODELO = mode_descripcion)
+GROUP BY M1.CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
 GO
 
 
