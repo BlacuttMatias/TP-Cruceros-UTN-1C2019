@@ -171,6 +171,11 @@ object_id(N'[mostrarLosCincoRecorridosConMasPasajesComprados]') and OBJECTPROPER
 drop procedure [mostrarLosCincoRecorridosConMasPasajesComprados]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1597,5 +1602,37 @@ BEGIN
 		WHERE YEAR(comp_fecha) = @anio AND MONTH(comp_fecha) BETWEEN @mesInicial AND @mesFinal
 		GROUP BY reco_id, puertoOrigen.puer_ciudad, puertoDestino.puer_ciudad, reco_precio
 		ORDER BY COUNT(pasa_codigo) DESC
+END
+GO
+
+--TOP 5 DE LOS RECORRIDOS CON MAS CABINAS LIBRES EN CADA UNO DE LOS VIAJES
+CREATE PROCEDURE mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje @anio int, @semestre int
+AS
+BEGIN
+	DECLARE @mesInicial int
+	DECLARE @mesFinal int
+	IF @semestre = 1
+		BEGIN
+		SET @mesInicial = 1
+		SET @mesFinal = 6
+		END
+	IF @semestre = 2
+		BEGIN
+		SET @mesInicial = 7
+		SET @mesFinal = 12
+		END
+	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio, 
+		SUM(cruc_cantidad_cabinas) - (SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
+			JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
+			WHERE pasa_viaje = viaj_codigo AND pasa_compra IS NOT NULL AND YEAR(viaj_fecha_inicio) = @anio 
+				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal) AS Cabinas_libres_en_cada_viaje
+		FROM FIDEOS_CON_TUCO.Recorrido
+		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
+		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = reco_puerto_origen)
+		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = reco_puerto_destino)
+		WHERE YEAR(viaj_fecha_inicio) = @anio AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal
+		GROUP BY reco_id, puertoOrigen.puer_ciudad, puertoDestino.puer_ciudad, reco_precio
+		ORDER BY 5 DESC
 END
 GO
