@@ -18,6 +18,8 @@ namespace FrbaCrucero.AbmRol
         public frmModificarRol()
         {
             InitializeComponent();
+
+            dataGridRoles.CellClick += new DataGridViewCellEventHandler(dataGridRoles_CellClick);
         }
         private void frmModificarRol_Load(object sender, EventArgs e)
         {
