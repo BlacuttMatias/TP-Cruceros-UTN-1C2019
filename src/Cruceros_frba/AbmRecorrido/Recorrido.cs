@@ -10,6 +10,20 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmRecorrido
 {
+    public class TramoElegido
+    {
+        public int codigoTramo { get; set; }
+        public Decimal precio { get; set; }
+        public string origen { get; set; }
+        public string destino { get; set; }
+        public TramoElegido(int _codigoTramo, string _origen, string _destino, Decimal _precio)
+        {
+            codigoTramo = _codigoTramo;
+            precio = _precio;
+            origen = _origen;
+            destino = _destino;
+        }
+    }
     static class Tramo
     {
         public static string tabla = "[GD1C2019].[FIDEOS_CON_TUCO].[Tramo]";
@@ -438,5 +452,6 @@ namespace FrbaCrucero.AbmRecorrido
                 return DtResultado;
             }
         #endregion
+        
     }
 }

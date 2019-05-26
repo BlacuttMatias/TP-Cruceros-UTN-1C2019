@@ -10,20 +10,6 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmRecorrido
 {
-    public class TramoElegido
-    {
-        public int codigoTramo { get; set; }
-        public Decimal precio { get; set; }
-        public string origen { get; set; }
-        public string destino { get; set; }
-        public TramoElegido(int _codigoTramo, string _origen, string _destino, Decimal _precio)
-        {
-            codigoTramo = _codigoTramo;
-            precio = _precio;
-            origen = _origen;
-            destino = _destino;
-        }
-    }
     public partial class frmAltaRecorrido : Form
     {
         Decimal precio;
@@ -124,7 +110,7 @@ namespace FrbaCrucero.AbmRecorrido
             Recorrido abm = new Recorrido();
             int idRecorrido = -1;
             idRecorrido = abm.crearRecorrido(listaTramos.ElementAt(0).origen, listaTramos.ElementAt(listaTramos.Count-1).destino, precio);
-            if (idRecorrido == 0)
+            if (idRecorrido != 0)
             {
                 foreach (TramoElegido t in listaTramos)
                 {
