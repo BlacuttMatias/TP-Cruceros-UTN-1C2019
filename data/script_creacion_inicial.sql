@@ -186,6 +186,21 @@ object_id(N'[generarViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [generarViaje]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[ingresarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [ingresarCliente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[traerCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [traerCliente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[actualizarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [actualizarCliente]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1618,6 +1633,42 @@ BEGIN
 			VALUES (@idRecorrido, @codigoCrucero, @fechaInicio, @fechaFinalizacion)
 		SET @resultado = 1
 		END
+END
+GO
+
+
+
+/*######################## [08]::[COMPRA DE VIAJE] ############################*/
+
+/************************** Manejo de CLIENTES *******************************************/
+
+
+CREATE PROCEDURE ingresarCliente @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
+	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Cliente(clie_nombre, clie_apellido, clie_dni, clie_telefono, clie_mail, clie_direccion, clie_fecha_nacimiento)
+		VALUES (@nombre, @apellido, @dni, @telefono, @mail, @direccion, @fechaNacimiento)
+END
+GO
+
+
+CREATE PROCEDURE traerCliente @dni numeric(18,0)
+AS
+BEGIN
+	SELECT clie_codigo AS ID, clie_nombre AS Nombre, clie_apellido AS Apellido, clie_dni AS DNI, clie_telefono AS Telefono, clie_mail AS Mail,
+		clie_direccion AS Direccion, clie_fecha_nacimiento AS fechaNacimiento
+		FROM FIDEOS_CON_TUCO.Cliente WHERE clie_dni = @dni
+END
+GO
+
+CREATE PROCEDURE actualizarCliente @codigoCliente int, @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
+	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Cliente SET clie_nombre = @nombre, clie_apellido = @apellido, clie_telefono = @telefono, clie_mail = @mail
+		, clie_direccion = @direccion, clie_fecha_nacimiento = @fechaNacimiento
+		WHERE clie_codigo = @codigoCliente
 END
 GO
 
