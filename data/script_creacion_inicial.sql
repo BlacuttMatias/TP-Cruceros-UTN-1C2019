@@ -181,6 +181,11 @@ object_id(N'[mostrarLosCincoCrucerosConMasDiasFueraDeServicio]') and OBJECTPROPE
 drop procedure [mostrarLosCincoCrucerosConMasDiasFueraDeServicio]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[generarViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [generarViaje]
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1572,6 +1577,47 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = tram_puerto_origen)
 		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = tram_puerto_destino)
 		WHERE tram_codigo = tram_por_reco_tramo
+END
+GO
+
+
+/*######################## [07]::[GENERAR VIAJE] ############################*/
+
+--Errores
+--resultado = 0 -> la fecha de inicio del viajes es menor que la actual
+--resultado = -1 -> El crucero ya tiene un viaje programado para ese intervalo de fechas
+--resultado = -2 -> El crucero esta deshabilitado
+--resultado = -3 -> El recorrido esta deshabilitado
+
+CREATE PROCEDURE generarViaje @idRecorrido int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFinalizacion datetime
+	, @fechaSistema datetime, @resultado int output
+AS
+BEGIN
+	IF (@fechaInicio < @fechaSistema)
+		BEGIN
+		SET @resultado = 0
+		END
+	ELSE IF EXISTS(SELECT viaj_codigo FROM FIDEOS_CON_TUCO.Viaje 
+			JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = @codigoCrucero)
+			WHERE viaj_fecha_inicio NOT BETWEEN @fechaInicio AND @fechaFinalizacion 
+				AND viaj_fecha_finalizacion NOT BETWEEN @fechaInicio AND @fechaFinalizacion)
+		BEGIN
+		SET @resultado = -1
+		END
+	ELSE IF (SELECT cruc_esta_habilitado FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @codigoCrucero) = 0
+		BEGIN
+		SET @resultado = -2
+		END
+	ELSE IF (SELECT reco_esta_habilitado FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_id = @idRecorrido) = 0
+		BEGIN
+		SET @resultado = -3
+		END
+	ELSE 
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Viaje(viaj_recorrido, viaj_crucero, viaj_fecha_inicio, viaj_fecha_finalizacion_estimada)
+			VALUES (@idRecorrido, @codigoCrucero, @fechaInicio, @fechaFinalizacion)
+		SET @resultado = 1
+		END
 END
 GO
 
