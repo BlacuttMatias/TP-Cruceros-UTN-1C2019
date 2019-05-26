@@ -201,6 +201,15 @@ object_id(N'[actualizarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [actualizarCliente]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarViajesParaComprar]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarCabinasDisponiblesDeUnViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarCabinasDisponiblesDeUnViaje]
+GO
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1669,6 +1678,51 @@ BEGIN
 	UPDATE FIDEOS_CON_TUCO.Cliente SET clie_nombre = @nombre, clie_apellido = @apellido, clie_telefono = @telefono, clie_mail = @mail
 		, clie_direccion = @direccion, clie_fecha_nacimiento = @fechaNacimiento
 		WHERE clie_codigo = @codigoCliente
+END
+GO
+
+
+/************************** LISTADO de viajes para comprar *******************************************/
+
+
+CREATE PROCEDURE mostrarViajesParaComprar @fechaInicio datetime, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
+AS 
+BEGIN
+	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
+		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
+			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
+			JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = pasa_viaje)
+			WHERE pasa_compra IS NOT NULL 
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo)
+			)) AS Cantidad_cabinas_disponibles
+		FROM FIDEOS_CON_TUCO.Viaje 
+		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_ciudad = @ciudadPuertoOrigen)
+		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
+		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_ciudad AND reco_puerto_destino = p2.puer_ciudad)
+		WHERE viaj_fecha_inicio = @fechaInicio AND viaj_recorrido = reco_id
+END
+GO
+
+
+/************************** LISTADO de cabinas disponibles de un viaje *******************************************/
+
+
+CREATE PROCEDURE mostrarCabinasDisponiblesDeUnViaje @codigoViaje int
+AS
+BEGIN
+	SELECT cabi_codigo AS Codigo, cabi_numero AS Numero, cabi_piso AS Piso, tipo_descripcion AS Tipo, (tipo_porcentaje_recargo-1)*100 AS Porcetaje_recargo
+		FROM FIDEOS_CON_TUCO.Cabina
+		JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE NOT EXISTS(SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
+				WHERE pasa_cabina = cabi_codigo 
+				AND pasa_compra IS NOT NULL
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo))
+		ORDER BY 4,3,2
 END
 GO
 
