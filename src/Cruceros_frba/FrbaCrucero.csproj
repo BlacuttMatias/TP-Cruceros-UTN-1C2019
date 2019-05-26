@@ -50,18 +50,54 @@
     <Compile Include="AbmCrucero\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmPuerto\Form1.cs">
+    <Compile Include="AbmPuerto\frmABMPuertoMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmPuerto\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmPuerto\frmABMPuertoMain.Designer.cs">
+      <DependentUpon>frmABMPuertoMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.cs">
+    <Compile Include="AbmPuerto\frmAltaPuerto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmPuerto\frmAltaPuerto.Designer.cs">
+      <DependentUpon>frmAltaPuerto.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmPuerto\frmModificarPuerto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmPuerto\frmModificarPuerto.Designer.cs">
+      <DependentUpon>frmModificarPuerto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmPuerto\frmModificarPuertoSeleccionado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmPuerto\frmModificarPuertoSeleccionado.Designer.cs">
+      <DependentUpon>frmModificarPuertoSeleccionado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmPuerto\Puerto.cs" />
+    <Compile Include="AbmRecorrido\frmABMRecorridoMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmABMRecorridoMain.Designer.cs">
+      <DependentUpon>frmABMRecorridoMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmAltaRecorrido.cs" />
+    <Compile Include="AbmRecorrido\frmAltaRecorrido.Designer.cs">
+      <DependentUpon>frmAltaRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmModificacionesRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmModificacionesRecorrido.Designer.cs">
+      <DependentUpon>frmModificacionesRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmNuevoTramo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmNuevoTramo.Designer.cs">
+      <DependentUpon>frmNuevoTramo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\Recorrido.cs" />
     <Compile Include="AbmRol\frmAltaRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +150,27 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AbmPuerto\frmABMPuertoMain.resx">
+      <DependentUpon>frmABMPuertoMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmPuerto\frmAltaPuerto.resx">
+      <DependentUpon>frmAltaPuerto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmPuerto\frmModificarPuerto.resx">
+      <DependentUpon>frmModificarPuerto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmPuerto\frmModificarPuertoSeleccionado.resx">
+      <DependentUpon>frmModificarPuertoSeleccionado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\frmABMRecorridoMain.resx">
+      <DependentUpon>frmABMRecorridoMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\frmAltaRecorrido.resx">
+      <DependentUpon>frmAltaRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\frmNuevoTramo.resx">
+      <DependentUpon>frmNuevoTramo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\frmAltaRol.resx">
       <DependentUpon>frmAltaRol.cs</DependentUpon>
     </EmbeddedResource>

@@ -51,7 +51,6 @@
             this.dataGridRoles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridRoles.Size = new System.Drawing.Size(487, 404);
             this.dataGridRoles.TabIndex = 81;
-            this.dataGridRoles.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridRoles_CellClick);
             // 
             // lblRolID
             // 

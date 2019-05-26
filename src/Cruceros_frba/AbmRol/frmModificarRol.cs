@@ -50,6 +50,5 @@ namespace FrbaCrucero.AbmRol
         {
             this.Show();
         }
-        
     }
 }

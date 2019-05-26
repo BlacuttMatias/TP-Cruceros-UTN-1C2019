@@ -14,11 +14,10 @@ namespace FrbaCrucero
         /// </summary>
         [STAThread]
         static void Main()
-        {
-            
+        {   
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AbmRol.frmABMRolMain());
+            Application.Run(new AbmRecorrido.frmABMRecorridoMain());
         }
     }
 }
