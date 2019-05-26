@@ -1684,7 +1684,7 @@ GO
 
 /************************** LISTADO de viajes para comprar *******************************************/
 
-
+/*
 CREATE PROCEDURE mostrarViajesParaComprar @fechaInicio datetime, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
 AS 
 BEGIN
@@ -1705,7 +1705,7 @@ BEGIN
 		WHERE viaj_fecha_inicio = @fechaInicio AND viaj_recorrido = reco_id
 END
 GO
-
+*/
 
 /************************** LISTADO de cabinas disponibles de un viaje *******************************************/
 
