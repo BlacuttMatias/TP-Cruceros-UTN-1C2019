@@ -347,6 +347,11 @@ drop table [FIDEOS_CON_TUCO].[Tarjeta]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Cantidad_cuotas]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Cantidad_cuotas]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
 object_id(N'[FIDEOS_CON_TUCO].[Empresa_tarjeta]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [FIDEOS_CON_TUCO].[Empresa_tarjeta]
 GO
@@ -720,12 +725,29 @@ GO
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta](
 	[empr_codigo] int IDENTITY(1,1) NOT NULL,
-	[empr_descripcion] [varchar](255) NOT NULL,
-	[empr_cantidad_de_cuotas] int NOT NULL)
+	[empr_descripcion] [varchar](255) NOT NULL)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Empresa_tarjeta] ADD CONSTRAINT PK_EMPRESA_TARJETA
 	PRIMARY KEY ([empr_codigo])
+GO
+
+
+/********** <<CANTIDAD CUOTAS>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Cantidad_cuotas](
+	[cant_codigo] int IDENTITY(1,1) NOT NULL,
+	[cant_cantidad] int NOT NULL,
+	[cant_empresa] int NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cantidad_cuotas] ADD CONSTRAINT PK_CANTIDAD_CUOTAS
+	PRIMARY KEY ([cant_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cantidad_cuotas] ADD CONSTRAINT FK_Empresa_Cuotas FOREIGN KEY ([cant_empresa])
+	REFERENCES [FIDEOS_CON_TUCO].[Empresa_tarjeta]([empr_codigo])
 GO
 
 
@@ -756,7 +778,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_medio_de_pago](
 	[tipo_medi_descripcion] [varchar](255) NOT NULL)
 GO
 
-ALTER TABLE [FIDEOS_CON_TUCO].[Tipo_medio_de_pago] ADD CONSTRAINT PK_EMPRESA_TARJETA
+ALTER TABLE [FIDEOS_CON_TUCO].[Tipo_medio_de_pago] ADD CONSTRAINT PK_TIPO_MEDIO_DE_PAGO
 	PRIMARY KEY ([tipo_medi_codigo])
 GO
 
@@ -1698,11 +1720,12 @@ GO
 
 
 CREATE PROCEDURE ingresarCliente @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
-	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime
+	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime, @codigoCliente int output
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Cliente(clie_nombre, clie_apellido, clie_dni, clie_telefono, clie_mail, clie_direccion, clie_fecha_nacimiento)
 		VALUES (@nombre, @apellido, @dni, @telefono, @mail, @direccion, @fechaNacimiento)
+	SET @codigoCliente = SCOPE_IDENTITY()
 END
 GO
 
@@ -1868,7 +1891,7 @@ BEGIN
 					END AS DiasFueraDeServicio
 				FROM FIDEOS_CON_TUCO.Registro_baja
 				JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo)
-				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'TEMPORAL'
+				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'Temporal'
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 		FROM FIDEOS_CON_TUCO.Crucero
@@ -1895,7 +1918,7 @@ BEGIN
 					END AS DiasFueraDeServicio
 				FROM FIDEOS_CON_TUCO.Registro_baja 
 				JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo)
-				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'TEMPORAL'
+				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'Temporal'
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 
