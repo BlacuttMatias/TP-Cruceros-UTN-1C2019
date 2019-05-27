@@ -81,7 +81,9 @@
     <Compile Include="AbmRecorrido\frmABMRecorridoMain.Designer.cs">
       <DependentUpon>frmABMRecorridoMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\frmAltaRecorrido.cs" />
+    <Compile Include="AbmRecorrido\frmAltaRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="AbmRecorrido\frmAltaRecorrido.Designer.cs">
       <DependentUpon>frmAltaRecorrido.cs</DependentUpon>
     </Compile>
@@ -130,6 +132,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Coneccion.cs" />
+    <Compile Include="frmInicio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmInicio.Designer.cs">
+      <DependentUpon>frmInicio.cs</DependentUpon>
+    </Compile>
     <Compile Include="GeneracionViaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +158,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserLogin\Administrador.cs" />
+    <Compile Include="UserLogin\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserLogin\frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserLogin\LoginControl.cs" />
     <EmbeddedResource Include="AbmPuerto\frmABMPuertoMain.resx">
       <DependentUpon>frmABMPuertoMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +199,9 @@
     <EmbeddedResource Include="AbmRol\frmModificarRolSeleccionado.resx">
       <DependentUpon>frmModificarRolSeleccionado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmInicio.resx">
+      <DependentUpon>frmInicio.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -192,6 +211,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UserLogin\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
