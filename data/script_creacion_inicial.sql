@@ -512,19 +512,6 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Funcionalidad_por_rol] ADD CONSTRAINT PK_FUNC_ROL
 GO
 
 
-/*********** <<CIUDAD>> ***************/
-
-
-CREATE TABLE [FIDEOS_CON_TUCO].[Ciudad](
-	[ciud_codigo] int IDENTITY(1,1) NOT NULL,
-	[ciud_descripcion] [varchar](255) NOT NULL)
-GO
-
-ALTER TABLE [FIDEOS_CON_TUCO].[Ciudad] ADD CONSTRAINT PK_CIUDAD
-	PRIMARY KEY(ciud_codigo)
-GO
-
-
 /********** <<PUERTO>> **************/
 
 
