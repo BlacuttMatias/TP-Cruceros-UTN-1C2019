@@ -262,6 +262,11 @@ drop table [FIDEOS_CON_TUCO].[Registro_baja]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Tipo_baja]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Tipo_baja]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
 object_id(N'[FIDEOS_CON_TUCO].[Pasaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [FIDEOS_CON_TUCO].[Pasaje]
 GO
@@ -644,13 +649,26 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Viaje] ADD CONSTRAINT FK_Viaj_Recorrido FOREIGN K
 GO
 
 
+/********** <<TIPO_BAJA>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_baja] (
+	[tipo_baja_codigo] int IDENTITY(1,1) NOT NULL,
+	[tipo_baja_descripcion] varchar(255) NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Tipo_baja] ADD CONSTRAINT PK_TIPO_BAJA
+	PRIMARY KEY ([tipo_baja_codigo])
+GO
+
+
 /********** <<REGISTRO_BAJA>> ************/
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Registro_baja](
 	[regi_codigo] int IDENTITY(1,1) NOT NULL,
-	[regi_tipo] [varchar](25) NOT NULL CHECK([regi_tipo] IN('PERMANENTE','TEMPORAL')),	/*?? PODRIA CAMBIARSE POR A UNA ENTIDAD SEPARADA*/
-	[regi_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
+	[regi_tipo] int NOT NULL,	
+	[regi_crucero] [varchar](255) NOT NULL,			
 	[regi_fecha_de_baja] [datetime] NOT NULL,
 	[regi_fecha_de_alta] [datetime])
 GO
@@ -661,6 +679,10 @@ GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT FK_Crucero FOREIGN KEY ([regi_crucero])
 	REFERENCES [FIDEOS_CON_TUCO].[Crucero]([cruc_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Registro_baja] ADD CONSTRAINT FK_Regi_tipo FOREIGN KEY ([regi_tipo])
+	REFERENCES [FIDEOS_CON_TUCO].[Tipo_baja]([tipo_baja_codigo])
 GO
 
 
@@ -1822,7 +1844,8 @@ BEGIN
 					WHEN regi_fecha_de_baja >= @fechaInicio AND regi_fecha_de_alta < @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, regi_fecha_de_alta)
 					END AS DiasFueraDeServicio
 				FROM FIDEOS_CON_TUCO.Registro_baja
-				WHERE regi_crucero = cruc_codigo AND regi_tipo = 'TEMPORAL'
+				JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo)
+				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'TEMPORAL'
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 		FROM FIDEOS_CON_TUCO.Crucero
@@ -1848,7 +1871,8 @@ BEGIN
 					WHEN regi_fecha_de_baja >= @fechaInicio AND regi_fecha_de_alta < @fechaFin THEN DATEDIFF(DAY, regi_fecha_de_baja, regi_fecha_de_alta)
 					END AS DiasFueraDeServicio
 				FROM FIDEOS_CON_TUCO.Registro_baja 
-				WHERE regi_crucero = cruc_codigo AND regi_tipo = 'TEMPORAL'
+				JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo)
+				WHERE regi_crucero = cruc_codigo AND tipo_baja_descripcion = 'TEMPORAL'
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 
