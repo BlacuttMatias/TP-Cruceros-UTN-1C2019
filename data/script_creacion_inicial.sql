@@ -231,6 +231,26 @@ object_id(N'[cargarCantidadDeCuotasDeEmpresasIniciales]') and OBJECTPROPERTY(id,
 drop procedure [cargarCantidadDeCuotasDeEmpresasIniciales]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[generarPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [generarPasaje]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[generarReservaDeUnPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [generarReservaDeUnPasaje]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[generarCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [generarCompra]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarPasajeAUnaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarPasajeAUnaCompra]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1752,7 +1772,7 @@ GO
 
 
 
-/*######################## [08]::[COMPRA DE VIAJE] ############################*/
+/*######################## [08]::[COMPRA O RESERVA DE VIAJE] ############################*/
 
 
 /************************** CREACION de tipos de medios de pago, empresas de tarjetas y cantidad de cuotas disponibles *******************************************/
@@ -1873,6 +1893,61 @@ BEGIN
 		ORDER BY 4,3,2
 END
 GO
+
+
+/************************** GENERACION DE PASAJE, COMPRAS Y RESERVAS *******************************************/
+
+
+CREATE PROCEDURE generarPasaje @codigoCliente int, @codigoViaje int, @codigoCabina int, @codigoPasaje int output
+AS
+BEGIN
+	DECLARE @precioPasaje int
+	SELECT @precioPasaje = reco_precio*tipo_porcentaje_recargo FROM FIDEOS_CON_TUCO.Viaje
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
+		JOIN FIDEOS_CON_TUCO.Cabina ON (cabi_codigo = @codigoCabina)
+		JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE viaj_codigo = @codigoViaje
+	INSERT INTO FIDEOS_CON_TUCO.Pasaje(pasa_precio, pasa_cliente, pasa_viaje, pasa_cabina)
+		VALUES(@precioPasaje, @codigoCliente, @codigoViaje, @codigoCabina)
+	SET @codigoPasaje = SCOPE_IDENTITY()
+END
+GO
+
+
+CREATE PROCEDURE generarReservaDeUnPasaje @codigoPasaje int, @fechaSistema datetime, @codigoReserva int output
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Reserva(rese_fecha, rese_pasaje)
+		VALUES(@fechaSistema, @codigoPasaje)
+	SET @codigoPasaje = SCOPE_IDENTITY()
+END
+GO
+
+
+CREATE PROCEDURE generarCompra @codigoCliente int, @fechaSistema datetime, @codigoMedioDePago int, @codigoCompra int output
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Compra(comp_cliente, comp_fecha, comp_medio_de_pago, comp_monto_total)
+		VALUES(@codigoCliente, @fechaSistema, @codigoMedioDePago, 0)
+	SET @codigoCompra = SCOPE_IDENTITY()
+END
+GO
+
+
+CREATE PROCEDURE agregarPasajeAUnaCompra @codigoPasaje int, @codigoCompra int
+AS
+BEGIN
+	IF NOT EXISTS(SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva 
+			JOIN FIDEOS_CON_TUCO.canc_reserva ON canc_reserva = rese_codigo WHERE rese_pasaje = @codigoPasaje)
+		BEGIN
+		DECLARE @precioPasaje numeric(10,2)
+		SELECT @precioPasaje = pasa_precio FROM FIDEOS_CON_TUCO.Pasaje WHERE pasa_codigo = @codigoPasaje
+		UPDATE FIDEOS_CON_TUCO.Compra SET comp_monto_total = comp_monto_total + @precioPasaje WHERE comp_codigo = @codigoCompra
+		END
+END
+GO
+
+
 
 
 /*######################## [10]::[LISTADOS ESTADISTICOS] ############################*/
