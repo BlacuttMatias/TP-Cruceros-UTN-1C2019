@@ -251,6 +251,31 @@ object_id(N'[agregarPasajeAUnaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') =
 drop procedure [agregarPasajeAUnaCompra]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarTiposDeMediosDePago]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarTiposDeMediosDePago]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarEmpresasDeTarjetas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarEmpresasDeTarjetas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarCuotasDeUnaEmpresa]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarCuotasDeUnaEmpresa]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[ingresarTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [ingresarTarjeta]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[ingresarMedioDePagoConTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [ingresarMedioDePagoConTarjeta]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -798,7 +823,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Tarjeta](
 	[tarj_numero] numeric(20,0) NOT NULL,
 	[tarj_empresa] int NOT NULL,
 	[tarj_codigo_verificador] int NOT NULL,
-	[tarj_tipo] [varchar] NOT NULL CHECK([tarj_tipo] IN('DEBITO', 'CREDITO')))
+	[tarj_tipo] [varchar](255) NOT NULL CHECK([tarj_tipo] IN('DEBITO', 'CREDITO')))
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT PK_TARJETA
@@ -1891,6 +1916,61 @@ BEGIN
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
 					WHERE rese_pasaje = pasa_codigo)))
 		ORDER BY 4,3,2
+END
+GO
+
+
+/************************** MANEJO de medios de pago *******************************************/
+
+
+CREATE PROCEDURE mostrarTiposDeMediosDePago
+AS
+BEGIN
+	SELECT tipo_medi_codigo, tipo_medi_descripcion FROM FIDEOS_CON_TUCO.Tipo_medio_de_pago
+END
+GO
+
+CREATE PROCEDURE mostrarEmpresasDeTarjetas
+AS
+BEGIN
+	SELECT empr_codigo, empr_descripcion FROM FIDEOS_CON_TUCO.Empresa_tarjeta
+END
+GO
+
+CREATE PROCEDURE mostrarCuotasDeUnaEmpresa @codigoEmpresa int
+AS
+BEGIN
+	SELECT cant_cantidad FROM FIDEOS_CON_TUCO.Cantidad_cuotas JOIN FIDEOS_CON_TUCO.Empresa_tarjeta ON (cant_empresa = @codigoEmpresa)
+END
+GO
+
+--@tipoTarjeta debe ser 'DEBITO' O 'CREDITO'
+CREATE PROCEDURE ingresarTarjeta @numeroTarjeta numeric(20,0), @codigoVerificador int, @tipoTarjeta varchar(255), @codigoEmpresa int
+AS
+BEGIN
+	IF NOT EXISTS(SELECT tarj_numero FROM FIDEOS_CON_TUCO.Tarjeta WHERE tarj_numero = @numeroTarjeta)
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Tarjeta(tarj_numero, tarj_codigo_verificador, tarj_tipo, tarj_empresa) 
+			VALUES (@numeroTarjeta, @codigoVerificador, @tipoTarjeta, @codigoEmpresa)
+		END
+END
+GO
+
+CREATE PROCEDURE ingresarMedioDePagoConTarjeta @tipoMedioDePago int, @numeroTarjeta numeric (20,0), @cantidadDeCuotas int, @codigoMedioDePago int output
+AS
+BEGIN
+	IF NOT EXISTS(SELECT medi_codigo FROM FIDEOS_CON_TUCO.Medio_de_pago WHERE medi_tarjeta = @numeroTarjeta 
+			AND medi_tipo = @tipoMedioDePago AND medi_cantidad_de_cuotas = @cantidadDeCuotas)
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Medio_de_pago(medi_tarjeta, medi_tipo, medi_cantidad_de_cuotas)
+			VALUES(@numeroTarjeta, @tipoMedioDePago, @cantidadDeCuotas)
+		SET @codigoMedioDePago = SCOPE_IDENTITY()
+		END
+	ELSE
+		BEGIN
+		SELECT @codigoMedioDePago = medi_codigo FROM FIDEOS_CON_TUCO.Medio_de_pago WHERE medi_tarjeta = @numeroTarjeta 
+			AND medi_tipo = @tipoMedioDePago AND medi_cantidad_de_cuotas = @cantidadDeCuotas
+		END
 END
 GO
 
