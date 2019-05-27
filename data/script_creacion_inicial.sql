@@ -337,6 +337,11 @@ drop table [FIDEOS_CON_TUCO].[Medio_de_pago]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Tipo_medio_de_pago]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Tipo_medio_de_pago]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
 object_id(N'[FIDEOS_CON_TUCO].[Tarjeta]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [FIDEOS_CON_TUCO].[Tarjeta]
 GO
@@ -743,13 +748,27 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Tarjeta] ADD CONSTRAINT FK_Empresa FOREIGN KEY ([
 GO
 
 
+/********** <<TIPO MEDIO DE PAGO>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Tipo_medio_de_pago](
+	[tipo_medi_codigo] int IDENTITY(1,1) NOT NULL,
+	[tipo_medi_descripcion] [varchar](255) NOT NULL)
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Tipo_medio_de_pago] ADD CONSTRAINT PK_EMPRESA_TARJETA
+	PRIMARY KEY ([tipo_medi_codigo])
+GO
+
+
 /********** <<MEDIO_DE_PAGO>> ************/
 
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Medio_de_pago](
 	[medi_codigo] int IDENTITY(1,1) NOT NULL,
-	[medi_tipo] [varchar](50) NOT NULL CHECK([medi_tipo] IN('EFECTIVO', 'TARJETA')),
-	[medi_tarjeta] numeric(20,0))
+	[medi_tipo] int NOT NULL,
+	[medi_tarjeta] numeric(20,0),
+	[medi_cantidad_de_cuotas] int)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT PK_MEDIO_DE_PAGO
@@ -758,6 +777,10 @@ GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT FK_Tarjeta FOREIGN KEY ([medi_tarjeta])
 	REFERENCES [FIDEOS_CON_TUCO].[Tarjeta]([tarj_numero])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Medio_de_pago] ADD CONSTRAINT FK_Tipo_Medio_De_Pago FOREIGN KEY ([medi_tipo])
+	REFERENCES [FIDEOS_CON_TUCO].[Tipo_medio_de_pago]([tipo_medi_codigo])
 GO
 
 
