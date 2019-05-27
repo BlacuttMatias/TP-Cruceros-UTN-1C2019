@@ -211,6 +211,26 @@ object_id(N'[mostrarCabinasDisponiblesDeUnViaje]') and OBJECTPROPERTY(id, N'IsPr
 drop procedure [mostrarCabinasDisponiblesDeUnViaje]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarTiposdeBajasDeCrucerosIniciales]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarTiposDeMediosDePagoIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarTiposDeMediosDePagoIniciales]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarEmpresasDeTarjetasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarEmpresasDeTarjetasIniciales]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarCantidadDeCuotasDeEmpresasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarCantidadDeCuotasDeEmpresasIniciales]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1672,6 +1692,24 @@ END
 GO
 
 
+/*######################## [04]::[ABM Cruceros] ############################*/
+
+
+/************************** CREACION de tipos de baja de los cruceros *******************************************/
+
+CREATE PROCEDURE cargarTiposdeBajasDeCrucerosIniciales
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Tipo_baja(tipo_baja_descripcion) VALUES ('Permanente')
+	INSERT INTO FIDEOS_CON_TUCO.Tipo_baja(tipo_baja_descripcion) VALUES ('Temporal')
+END
+GO
+
+EXEC cargarTiposdeBajasDeCrucerosIniciales
+GO
+
+
+
 /*######################## [07]::[GENERAR VIAJE] ############################*/
 
 --Errores
@@ -1715,6 +1753,48 @@ GO
 
 
 /*######################## [08]::[COMPRA DE VIAJE] ############################*/
+
+
+/************************** CREACION de tipos de medios de pago, empresas de tarjetas y cantidad de cuotas disponibles *******************************************/
+
+
+CREATE PROCEDURE cargarTiposDeMediosDePagoIniciales
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Tipo_medio_de_pago(tipo_medi_descripcion) VALUES ('Tarjeta de credito')
+	INSERT INTO FIDEOS_CON_TUCO.Tipo_medio_de_pago(tipo_medi_descripcion) VALUES ('Tarjeta de debito')
+END
+GO
+
+CREATE PROCEDURE cargarEmpresasDeTarjetasIniciales
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Empresa_tarjeta(empr_descripcion) VALUES('Visa')
+	INSERT INTO FIDEOS_CON_TUCO.Empresa_tarjeta(empr_descripcion) VALUES('MasterCard')
+END
+GO
+
+CREATE PROCEDURE cargarCantidadDeCuotasDeEmpresasIniciales
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
+		SELECT 6, empr_codigo FROM FIDEOS_CON_TUCO.Empresa_tarjeta WHERE empr_descripcion = 'Visa'
+	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
+		SELECT 12, empr_codigo FROM FIDEOS_CON_TUCO.Empresa_tarjeta WHERE empr_descripcion = 'Visa'
+	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
+		SELECT 18, empr_codigo FROM FIDEOS_CON_TUCO.Empresa_tarjeta WHERE empr_descripcion = 'Visa'
+	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
+		SELECT 6, empr_codigo FROM FIDEOS_CON_TUCO.Empresa_tarjeta WHERE empr_descripcion = 'MasterCard'
+	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
+		SELECT 12, empr_codigo FROM FIDEOS_CON_TUCO.Empresa_tarjeta WHERE empr_descripcion = 'MasterCard'
+END
+GO
+
+EXEC cargarTiposDeMediosDePagoIniciales
+EXEC cargarEmpresasDeTarjetasIniciales
+EXEC cargarCantidadDeCuotasDeEmpresasIniciales
+GO
+
 
 /************************** Manejo de CLIENTES *******************************************/
 
