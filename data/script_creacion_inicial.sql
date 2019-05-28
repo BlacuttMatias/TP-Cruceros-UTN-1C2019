@@ -332,6 +332,11 @@ drop table [FIDEOS_CON_TUCO].[Tipo_baja]
 GO
 
 if exists(select * from dbo.sysobjects where id = 
+object_id(N'[FIDEOS_CON_TUCO].[Cancelacion_pasaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [FIDEOS_CON_TUCO].[Cancelacion_pasaje]
+GO
+
+if exists(select * from dbo.sysobjects where id = 
 object_id(N'[FIDEOS_CON_TUCO].[Pasaje]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [FIDEOS_CON_TUCO].[Pasaje]
 GO
@@ -669,8 +674,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Cabina](
 	[cabi_numero] int NOT NULL,
 	[cabi_piso] int NOT NULL,
 	[cabi_tipo] int NOT NULL,
-	[cabi_crucero] [varchar](255) NOT NULL,				/*CAMBIO EN EL DER*/
-	[cabi_esta_disponible] [bit] NOT NULL)				
+	[cabi_crucero] [varchar](255) NOT NULL)				
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Cabina] ADD CONSTRAINT PK_CABINA 
@@ -915,6 +919,24 @@ ALTER TABLE [FIDEOS_CON_TUCO].[Pasaje] ADD CONSTRAINT FK_Compra FOREIGN KEY ([pa
 GO
 
 
+/********** <<CANCELACION_PASAJE>> ************/
+
+
+CREATE TABLE [FIDEOS_CON_TUCO].[Cancelacion_pasaje](
+	[canc_pasa_codigo] int IDENTITY(1,1) NOT NULL,
+	[canc_pasa_fecha] datetime NOT NULL,
+	[canc_pasa_descripcion] varchar(255) NOT NULL,
+	[canc_pasa_pasaje] int NOT NULL)
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_pasaje] ADD CONSTRAINT PK_CANCELACION_PASAJE
+	PRIMARY KEY ([canc_pasa_codigo])
+GO
+
+ALTER TABLE [FIDEOS_CON_TUCO].[Cancelacion_pasaje] ADD CONSTRAINT FK_Canc_pasa_pasaje FOREIGN KEY ([canc_pasa_pasaje])
+	REFERENCES [FIDEOS_CON_TUCO].[Pasaje]([pasa_codigo])
+GO
+
+
 /********** <<RESERVA>> ************/
 
 
@@ -997,8 +1019,7 @@ GO
 INSERT INTO [FIDEOS_CON_TUCO].[Crucero](cruc_codigo, cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado)
 SELECT M1.CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
 , (SELECT COUNT(*) FROM (SELECT DISTINCT M2.CRUCERO_IDENTIFICADOR, M2.CABINA_NRO, M2.CABINA_PISO FROM gd_esquema.Maestra M2 
-	WHERE M1.CRUCERO_IDENTIFICADOR = M2.CRUCERO_IDENTIFICADOR) AS cabinas)
-, 1
+	WHERE M1.CRUCERO_IDENTIFICADOR = M2.CRUCERO_IDENTIFICADOR) AS cabinas), 1
 FROM gd_esquema.Maestra M1
 JOIN [FIDEOS_CON_TUCO].[Marca] ON (M1.CRU_FABRICANTE = marc_descripcion)
 JOIN [FIDEOS_CON_TUCO].[Modelo] ON (M1.CRUCERO_MODELO = mode_descripcion)
@@ -1009,8 +1030,8 @@ GO
 /**********************************Carga de Cabinas**************************************************************************/
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Cabina](cabi_numero, cabi_piso, cabi_tipo, cabi_crucero, cabi_esta_disponible)
-SELECT DISTINCT CABINA_NRO, CABINA_PISO, tipo_codigo, cruc_codigo, 1
+INSERT INTO [FIDEOS_CON_TUCO].[Cabina](cabi_numero, cabi_piso, cabi_tipo, cabi_crucero)
+SELECT DISTINCT CABINA_NRO, CABINA_PISO, tipo_codigo, cruc_codigo
 FROM gd_esquema.Maestra
 JOIN [FIDEOS_CON_TUCO].[Tipo_cabina] ON (CABINA_TIPO = tipo_descripcion)
 JOIN [FIDEOS_CON_TUCO].[Crucero] ON (CRUCERO_IDENTIFICADOR = cruc_codigo)
@@ -2102,7 +2123,7 @@ BEGIN
 		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
 			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
 				ELSE 'NO'
-			END AS Habilitado,
+			END AS Habilitado, 
 			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(
 				SELECT 
 					CASE WHEN regi_fecha_de_baja < @fechaInicio AND YEAR(regi_fecha_de_alta) = @anio 
@@ -2117,7 +2138,7 @@ BEGIN
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 		FROM FIDEOS_CON_TUCO.Crucero
-		ORDER BY 6 DESC
+		ORDER BY 5 DESC
 		END
 	IF @semestre = 2
 		BEGIN
@@ -2129,7 +2150,7 @@ BEGIN
 		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
 			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
 				ELSE 'NO'
-			END AS Habilitado,
+			END AS Habilitado, 
 			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(
 				SELECT 
 					CASE WHEN regi_fecha_de_baja < @fechaInicio AND YEAR(regi_fecha_de_alta) = @anio 
@@ -2145,7 +2166,7 @@ BEGIN
 			), 0) AS Dias_fuera_de_servicio
 
 		FROM FIDEOS_CON_TUCO.Crucero
-		ORDER BY 6 DESC
+		ORDER BY 5 DESC
 		END
 END
 GO
