@@ -1747,7 +1747,6 @@ GO
 
 /*######################## [04]::[ABM Cruceros] ############################*/
 
-
 /************************** CREACION de tipos de baja de los cruceros *******************************************/
 
 CREATE PROCEDURE cargarTiposdeBajasDeCrucerosIniciales
@@ -1759,6 +1758,142 @@ END
 GO
 
 EXEC cargarTiposdeBajasDeCrucerosIniciales
+GO
+
+/*************************** ALTA CRUCEROS ***************************/
+
+CREATE PROCEDURE cargarCrucero @marca int, @cantidad_cabinas int, @modelo int, @fechaSistema datetime
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_marca, cruc_cantidad_cabinas, cruc_fecha_de_alta, cruc_modelo, cruc_esta_habilitado)
+				VALUES (@marca, @cantidad_cabinas, @fechaSistema, @modelo, 1)
+END
+GO
+
+/*************************** MODIFICAR MARCA DE CRUCEROS ***************************/
+	
+CREATE PROCEDURE actualizarMarca @codigo int, @marca_codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_marca = @marca_codigo WHERE cruc_codigo = @codigo;
+END
+GO
+
+/*************************** LISTADO DE CABINAS A MODIFICAR  ***************************/
+
+CREATE PROCEDURE listadoCabinas @crucero_codigo int
+AS
+BEGIN
+	SELECT cabi_codigo, cabi_tipo, cabi_numero FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @crucero_codigo
+END
+GO
+
+/*************************** LISTADO DE TIPOS DE CABINAS  ***************************/
+
+CREATE PROCEDURE listadoTipoCabinas
+AS
+BEGIN
+	SELECT tipo_descripcion FROM FIDEOS_CON_TUCO.Tipo_cabina
+END
+GO
+
+/*************************** MODIFICAR TIPO DE CABINA ***************************/
+
+CREATE PROCEDURE modificarTipoCabina @cabina_codigo int, @cabina_tipo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Cabina SET cabi_tipo = @cabina_tipo WHERE cabi_codigo = @cabina_codigo
+END
+GO
+
+/*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
+/*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
+
+CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo int, @corrimiento int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Viaje 
+	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) , viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
+	WHERE viaj_crucero = @crucero_codigo
+END
+GO
+/*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
+/*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
+
+CREATE PROCEDURE crucerosDisponibles @codigo_crucero int
+AS
+DECLARE @viaje_codigo int
+DECLARE @viaje_fecha_inicio datetime
+DECLARE @viaje_fecha_finalizacion datetime
+BEGIN
+	SELECT TOP 1 @viaje_codigo = viaj_codigo, @viaje_fecha_inicio = viaj_fecha_inicio, @viaje_fecha_finalizacion = viaj_fecha_finalizacion 
+	FROM FIDEOS_CON_TUCO.Viaje WHERE viaj_crucero = @codigo_crucero
+	SELECT cruc_codigo, cruc_marca, cruc_modelo FROM FIDEOS_CON_TUCO.Crucero 
+	WHERE NOT EXISTS (	SELECT viaj_codigo FROM FIDEOS_CON_TUCO.Viaje 
+						WHERE ((viaj_fecha_inicio BETWEEN @viaje_fecha_inicio AND @viaje_fecha_finalizacion 
+						OR viaj_fecha_finalizacion BETWEEN @viaje_fecha_inicio AND @viaje_fecha_finalizacion)
+						OR (viaj_fecha_inicio < @viaje_fecha_inicio AND viaj_fecha_finalizacion > @viaje_fecha_finalizacion))
+						AND viaj_crucero = cruc_codigo)
+END
+GO
+
+/*************************** REEMPLAZO DE CRUCERO EN VIAJE ***************************/
+/*Se debe ejecutar después de elegir un crucero en crucerosDisponibles*/
+
+CREATE PROCEDURE reemplazoCrucero @viaje_codigo int, @crucero_codigo int
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero_codigo WHERE viaj_codigo = @crucero_codigo
+END
+GO
+
+/*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
+
+CREATE PROCEDURE cancelacionViajes @codigo_crucero int, @fechaSistema datetime
+AS
+DECLARE @codigo_pasaje int
+BEGIN
+	DECLARE c1 CURSOR FOR SELECT pasa_codigo	FROM FIDEOS_CON_TUCO.Crucero	JOIN FIDEOS_CON_TUCO.Viaje ON (cruc_codigo = viaj_crucero) 
+																				JOIN FIDEOS_CON_TUCO.Pasaje ON (viaj_codigo = pasa_viaje)
+												WHERE cruc_codigo = @codigo_crucero
+	OPEN c1
+	FETCH NEXT FROM c1 INTO @codigo_pasaje
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
+					VALUES (@codigo_pasaje,'Baja del crucero', @fechaSistema)
+		FETCH NEXT FROM c1 INTO @codigo_pasaje
+	END
+	CLOSE c1
+	DEALLOCATE c1
+END
+GO
+
+/*************************** BAJA CRUCEROS ***************************/
+/*Si la baja es permanente y se deciden no cancelar el viaje, ejecutar el SP "crucerosDisponibles" para que el usuario pueda elegir 
+que cruceros poner para el viaje*/
+/*Si la baja es temporal y se deciden no cancelar el viaje, ejecutar el SP "corrimientoDiasViajes" para que se reprogramen automaticamente
+los viajes*/
+
+CREATE PROCEDURE bajaCrucero @codigo int, @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
+AS
+DECLARE @tipo_baja int
+BEGIN
+	if (@tipoBaja = 'Temporal')
+	BEGIN
+		UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 0 WHERE cruc_codigo = @codigo;
+		SELECT @tipo_baja = tipo_baja_codigo FROM FIDEOS_CON_TUCO.Tipo_baja WHERE tipo_baja_descripcion = 'Temporal'
+		INSERT INTO FIDEOS_CON_TUCO.Registro_baja(regi_tipo, regi_fecha_de_baja, regi_fecha_de_alta, regi_crucero)
+					VALUES (@tipo_baja, @fechaSistema, @fechaAlta, @codigo) 
+	END
+	if (@tipoBaja = 'Permanente')
+	BEGIN
+		UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 0 WHERE cruc_codigo = @codigo;
+		SELECT @tipo_baja = tipo_baja_codigo FROM FIDEOS_CON_TUCO.Tipo_baja WHERE tipo_baja_descripcion = 'Permanente'
+		INSERT INTO FIDEOS_CON_TUCO.Registro_baja(regi_tipo, regi_fecha_de_baja, regi_crucero)
+					VALUES (@tipo_baja, @fechaSistema, @codigo) 
+	END
+END
 GO
 
 
