@@ -1113,8 +1113,8 @@ GO
 SET IDENTITY_INSERT [FIDEOS_CON_TUCO].[Pasaje] ON
 GO
 
-INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_codigo, pasa_cliente, pasa_viaje, pasa_cabina, pasa_compra)
-SELECT PASAJE_CODIGO, clie_codigo, viaj_codigo, cabi_codigo, comp_codigo
+INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_codigo, pasa_cliente, pasa_viaje, pasa_cabina, pasa_compra, pasa_precio)
+SELECT PASAJE_CODIGO, clie_codigo, viaj_codigo, cabi_codigo, comp_codigo, PASAJE_PRECIO
 FROM gd_esquema.Maestra
 --obtengo el codigo del cliente
 JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
@@ -1147,8 +1147,8 @@ GO
 --Los demas si son todos cancelados por no pagar la reserva
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_cliente, pasa_viaje, pasa_cabina)
-SELECT clie_codigo, viaj_codigo, cabi_codigo
+INSERT INTO [FIDEOS_CON_TUCO].[Pasaje](pasa_cliente, pasa_viaje, pasa_cabina, pasa_precio)
+SELECT clie_codigo, viaj_codigo, cabi_codigo, RECORRIDO_PRECIO_BASE*CABINA_TIPO_PORC_RECARGO
 FROM gd_esquema.Maestra
 --obtengo el codigo del cliente
 JOIN [FIDEOS_CON_TUCO].[Cliente] ON (clie_dni = CLI_DNI AND clie_nombre = CLI_NOMBRE AND clie_apellido = CLI_APELLIDO)
@@ -1217,6 +1217,14 @@ GO
 DELETE p1 FROM [FIDEOS_CON_TUCO].[Pasaje] p1
 WHERE p1.pasa_compra IS NULL AND NOT EXISTS (SELECT rese_codigo FROM [FIDEOS_CON_TUCO].[Reserva] WHERE rese_pasaje = p1.pasa_codigo)
 GO
+
+
+/**********************Actualizo los precios de los pasajes para que concuerden con los de la compra**********************/
+
+
+UPDATE [FIDEOS_CON_TUCO].[Pasaje] SET pasa_precio = comp_monto_total FROM [FIDEOS_CON_TUCO].[Pasaje]
+JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = pasa_compra)
+
 
 
 /**********************************Carga de Cancelaciones de reservas**************************************************************************/
@@ -2021,7 +2029,7 @@ GO
 /************************** LISTADO de viajes para comprar *******************************************/
 
 
-CREATE PROCEDURE mostrarViajesParaComprar @fechaInicio datetime, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
+CREATE PROCEDURE mostrarViajesParaComprar @fechaInicio date, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
 AS 
 BEGIN
 	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
@@ -2037,7 +2045,7 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_codigo AND reco_puerto_destino = p2.puer_codigo)
-		WHERE viaj_fecha_inicio = @fechaInicio AND viaj_recorrido = reco_id
+		WHERE CONVERT(DATE, viaj_fecha_inicio) = @fechaInicio AND viaj_recorrido = reco_id AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
 END
 GO
 
