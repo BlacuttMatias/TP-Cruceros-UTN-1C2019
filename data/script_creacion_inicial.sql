@@ -277,18 +277,73 @@ drop procedure [ingresarMedioDePagoConTarjeta]
 GO
 
 IF 
-OBJECT_ID('GetDateMagico') IS NOT NULL
-DROP FUNCTION GetDateMagico
-GO
-
-if exists (select * from dbo.sysobjects where id =
-object_id(N'[existenViajesConPasajesVendidosDeEsePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [existenViajesConPasajesVendidosDeEsePuerto]
+OBJECT_ID('existenViajesConPasajesVendidosDeEsePuerto') IS NOT NULL
+DROP FUNCTION existenViajesConPasajesVendidosDeEsePuerto
 GO
 
 if exists (select * from dbo.sysobjects where id =
 object_id(N'[cancelarPasajesPorBajaDePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [cancelarPasajesPorBajaDePuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarTiposdeBajasDeCrucerosIniciales]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cargarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cargarCrucero]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[actualizarMarca]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [actualizarMarca]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[listadoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [listadoCabinas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[listadoTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [listadoTipoCabinas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[modificarTipoCabina]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [modificarTipoCabina]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[corrimientoDiasViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [corrimientoDiasViaje]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[crucerosDisponibles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [crucerosDisponibles]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[reemplazoCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [reemplazoCrucero]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cancelacionViajes]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[bajaCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [bajaCrucero]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarDatosFinalizadaLaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarDatosFinalizadaLaCompra]
 GO
 
 /************************************************************************************************************/
@@ -2222,7 +2277,7 @@ CREATE PROCEDURE agregarPasajeAUnaCompra @codigoPasaje int, @codigoCompra int
 AS
 BEGIN
 	IF NOT EXISTS(SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva 
-			JOIN FIDEOS_CON_TUCO.canc_reserva ON canc_reserva = rese_codigo WHERE rese_pasaje = @codigoPasaje)
+			JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON canc_reserva = rese_codigo WHERE rese_pasaje = @codigoPasaje)
 		BEGIN
 		DECLARE @precioPasaje numeric(10,2)
 		SELECT @precioPasaje = pasa_precio FROM FIDEOS_CON_TUCO.Pasaje WHERE pasa_codigo = @codigoPasaje
@@ -2232,6 +2287,32 @@ END
 GO
 
 
+/************************** LISTADO con la información de la compra hecha *******************************************/
+
+
+CREATE PROCEDURE mostrarDatosFinalizadaLaCompra @codigoCompra int
+AS
+BEGIN
+	SELECT comp_codigo AS Codigo_compra, viaj_fecha_inicio AS Fecha_inicio_viaje, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion_viaje,
+		p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje, cabi_numero AS Numero_cabina 
+		,cabi_piso AS Piso_cabina, tipo_descripcion AS Tipo_Cabina, 
+		(SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
+			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo)/* AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)*/) AS Cantidad_de_pasajeros
+	FROM FIDEOS_CON_TUCO.Compra
+	JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_compra = @codigoCompra)
+	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = pasa_viaje)
+	JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
+	JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = reco_puerto_origen)
+	JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = reco_puerto_destino)
+	JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
+	JOIN FIDEOS_CON_TUCO.Cabina ON (cabi_codigo = pasa_cabina)
+	JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+	WHERE comp_codigo = @codigoCompra
+END
+GO
 
 
 /*######################## [10]::[LISTADOS ESTADISTICOS] ############################*/
@@ -2288,7 +2369,8 @@ BEGIN
 		SUM(cruc_cantidad_cabinas) - (SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
 			JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
 			WHERE pasa_viaje = viaj_codigo AND pasa_compra IS NOT NULL AND YEAR(viaj_fecha_inicio) = @anio 
-				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal) AS Cabinas_libres_en_cada_viaje
+				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal/* AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)*/) AS Cabinas_libres_en_cada_viaje
 		FROM FIDEOS_CON_TUCO.Recorrido
 		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
