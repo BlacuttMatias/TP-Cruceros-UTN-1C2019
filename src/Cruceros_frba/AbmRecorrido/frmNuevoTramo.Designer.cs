@@ -54,6 +54,7 @@
             this.cBoxDestino.Name = "cBoxDestino";
             this.cBoxDestino.Size = new System.Drawing.Size(219, 33);
             this.cBoxDestino.TabIndex = 1;
+            this.cBoxDestino.SelectedIndexChanged += new System.EventHandler(this.cBoxDestino_SelectedIndexChanged_1);
             // 
             // lblOrigen
             // 

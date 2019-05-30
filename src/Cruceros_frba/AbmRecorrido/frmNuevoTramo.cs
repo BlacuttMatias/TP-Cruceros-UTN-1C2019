@@ -87,5 +87,10 @@ namespace FrbaCrucero.AbmRecorrido
                 txtBoxPrecio.Clear();
             }
         }
+
+        private void cBoxDestino_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

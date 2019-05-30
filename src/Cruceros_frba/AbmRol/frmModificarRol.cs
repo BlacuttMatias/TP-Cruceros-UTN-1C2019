@@ -52,5 +52,10 @@ namespace FrbaCrucero.AbmRol
         {
             this.Show();
         }
+
+        private void dataGridRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

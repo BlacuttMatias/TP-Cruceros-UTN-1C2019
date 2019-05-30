@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaDatos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -110,17 +111,24 @@ namespace FrbaCrucero.AbmRecorrido
             Recorrido abm = new Recorrido();
             int idRecorrido = -1;
             idRecorrido = abm.crearRecorrido(listaTramos.ElementAt(0).origen, listaTramos.ElementAt(listaTramos.Count-1).destino, precio);
+            Debugger debugger = new Debugger();
+            debugger.log("idRecorrido:" + idRecorrido+" Origen:" + listaTramos.ElementAt(0).origen + " Destino:"+ listaTramos.ElementAt(listaTramos.Count - 1).destino+" Precio:"+precio);
+            debugger.Show();
             if (idRecorrido != 0)
             {
                 foreach (TramoElegido t in listaTramos)
                 {
                     abm.agregarTramoAUnRecorrido(t.origen, t.destino, t.precio, idRecorrido);
+                    debugger.log("Origen:" + t.origen + " Destino:" + t.destino + " Precio:" + t.precio + " idRecorrido:" + idRecorrido);
                 }
             } 
             else
             {
                 MessageBox.Show("No se inserto el Recorrido", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            debugger.QSP1("mostrarRecorridos");
+            debugger.QSP2("mostrarTramosDeUnRecorrido","@idRecorrido",idRecorrido);
+            debugger.QQ1("SELECT P1.puer_ciudad, P2.puer_ciudad FROM [FIDEOS_CON_TUCO].[Tramo] join [FIDEOS_CON_TUCO].[Puerto] as P1 on([tram_puerto_origen] = P1.[puer_codigo]) join [FIDEOS_CON_TUCO].[Puerto] as P2 on([tram_puerto_origen] = P2.[puer_codigo])");
         }
 
         private void btnCrearTramo_Click(object sender, EventArgs e)

@@ -75,11 +75,23 @@
       <DependentUpon>frmModificarPuertoSeleccionado.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmPuerto\Puerto.cs" />
+    <Compile Include="AbmRecorrido\Debugger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\Debugger.Designer.cs">
+      <DependentUpon>Debugger.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRecorrido\frmABMRecorridoMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRecorrido\frmABMRecorridoMain.Designer.cs">
       <DependentUpon>frmABMRecorridoMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmABMRecorridoModificarSeleccionado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\frmABMRecorridoModificarSeleccionado.Designer.cs">
+      <DependentUpon>frmABMRecorridoModificarSeleccionado.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRecorrido\frmAltaRecorrido.cs">
       <SubType>Form</SubType>
@@ -178,11 +190,20 @@
     <EmbeddedResource Include="AbmPuerto\frmModificarPuertoSeleccionado.resx">
       <DependentUpon>frmModificarPuertoSeleccionado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\Debugger.resx">
+      <DependentUpon>Debugger.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\frmABMRecorridoMain.resx">
       <DependentUpon>frmABMRecorridoMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\frmABMRecorridoModificarSeleccionado.resx">
+      <DependentUpon>frmABMRecorridoModificarSeleccionado.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\frmAltaRecorrido.resx">
       <DependentUpon>frmAltaRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\frmModificacionesRecorrido.resx">
+      <DependentUpon>frmModificacionesRecorrido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\frmNuevoTramo.resx">
       <DependentUpon>frmNuevoTramo.cs</DependentUpon>
