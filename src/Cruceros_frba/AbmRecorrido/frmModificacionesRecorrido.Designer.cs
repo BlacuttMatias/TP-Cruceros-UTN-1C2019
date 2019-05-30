@@ -187,6 +187,7 @@
             this.txtBoxFiltroDestino.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBoxFiltroDestino.Location = new System.Drawing.Point(88, 56);
+            this.txtBoxFiltroDestino.MaximumSize = new System.Drawing.Size(425, 20);
             this.txtBoxFiltroDestino.Name = "txtBoxFiltroDestino";
             this.txtBoxFiltroDestino.Size = new System.Drawing.Size(425, 20);
             this.txtBoxFiltroDestino.TabIndex = 7;
@@ -201,6 +202,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnAceptar);
+            this.MinimumSize = new System.Drawing.Size(816, 513);
             this.Name = "frmModificacionesRecorrido";
             this.Text = "ABM Recorrido";
             this.tableLayoutPanel1.ResumeLayout(false);

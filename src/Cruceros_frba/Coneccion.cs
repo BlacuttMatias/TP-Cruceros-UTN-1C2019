@@ -11,16 +11,17 @@ namespace CapaDatos
         public static string Con = "Data Source=LOCALHOST\\SQLSERVER2012;Initial Catalog=GD1C2019;User ID=sa;password=gestiondedatos;Integrated Security=False";
 
         /// <summary>
-        /// Ejecuta un stock procedure.
-        /// (tipo, SqlCommandString, @var1,var1,@var2,var2)
+        /// Ejecuta un stock procedure, no tiene retorno.
+        /// (SqlCommandString, "@var1",var1,"@var2",var2,...,"@varN",varN)
+        /// SqlCommandString es el nombre de el SP en este caso, por ejemplo "mostrarRoles"
         /// </summary>
-        /// <param name="args">(tipo, SqlCommandString, @var1,var1,@var2,var2)</param>
+        /// <param name="args">(SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)</param>
         public static void ejecutarSPV(params object[] args)
         {
             SqlConnection coneccion = new SqlConnection(Coneccion.Con);
-            SqlCommand cmd = new SqlCommand(args[1].ToString(), coneccion);
+            SqlCommand cmd = new SqlCommand(args[0].ToString(), coneccion);
             cmd.CommandType = CommandType.StoredProcedure;
-            for (int i = 1; i < args.Length - 2; i++)
+            for (int i = 0; i < args.Length - 2; i++)
             {
                 cmd.Parameters.AddWithValue(args[i + 1] as string, args[i + 2]);
                 i++;
@@ -28,12 +29,14 @@ namespace CapaDatos
             coneccion.Open();
             cmd.ExecuteReader();
         }
-        
+
         /// <summary>
         /// Ejecuta un stock procedure que devuelve un int.
-        /// (tipo, SqlCommandString, @var1,var1,@var2,var2)
+        /// (SqlCommandString,"@varRetorno", "@var1",var1,"@var2",var2,...,"@varN",varN)
+        /// "@varRetorno" puede ser "@resultado" o "@flag" segun lo que vi en las SP
+        /// SqlCommandString es el nombre de el SP en este caso, por ejemplo "mostrarRoles"
         /// </summary>
-        /// <param name="args">(tipo, SqlCommandString, @var1,var1,@var2,var2)</param>
+        /// <param name="args">(SqlCommandString,"@varRetorno", "@var1",var1,"@var2",var2,...,"@varN",varN)</param>
         public static int ejecutarSPR(params object[] args)
         {
             int respuesta = 0;
@@ -42,12 +45,12 @@ namespace CapaDatos
                 SqlConnection coneccion = new SqlConnection(Coneccion.Con);
                 SqlCommand cmd = new SqlCommand(args[0].ToString(), coneccion);
                 cmd.CommandType = CommandType.StoredProcedure;
-                for (int i = 0; i < args.Length - 2; i++)
+                for (int i = 1; i < args.Length - 2; i++)
                 {
                     cmd.Parameters.AddWithValue(args[i + 1] as string, args[i + 2]);
                     i++;
                 }
-                SqlParameter resultado = new SqlParameter("@resultado", SqlDbType.Int);
+                SqlParameter resultado = new SqlParameter(args[1].ToString(), SqlDbType.Int);
                 resultado.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(resultado);
                 coneccion.Open();
@@ -62,10 +65,10 @@ namespace CapaDatos
         }
         /// <summary>
         /// Ejecuta un stock procedure que devuelve un DataTable.
-        /// poblarDataTable lo llama cuando es tipo SP
-        /// (tipo, SqlCommandString, @var1,var1,@var2,var2)
+        /// (SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)
+        /// SqlCommandString es el nombre de el SP en este caso, por ejemplo "mostrarRoles"
         /// </summary>
-        /// <param name="args">(tipo, SqlCommandString, @var1,var1,@var2,var2)</param>
+        /// <param name="args">(SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)</param>
         public static DataTable ejecutarSP(params object[] args)
         {
             DataTable dtSP = new DataTable();
@@ -97,10 +100,17 @@ namespace CapaDatos
         }
         /// <summary>
         /// Ejecuta un SELECT que devuelve un DataTable.
-        /// poblarDataTable lo llama cuando es tipo SLCT
-        /// (tipo, SqlCommandString, @var1,var1,@var2,var2)
+        /// (SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)
+        /// SqlCommandString es el SELECT!!!
+        /// ejemplo
+        /// string SLCT= SELECT *
+        /// SLCT +=" FROM tabla"
+        /// SLCT +=" WHERE blah"
+        /// SLCT +=" GROUP BY bleh"
+        /// SLCT +=" HAVING a=@a"
+        /// entonces la llamas asi: DataTable hayTabla=Coneccion.ejecutarSelect(SLCT,"@a",a);
         /// </summary>
-        /// <param name="args">(tipo, SqlCommandString, @var1,var1,@var2,var2)</param>
+        /// <param name="args">(SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)</param>
         public static DataTable ejecutarSelect(params object[] args)
         {
             DataTable dtSelect = new DataTable();

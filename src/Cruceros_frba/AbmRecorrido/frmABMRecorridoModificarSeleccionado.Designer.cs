@@ -178,6 +178,7 @@
             // 
             // btnModificar
             // 
+            this.btnModificar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnModificar.Location = new System.Drawing.Point(12, 423);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(96, 38);
@@ -246,7 +247,7 @@
             // 
             // btnCrearTramo
             // 
-            this.btnCrearTramo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCrearTramo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCrearTramo.Location = new System.Drawing.Point(410, 423);
             this.btnCrearTramo.Name = "btnCrearTramo";
             this.btnCrearTramo.Size = new System.Drawing.Size(115, 38);
@@ -274,6 +275,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimumSize = new System.Drawing.Size(816, 504);
             this.Name = "frmABMRecorridoModificarSeleccionado";
             this.Text = "ABM Recorrido Modificar Seleccionado";
             this.tableLayoutPanel1.ResumeLayout(false);

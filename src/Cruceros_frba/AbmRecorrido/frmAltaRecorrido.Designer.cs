@@ -229,7 +229,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(6);
-            this.MinimumSize = new System.Drawing.Size(963, 525);
+            this.MinimumSize = new System.Drawing.Size(1112, 583);
             this.Name = "frmAltaRecorrido";
             this.Text = "ABM Alta Recorrido";
             this.tableLayoutPanel1.ResumeLayout(false);

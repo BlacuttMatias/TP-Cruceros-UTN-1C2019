@@ -59,7 +59,7 @@ namespace FrbaCrucero.AbmRecorrido
         public int crearRecorrido(string ciudadPuertoOrigen, string ciudadPuertoDestino, Decimal precio)
         {
             string SPR = "agregarRecorrido";
-            object[] ARGUMENT = { SPR, "@ciudadPuertoOrigen", ciudadPuertoOrigen, "@ciudadPuertoDestino", ciudadPuertoDestino, "@precio", precio};
+            object[] ARGUMENT = { SPR,"@resultado", "@ciudadPuertoOrigen", ciudadPuertoOrigen, "@ciudadPuertoDestino", ciudadPuertoDestino, "@precio", precio};
             respuesta=Coneccion.ejecutarSPR(ARGUMENT);
             return respuesta;
         }
@@ -68,74 +68,14 @@ namespace FrbaCrucero.AbmRecorrido
         #region deshabilitarRecorrido
         public void deshabilitarRecorrido(int idRecorrido)
         {
-            DataTable DtResultado = new DataTable();
-            SqlConnection SqlCon = new SqlConnection();
-            try
-            {
-                SqlCon.ConnectionString = Coneccion.Con;
-                SqlCon.Open();
-                SqlCommand SqlCmd = new SqlCommand();
-                SqlCmd.Connection = SqlCon;
-                SqlCmd.CommandText = "deshabilitarRecorrido";
-                SqlCmd.CommandType = CommandType.StoredProcedure;
-
-                SqlParameter reco_codigo = new SqlParameter("@idRecorrido", SqlDbType.Int);
-                reco_codigo.Value = idRecorrido;
-                SqlCmd.Parameters.Add(reco_codigo);
-
-                SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
-                SqlDat.Fill(DtResultado);
-            }
-            catch (Exception ex)
-            {
-                DtResultado = null;
-            }
-            finally
-            {
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-            }
+            Coneccion.ejecutarSPV("deshabilitarRecorrido", "@idRecorrido", idRecorrido);
         }
         #endregion
 
         #region habilitarRecorrido
         public int habilitarRecorrido(int idRecorrido)
         {
-            DataTable DtResultado = new DataTable();
-            SqlConnection SqlCon = new SqlConnection();
-            try
-            {
-                SqlCon.ConnectionString = Coneccion.Con;
-                SqlCommand SqlCmd = new SqlCommand();
-                SqlCmd.Connection = SqlCon;
-                SqlCmd.CommandText = "habilitarRecorrido";
-                SqlCmd.CommandType = CommandType.StoredProcedure;
-                SqlCmd.Parameters.AddWithValue("@idRecorrido", idRecorrido);
-
-                //SqlParameter reco_codigo = new SqlParameter("@idRecorrido", SqlDbType.Int);
-                //reco_codigo.Value = idRecorrido;
-                //SqlCmd.Parameters.Add(reco_codigo);
-
-                #region Retorno del Stoc Procedure?
-                SqlParameter resultado = new SqlParameter("@resultado", SqlDbType.Int);
-                resultado.Direction = ParameterDirection.Output;
-                SqlCmd.Parameters.Add(resultado);
-                #endregion
-
-                SqlCon.Open();
-                SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
-                SqlDat.Fill(DtResultado);
-                respuesta = Convert.ToInt32(resultado.Value);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                DtResultado = null;
-            }
-            finally
-            {
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-            }
-            return respuesta;
+            return Coneccion.ejecutarSPR("habilitarRecorrido","@resultado", "@idRecorrido", idRecorrido);
         }
         #endregion
 
@@ -143,52 +83,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         public void modificarRecorrido(int idRecorrido, string ciudadPuertoOrigen, string ciudadPuertoDestino, decimal precio)
         {
-            DataTable DtResultado = new DataTable();
-            SqlConnection SqlCon = new SqlConnection();
-            try
-            {
-                SqlCon.ConnectionString = Coneccion.Con;
-                SqlCon.Open();
-                SqlCommand SqlCmd = new SqlCommand();
-                SqlCmd.Connection = SqlCon;
-                SqlCmd.CommandText = "modificarRecorrido";
-                SqlCmd.CommandType = CommandType.StoredProcedure;
-
-                SqlCmd.Parameters.AddWithValue("@idRecorrido", idRecorrido);
-                SqlCmd.Parameters.AddWithValue("@ciudadPuertoOrigen", ciudadPuertoOrigen);
-                SqlCmd.Parameters.AddWithValue("@ciudadPuertoDestino", ciudadPuertoDestino);
-                SqlCmd.Parameters.AddWithValue("@precio", precio);
-
-                //SqlParameter reco_codigo = new SqlParameter("@idRecorrido", SqlDbType.Int);
-                //reco_codigo.Value = idRecorrido;
-                //SqlCmd.Parameters.Add(reco_codigo);
-
-                //SqlParameter reco_puerto_origen = new SqlParameter("@ciudadPuertoOrigen", SqlDbType.VarChar);
-                //reco_puerto_origen.Size = 255;
-                //reco_puerto_origen.Value = ciudadPuertoOrigen;
-                //SqlCmd.Parameters.Add(reco_puerto_origen);
-
-                //SqlParameter reco_puerto_destino = new SqlParameter("@ciudadPuertoDestino", SqlDbType.VarChar);
-                //reco_puerto_destino.Size = 255;
-                //reco_puerto_destino.Value = ciudadPuertoDestino;
-                //SqlCmd.Parameters.Add(reco_puerto_destino);
-
-                //SqlParameter reco_precio = new SqlParameter("@precio", SqlDbType.Int);
-                //reco_precio.Value = precio;
-                //SqlCmd.Parameters.Add(reco_precio);
-
-                SqlDataAdapter SqlDat = new SqlDataAdapter(SqlCmd);
-                SqlDat.Fill(DtResultado);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                DtResultado = null;
-            }
-            finally
-            {
-                if (SqlCon.State == ConnectionState.Open) SqlCon.Close();
-            }
+            Coneccion.ejecutarSPV("modificarRecorrido", "@idRecorrido", idRecorrido, "@ciudadPuertoOrigen", ciudadPuertoOrigen, "@ciudadPuertoDestino", ciudadPuertoDestino, "@precio", precio);
         }
         #endregion
 
