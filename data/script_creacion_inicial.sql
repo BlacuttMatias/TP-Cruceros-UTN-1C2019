@@ -276,6 +276,21 @@ object_id(N'[ingresarMedioDePagoConTarjeta]') and OBJECTPROPERTY(id, N'IsProcedu
 drop procedure [ingresarMedioDePagoConTarjeta]
 GO
 
+IF 
+OBJECT_ID('GetDateMagico') IS NOT NULL
+DROP FUNCTION GetDateMagico
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[existenViajesConPasajesVendidosDeEsePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [existenViajesConPasajesVendidosDeEsePuerto]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cancelarPasajesPorBajaDePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cancelarPasajesPorBajaDePuerto]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1533,6 +1548,43 @@ GO
 
 /************************** BAJA LOGICA Puerto (DESHABILITAR)*******************************************/
 
+CREATE FUNCTION existenViajesConPasajesVendidosDeEsePuerto (@codigoPuerto int) returns bit
+AS
+BEGIN
+	DECLARE @resultado bit
+	IF EXISTS(SELECT TOP 1 pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje
+		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
+		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = tram_por_reco_recorrido)
+		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
+		WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo) AND 
+			NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo))
+		BEGIN
+		RETURN 1
+		END
+	RETURN 0
+END
+GO
+
+CREATE PROCEDURE cancelarPasajesPorBajaDePuerto @codigoPuerto int
+AS
+BEGIN
+	IF dbo.existenViajesConPasajesVendidosDeEsePuerto(@codigoPuerto) = 1
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion)
+		SELECT pasa_codigo, 'Cancelacion por puerto deshabilitado' FROM FIDEOS_CON_TUCO.Pasaje
+		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
+		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = tram_por_reco_recorrido)
+		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
+		WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo) AND 
+			NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)
+		END
+END
+GO
+
 CREATE PROCEDURE deshabilitarPuerto @codigoPuerto int
 AS
 BEGIN
@@ -1542,6 +1594,7 @@ BEGIN
 		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
 		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
 		WHERE reco_id = tram_por_reco_recorrido
+	EXEC cancelarPasajesPorBajaDePuerto @codigoPuerto
 END
 GO
 
