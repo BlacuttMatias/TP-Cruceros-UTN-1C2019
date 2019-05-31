@@ -1897,7 +1897,7 @@ GO
 
 /*************************** LISTADO DE CABINAS A MODIFICAR  ***************************/
 
-CREATE PROCEDURE listadoCabinas @crucero_codigo int
+CREATE PROCEDURE listadoCabinas @crucero_codigo varchar(255)
 AS
 BEGIN
 	SELECT cabi_codigo, cabi_tipo, cabi_numero FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @crucero_codigo
@@ -1925,7 +1925,7 @@ GO
 /*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
 /*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
 
-CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo int, @corrimiento int
+CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje 
@@ -1936,7 +1936,7 @@ GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
-CREATE PROCEDURE crucerosDisponibles @codigo_crucero int
+CREATE PROCEDURE crucerosDisponibles @codigo_crucero varchar(255)
 AS
 DECLARE @viaje_codigo int
 DECLARE @viaje_fecha_inicio datetime
@@ -1956,7 +1956,7 @@ GO
 /*************************** REEMPLAZO DE CRUCERO EN VIAJE ***************************/
 /*Se debe ejecutar después de elegir un crucero en crucerosDisponibles*/
 
-CREATE PROCEDURE reemplazoCrucero @viaje_codigo int, @crucero_codigo int
+CREATE PROCEDURE reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero_codigo WHERE viaj_codigo = @crucero_codigo
@@ -1965,7 +1965,7 @@ GO
 
 /*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
 
-CREATE PROCEDURE cancelacionViajes @codigo_crucero int, @fechaSistema datetime
+CREATE PROCEDURE cancelacionViajes @codigo_crucero varchar(255), @fechaSistema datetime
 AS
 DECLARE @codigo_pasaje int
 BEGIN
@@ -1991,7 +1991,7 @@ que cruceros poner para el viaje*/
 /*Si la baja es temporal y se deciden no cancelar el viaje, ejecutar el SP "corrimientoDiasViajes" para que se reprogramen automaticamente
 los viajes*/
 
-CREATE PROCEDURE bajaCrucero @codigo int, @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
+CREATE PROCEDURE bajaCrucero @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
 AS
 DECLARE @tipo_baja int
 BEGIN
