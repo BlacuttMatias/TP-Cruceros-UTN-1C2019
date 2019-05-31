@@ -1461,9 +1461,32 @@ BEGIN
 END
 GO
 
+/************* CANCELAR RESERVAS EN EL LOGIN  *************/
+
+CREATE PROCEDURE cancelarReservas @fechaSistema datetime
+AS
+DECLARE @reserva_codigo int
+DECLARE @reserva_fecha datetime
+BEGIN
+	DECLARE cReservas CURSOR FOR	SELECT rese_codigo, rese_fecha FROM FIDEOS_CON_TUCO.Reserva 
+									WHERE rese_codigo NOT IN (SELECT canc_reserva FROM FIDEOS_CON_TUCO.Cancelacion_reserva)		
+	OPEN cReservas
+	FETCH NEXT FROM cReservas INTO @reserva_codigo, @reserva_fecha
+	WHILE (@@FETCH_STATUS = 0)
+	BEGIN
+		if(DATEDIFF(DAY, @fechaSistema, @reserva_fecha) >= 4)
+			INSERT INTO FIDEOS_CON_TUCO.Cancelacion_reserva(canc_reserva, canc_fecha, canc_detalle)
+					VALUES (@reserva_codigo, @fechaSistema, 'Reserva vencida')
+		FETCH NEXT FROM cReservas INTO @reserva_codigo, @reserva_fecha
+	END
+	CLOSE cReservas
+	DEALLOCATE cReservas
+END
+GO
+
 /************* LOGIN  *************/
 
-CREATE PROCEDURE adminLogin @username varchar(255), @password varchar(255)
+CREATE PROCEDURE adminLogin @username varchar(255), @password varchar(255), @fechaSistema datetime
 AS
 DECLARE @usua_contrasenia varchar(255)
 DECLARE @usua_intentos_fallidos int
@@ -1476,7 +1499,10 @@ END
 /*IF PARA VER SI ES LA CONTRASEÑA CORRECTA*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) = @usua_contrasenia and @usua_intentos_fallidos < 3)
+		BEGIN
 		UPDATE	FIDEOS_CON_TUCO.Usuario SET	usua_intentos_fallidos = 0 WHERE usua_username = @username
+		EXEC cancelarReservas @fechaSistema
+		END
 END
 /*SELECT PARA MOSTRAR EL USUARIO INGRESADO*/
 SELECT usua_username, usua_contrasenia, usua_esta_habilitado FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username and usua_contrasenia = HASHBYTES('SHA2_256', @password)
@@ -1969,19 +1995,19 @@ CREATE PROCEDURE cancelacionViajes @codigo_crucero varchar(255), @fechaSistema d
 AS
 DECLARE @codigo_pasaje int
 BEGIN
-	DECLARE c1 CURSOR FOR SELECT pasa_codigo	FROM FIDEOS_CON_TUCO.Crucero	JOIN FIDEOS_CON_TUCO.Viaje ON (cruc_codigo = viaj_crucero) 
+	DECLARE cPasajes CURSOR FOR SELECT pasa_codigo	FROM FIDEOS_CON_TUCO.Crucero	JOIN FIDEOS_CON_TUCO.Viaje ON (cruc_codigo = viaj_crucero) 
 																				JOIN FIDEOS_CON_TUCO.Pasaje ON (viaj_codigo = pasa_viaje)
 												WHERE cruc_codigo = @codigo_crucero
-	OPEN c1
-	FETCH NEXT FROM c1 INTO @codigo_pasaje
+	OPEN cPasajes
+	FETCH NEXT FROM cPasajes INTO @codigo_pasaje
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN
 		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
 					VALUES (@codigo_pasaje,'Baja del crucero', @fechaSistema)
-		FETCH NEXT FROM c1 INTO @codigo_pasaje
+		FETCH NEXT FROM cPasajes INTO @codigo_pasaje
 	END
-	CLOSE c1
-	DEALLOCATE c1
+	CLOSE cPasajes
+	DEALLOCATE cPasajes
 END
 GO
 
