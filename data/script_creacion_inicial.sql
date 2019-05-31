@@ -1991,20 +1991,20 @@ GO
 
 /*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
 
-CREATE PROCEDURE cancelacionViajes @codigo_crucero varchar(255), @fechaSistema datetime
+CREATE PROCEDURE cancelacionViajes @crucero_codigo varchar(255), @fechaSistema datetime
 AS
-DECLARE @codigo_pasaje int
+DECLARE @pasaje_codigo int
 BEGIN
 	DECLARE cPasajes CURSOR FOR SELECT pasa_codigo	FROM FIDEOS_CON_TUCO.Crucero	JOIN FIDEOS_CON_TUCO.Viaje ON (cruc_codigo = viaj_crucero) 
-																				JOIN FIDEOS_CON_TUCO.Pasaje ON (viaj_codigo = pasa_viaje)
-												WHERE cruc_codigo = @codigo_crucero
+																					JOIN FIDEOS_CON_TUCO.Pasaje ON (viaj_codigo = pasa_viaje)
+												WHERE cruc_codigo = @crucero_codigo
 	OPEN cPasajes
-	FETCH NEXT FROM cPasajes INTO @codigo_pasaje
+	FETCH NEXT FROM cPasajes INTO @pasaje_codigo
 	WHILE (@@FETCH_STATUS = 0)
 	BEGIN
 		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
-					VALUES (@codigo_pasaje,'Baja del crucero', @fechaSistema)
-		FETCH NEXT FROM cPasajes INTO @codigo_pasaje
+					VALUES (@pasaje_codigo,'Baja del crucero', @fechaSistema)
+		FETCH NEXT FROM cPasajes INTO @pasaje_codigo
 	END
 	CLOSE cPasajes
 	DEALLOCATE cPasajes
