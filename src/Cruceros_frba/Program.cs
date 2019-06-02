@@ -18,10 +18,13 @@ namespace FrbaCrucero
         [STAThread]
         static void Main()
         {
+            //levanto los datos iniciales del archivo de configuracion
             Coneccion.setFechaSistemaSinHora(DateTime.Parse(ConfigurationSettings.AppSettings["fechaApp"]));
+            Coneccion.Con = ConfigurationSettings.AppSettings["coneccion"];
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmPrincipalAdmin());
+            Application.Run(new frmInicio());
         }
     }
 }

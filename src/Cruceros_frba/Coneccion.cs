@@ -8,7 +8,7 @@ namespace CapaDatos
 {
     public class Coneccion
     {
-        public static string Con = "Data Source=LOCALHOST\\SQLSERVER2012;Initial Catalog=GD1C2019;User ID=gdCruceros2019;password=gd2019;Integrated Security=True";
+        public static string Con;
 
         private static DateTime fechaSistema;
 
@@ -17,6 +17,7 @@ namespace CapaDatos
             fechaSistema = unaFechaSinHoras;
         }
 
+        //Retorna la fecha del sistema del archivo de configuracion con la hora actual
         public static DateTime getFechaSistema()
         {
             DateTime horaReal = DateTime.Now;

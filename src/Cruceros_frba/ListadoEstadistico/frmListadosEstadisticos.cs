@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaDatos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,10 +25,19 @@ namespace FrbaCrucero.ListadoEstadistico
         {
             this.CenterToScreen();
 
+            //para autoajustar las celdas al texto
             dataGridListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-            cmbAnio.DataSource = Enumerable.Range(1900, 2019 - 1899).ToList();
-            cmbAnio.SelectedIndex = cmbAnio.Items.IndexOf(2019);
+            //Cargo los años que se mostraran
+            List<int> listaDeAnios = new List<int>();
+            for (int i = 1950; i <= Coneccion.getFechaSistema().Year; i++) {
+                listaDeAnios.Add(i);
+            }
+
+            cmbAnio.DataSource = listaDeAnios;
+            //para seleccionar el año del sistema por defecto
+            cmbAnio.SelectedIndex = cmbAnio.Items.IndexOf(Coneccion.getFechaSistema().Year);
+            //para no escribir en el combobox
             cmbAnio.DropDownStyle = ComboBoxStyle.DropDownList;
 
             cmbSemestre.DataSource = new List<int> { 1, 2 };
@@ -48,6 +58,8 @@ namespace FrbaCrucero.ListadoEstadistico
             Listado listado = new Listado();
             int anio = Convert.ToInt32(cmbAnio.SelectedValue);
             int semestre = Convert.ToInt32(cmbSemestre.SelectedValue);
+
+            //muestro el tipo de listado que eligio el usuario
             DataTable dataTableListado;
             if (cmbTipoListado.SelectedIndex == 0) {
                 dataTableListado = listado.mostrarLosCincoRecorridosConMasPasajesComprados(anio, semestre);
@@ -60,6 +72,7 @@ namespace FrbaCrucero.ListadoEstadistico
                 dataTableListado = listado.mostrarLosCincoCrucerosConMasDiasFueraDeServicio(anio, semestre);
             }
             dataGridListado.DataSource = dataTableListado;
+            //si no hay registros de esa fecha, se lo informo al usuario
             if (dataTableListado.Rows.Count == 0) {
                 MessageBox.Show("No hay registros con ese intervalo de fechas","Aviso", MessageBoxButtons.OK);
             }
