@@ -8,7 +8,20 @@ namespace CapaDatos
 {
     public class Coneccion
     {
-        public static string Con = "Data Source=LOCALHOST\\SQLSERVER2012;Initial Catalog=GD1C2019;User ID=sa;password=gestiondedatos;Integrated Security=False";
+        public static string Con = "Data Source=LOCALHOST\\SQLSERVER2012;Initial Catalog=GD1C2019;User ID=gdCruceros2019;password=gd2019;Integrated Security=True";
+
+        private static DateTime fechaSistema;
+
+        public static void setFechaSistemaSinHora(DateTime unaFechaSinHoras)
+        {
+            fechaSistema = unaFechaSinHoras;
+        }
+
+        public static DateTime getFechaSistema()
+        {
+            DateTime horaReal = DateTime.Now;
+            return fechaSistema.AddHours(horaReal.Hour).AddMinutes(horaReal.Minute).AddSeconds(horaReal.Second);
+        }
 
         /// <summary>
         /// Ejecuta un stock procedure, no tiene retorno.
