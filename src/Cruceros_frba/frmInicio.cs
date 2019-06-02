@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using FrbaCrucero.UserLogin;
+using FrbaCrucero.FormsPrincipales;
 
 namespace FrbaCrucero
 {
@@ -35,6 +36,13 @@ namespace FrbaCrucero
         private void button3_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            frmPrincipalCliente frm = new frmPrincipalCliente();
+            frm.Show();
+            this.Hide();
         }
     }
 }

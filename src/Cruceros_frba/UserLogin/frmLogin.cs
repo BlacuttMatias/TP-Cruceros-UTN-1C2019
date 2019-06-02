@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using FrbaCrucero.AbmRol;
+using FrbaCrucero.FormsPrincipales;
 
 namespace FrbaCrucero.UserLogin
 {
@@ -39,7 +40,7 @@ namespace FrbaCrucero.UserLogin
             }
             else
             {
-                frmABMRolMain frm = new frmABMRolMain();
+                frmPrincipalAdmin frm = new frmPrincipalAdmin();
 
                 frm.Show();
                 this.Hide();
