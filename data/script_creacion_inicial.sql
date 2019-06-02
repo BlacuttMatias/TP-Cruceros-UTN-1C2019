@@ -346,6 +346,16 @@ object_id(N'[mostrarDatosFinalizadaLaCompra]') and OBJECTPROPERTY(id, N'IsProced
 drop procedure [mostrarDatosFinalizadaLaCompra]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cancelarReservas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cancelarReservas]
+GO
+
+IF 
+OBJECT_ID('pasajeDeUnaReserva') IS NOT NULL
+DROP FUNCTION pasajeDeUnaReserva
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1294,18 +1304,19 @@ GO
 
 UPDATE [FIDEOS_CON_TUCO].[Pasaje] SET pasa_precio = comp_monto_total FROM [FIDEOS_CON_TUCO].[Pasaje]
 JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = pasa_compra)
+GO
 
 
 
 /**********************************Carga de Cancelaciones de reservas**************************************************************************/
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
-SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
-FROM [FIDEOS_CON_TUCO].[Reserva]
-JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
-WHERE pasa_compra IS NULL
-GO
+--INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
+--SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
+--FROM [FIDEOS_CON_TUCO].[Reserva]
+--JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
+--WHERE pasa_compra IS NULL
+--GO
 
 
 
@@ -2169,10 +2180,11 @@ BEGIN
 	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
 		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
 			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
-			WHERE pasa_viaje = viaj_codigo AND (pasa_compra IS NOT NULL 
-				OR NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+				WHERE canc_pasa_pasaje = pasa_codigo)
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
-					WHERE rese_pasaje = pasa_codigo))
+					WHERE rese_pasaje = pasa_codigo)
 			) AS t1) AS Cantidad_cabinas_disponibles
 		FROM FIDEOS_CON_TUCO.Viaje 
 		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_ciudad = @ciudadPuertoOrigen)
@@ -2196,10 +2208,11 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = @codigoViaje)
 		WHERE cabi_crucero = viaj_crucero AND NOT EXISTS(SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
 				WHERE pasa_cabina = cabi_codigo AND pasa_viaje = viaj_codigo
-				AND (pasa_compra IS NOT NULL
-				OR NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+				AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+				WHERE canc_pasa_pasaje = pasa_codigo) 
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
-					WHERE rese_pasaje = pasa_codigo)))
+					WHERE rese_pasaje = pasa_codigo))
 		ORDER BY 4,3,2
 END
 GO
@@ -2313,6 +2326,34 @@ END
 GO
 
 
+--Obtiene el pasaje de una reserva. Se usaria cuando se quiere pagar una reserva.
+--Devuelve el codigo del pasaje si tiene un pasaje esa reserva.
+--Devuelve -1 si no existe ese numero de reserva.
+--Devuelve -2 si la reserva fue cancelada.
+--Devuelve -3 si el pasaje fue cancelado.
+CREATE FUNCTION pasajeDeUnaReserva (@codigoReserva int) RETURNS int
+AS
+BEGIN
+	DECLARE @codigoPasaje int
+	IF NOT EXISTS(SELECT rese_codigo FROM FIDEOS_CON_TUCO.Reserva WHERE rese_codigo = @codigoReserva)
+		BEGIN
+		RETURN -1
+		END
+	ELSE IF EXISTS(SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva WHERE canc_reserva = @codigoReserva)
+		BEGIN
+		RETURN -2
+		END
+	ELSE IF EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje JOIN FIDEOS_CON_TUCO.Reserva ON (rese_codigo = @codigoReserva)
+			WHERE canc_pasa_pasaje = rese_pasaje)
+		BEGIN
+		RETURN -3
+		END
+	SELECT @codigoPasaje = rese_pasaje FROM FIDEOS_CON_TUCO.Reserva WHERE rese_codigo = @codigoReserva
+	RETURN @codigoPasaje
+END
+GO
+
+
 /************************** LISTADO con la información de la compra hecha *******************************************/
 
 
@@ -2325,8 +2366,8 @@ BEGIN
 		(SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
 			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
-					WHERE rese_pasaje = pasa_codigo)/* AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
-			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)*/) AS Cantidad_de_pasajeros
+					WHERE rese_pasaje = pasa_codigo) AND NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+					WHERE canc_pasa_pasaje = pasa_codigo)) AS Cantidad_de_pasajeros
 	FROM FIDEOS_CON_TUCO.Compra
 	JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_compra = @codigoCompra)
 	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = pasa_viaje)
@@ -2395,8 +2436,9 @@ BEGIN
 		SUM(cruc_cantidad_cabinas) - (SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
 			JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
 			WHERE pasa_viaje = viaj_codigo AND pasa_compra IS NOT NULL AND YEAR(viaj_fecha_inicio) = @anio 
-				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal/* AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
-			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)*/) AS Cabinas_libres_en_cada_viaje
+				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo) AND NOT EXISTS(SELECT canc_pasa_codigo 
+			FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)) AS Cabinas_libres_en_cada_viaje
 		FROM FIDEOS_CON_TUCO.Recorrido
 		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
