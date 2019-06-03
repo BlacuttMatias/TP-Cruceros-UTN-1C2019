@@ -32,27 +32,31 @@ namespace FrbaCrucero.UserLogin
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DataTable Datos = Administrador.LoginAdm(this.usuarioTxt.Text, this.passwordTxt.Text);
+            DataTable datosUsuario = Login.loguearUsuario(this.usuarioTxt.Text, this.passwordTxt.Text);
 
-            if (Datos.Rows.Count == 0)
+            if (datosUsuario.Rows.Count == 0)
             {
                 MessageBox.Show("No existe el Usuario o la Contraseña no es correcta", "Login Administrador", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (datosUsuario.Rows[0][2].ToString() == "False")
+            {
+                MessageBox.Show("El usuario se encuentra deshabilitado", "Login Administrador", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
                 frmPrincipalAdmin frm = new frmPrincipalAdmin();
-
-                frm.Show();
                 this.Hide();
+                frm.ShowDialog();
+                this.Close();
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             frmInicio frm = new frmInicio();
-
-            frm.Show();
             this.Hide();
+            frm.ShowDialog();
+            this.Close();
         }
     }
 }

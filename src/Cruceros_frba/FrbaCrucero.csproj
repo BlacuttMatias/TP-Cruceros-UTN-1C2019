@@ -196,6 +196,7 @@
     <Compile Include="UserLogin\frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserLogin\Login.cs" />
     <Compile Include="UserLogin\LoginControl.cs" />
     <EmbeddedResource Include="AbmPuerto\frmABMPuertoMain.resx">
       <DependentUpon>frmABMPuertoMain.cs</DependentUpon>

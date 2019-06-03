@@ -28,9 +28,9 @@ namespace FrbaCrucero
         private void button1_Click(object sender, EventArgs e)
         {
             frmLogin frm = new frmLogin();
-
-            frm.Show();
             this.Hide();
+            frm.ShowDialog();
+            this.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -41,8 +41,9 @@ namespace FrbaCrucero
         private void button2_Click(object sender, EventArgs e)
         {
             frmPrincipalCliente frm = new frmPrincipalCliente();
-            frm.Show();
             this.Hide();
+            frm.ShowDialog();
+            this.Close();
         }
     }
 }
