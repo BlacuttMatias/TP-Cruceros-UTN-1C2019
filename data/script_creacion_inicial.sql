@@ -2238,7 +2238,7 @@ GO
 CREATE PROCEDURE mostrarCuotasDeUnaEmpresa @codigoEmpresa int
 AS
 BEGIN
-	SELECT cant_cantidad FROM FIDEOS_CON_TUCO.Cantidad_cuotas JOIN FIDEOS_CON_TUCO.Empresa_tarjeta ON (cant_empresa = @codigoEmpresa)
+	SELECT cant_cantidad FROM FIDEOS_CON_TUCO.Cantidad_cuotas WHERE cant_empresa = @codigoEmpresa
 END
 GO
 
