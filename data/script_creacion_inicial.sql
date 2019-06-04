@@ -1479,19 +1479,12 @@ AS
 DECLARE @reserva_codigo int
 DECLARE @reserva_fecha datetime
 BEGIN
-	DECLARE cReservas CURSOR FOR	SELECT rese_codigo, rese_fecha FROM FIDEOS_CON_TUCO.Reserva 
-									WHERE rese_codigo NOT IN (SELECT canc_reserva FROM FIDEOS_CON_TUCO.Cancelacion_reserva)		
-	OPEN cReservas
-	FETCH NEXT FROM cReservas INTO @reserva_codigo, @reserva_fecha
-	WHILE (@@FETCH_STATUS = 0)
-	BEGIN
-		if(DATEDIFF(DAY, @fechaSistema, @reserva_fecha) >= 4)
-			INSERT INTO FIDEOS_CON_TUCO.Cancelacion_reserva(canc_reserva, canc_fecha, canc_detalle)
-					VALUES (@reserva_codigo, @fechaSistema, 'Reserva vencida')
-		FETCH NEXT FROM cReservas INTO @reserva_codigo, @reserva_fecha
-	END
-	CLOSE cReservas
-	DEALLOCATE cReservas
+	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_reserva(canc_reserva, canc_fecha, canc_detalle)
+	SELECT R1.rese_codigo, @fechaSistema, 'Reserva vencida' FROM FIDEOS_CON_TUCO.Reserva R1
+	WHERE R1.rese_codigo NOT IN (SELECT canc_reserva FROM FIDEOS_CON_TUCO.Cancelacion_reserva)
+	AND DATEDIFF(DAY, @fechaSistema, rese_fecha) >= 4
+	AND R1.rese_codigo NOT IN (SELECT R2.rese_codigo FROM FIDEOS_CON_TUCO.Pasaje	JOIN FIDEOS_CON_TUCO.Compra on (pasa_compra = comp_codigo)
+																					JOIN FIDEOS_CON_TUCO.Reserva R2 on (pasa_codigo = rese_pasaje))
 END
 GO
 
