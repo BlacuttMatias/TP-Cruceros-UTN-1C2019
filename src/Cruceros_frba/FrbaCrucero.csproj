@@ -137,12 +137,28 @@
       <DependentUpon>frmModificarRolSeleccionado.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\Rol.cs" />
+    <Compile Include="CompraReservaPasaje\Compra.cs" />
+    <Compile Include="CompraReservaPasaje\DatosMediosDePago.cs" />
     <Compile Include="CompraReservaPasaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompraReservaPasaje\frmMedioDePago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\frmMedioDePago.designer.cs">
+      <DependentUpon>frmMedioDePago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\frmTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\frmTarjeta.designer.cs">
+      <DependentUpon>frmTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\MedioDePago.cs" />
+    <Compile Include="CompraReservaPasaje\Pasaje.cs" />
     <Compile Include="Coneccion.cs" />
     <Compile Include="FormsPrincipales\frmPrincipalAdmin.cs">
       <SubType>Form</SubType>
@@ -239,6 +255,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\frmModificarRolSeleccionado.resx">
       <DependentUpon>frmModificarRolSeleccionado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\frmMedioDePago.resx">
+      <DependentUpon>frmMedioDePago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\frmTarjeta.resx">
+      <DependentUpon>frmTarjeta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormsPrincipales\frmPrincipalAdmin.resx">
       <DependentUpon>frmPrincipalAdmin.cs</DependentUpon>

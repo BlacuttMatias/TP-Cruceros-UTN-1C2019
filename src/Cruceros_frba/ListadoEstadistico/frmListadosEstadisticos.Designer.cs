@@ -109,14 +109,14 @@
             this.dataGridListado.Name = "dataGridListado";
             this.dataGridListado.ReadOnly = true;
             this.dataGridListado.RowTemplate.Height = 24;
-            this.dataGridListado.Size = new System.Drawing.Size(860, 232);
+            this.dataGridListado.Size = new System.Drawing.Size(1193, 354);
             this.dataGridListado.TabIndex = 7;
             // 
             // frmListadosEstadisticos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(901, 504);
+            this.ClientSize = new System.Drawing.Size(1228, 591);
             this.Controls.Add(this.dataGridListado);
             this.Controls.Add(this.btnMostrar);
             this.Controls.Add(this.lblTipoListado);

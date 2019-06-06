@@ -26,7 +26,7 @@ namespace FrbaCrucero.ListadoEstadistico
             this.CenterToScreen();
 
             //para autoajustar las celdas al texto
-            dataGridListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dataGridListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             //Cargo los años que se mostraran
             List<int> listaDeAnios = new List<int>();
@@ -75,6 +75,12 @@ namespace FrbaCrucero.ListadoEstadistico
             //si no hay registros de esa fecha, se lo informo al usuario
             if (dataTableListado.Rows.Count == 0) {
                 MessageBox.Show("No hay registros con ese intervalo de fechas","Aviso", MessageBoxButtons.OK);
+            }
+
+            //para que el usuario no pueda ordenar las columnas haciendo click en el encabezado de una columna
+            foreach (DataGridViewColumn column in dataGridListado.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Programmatic;
             }
         }
 
