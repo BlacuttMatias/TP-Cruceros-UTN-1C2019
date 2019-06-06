@@ -356,6 +356,16 @@ OBJECT_ID('pasajeDeUnaReserva') IS NOT NULL
 DROP FUNCTION pasajeDeUnaReserva
 GO
 
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.stringDestinos') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.stringDestinos
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -2164,6 +2174,52 @@ END
 GO
 
 
+/*************************** Funciones para mostrar tramos de un recorrido   *********************************/
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.stringDestinos(@idRecorrido int, @codigoPuertoDestino int) RETURNS varchar(255)
+AS
+BEGIN
+	DECLARE @ciudadPuertoDestino varchar(255)
+	SET @ciudadPuertoDestino = ''
+	SELECT @ciudadPuertoDestino = puer_ciudad FROM FIDEOS_CON_TUCO.Puerto WHERE puer_codigo = @codigoPuertoDestino
+	IF NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Tramo JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
+			WHERE tram_codigo = tram_por_reco_tramo AND tram_puerto_origen = @codigoPuertoDestino)
+		BEGIN
+		RETURN @ciudadPuertoDestino
+		END
+	DECLARE @codigoPuertoFinalRecorrido int
+	SELECT @codigoPuertoFinalRecorrido = reco_puerto_destino FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_id = @idRecorrido
+	IF (@codigoPuertoDestino = @codigoPuertoFinalRecorrido)
+		BEGIN
+		RETURN @ciudadPuertoDestino
+		END
+	DECLARE @codigoPuertoSiguienteDestino int
+	SELECT @codigoPuertoSiguienteDestino = tram_puerto_destino FROM FIDEOS_CON_TUCO.Tramo 
+		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido) 
+		WHERE tram_codigo = tram_por_reco_tramo AND tram_puerto_origen = @codigoPuertoDestino
+	RETURN @ciudadPuertoDestino + '-' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoSiguienteDestino)
+END
+GO
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido (@idRecorrido int) RETURNS varchar(255)
+AS
+BEGIN
+	DECLARE @ciudadPuertoOrigen varchar(255)
+	DECLARE @codigoPuertoDestinoPrierTramo int
+	SELECT @ciudadPuertoOrigen = puer_ciudad FROM FIDEOS_CON_TUCO.Puerto 
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = @idRecorrido)
+		WHERE puer_codigo = reco_puerto_origen
+	SELECT @codigoPuertoDestinoPrierTramo = tram_puerto_destino FROM FIDEOS_CON_TUCO.Tramo 
+		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = @idRecorrido)
+		WHERE tram_puerto_origen = reco_puerto_origen AND tram_codigo = tram_por_reco_tramo
+	RETURN @ciudadPuertoOrigen + '-' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoDestinoPrierTramo)
+END
+GO
+
+
 /************************** LISTADO de viajes para comprar *******************************************/
 
 
@@ -2178,7 +2234,8 @@ BEGIN
 				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
 					WHERE rese_pasaje = pasa_codigo)
-			) AS t1) AS Cantidad_cabinas_disponibles
+			) AS t1) AS Cantidad_cabinas_disponibles,
+		FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
 		FROM FIDEOS_CON_TUCO.Viaje 
 		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_ciudad = @ciudadPuertoOrigen)
 		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
