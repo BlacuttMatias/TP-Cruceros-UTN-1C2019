@@ -25,6 +25,27 @@ namespace CapaDatos
         }
 
         /// <summary>
+        /// Ejecuta una funcion que retorna un int
+        /// (SqlCommandString, "@var1",var1,"@var2",var2,...,"@varN",varN)
+        /// ejemplo. string SqlCommandString = "FIDEOS_CON_TUCO.pasajeDeUnaReserva(@codigoReserva)"
+        /// </summary>
+        /// <param name="args">(SqlCommandString, @var1,var1,@var2,var2,...,@varN,varN)</param>
+        public static int ejecutarFunction(params object[] args)
+        {
+            SqlConnection coneccion = new SqlConnection(Coneccion.Con);
+            SqlCommand cmd = new SqlCommand("SELECT dbo." + args[0].ToString(), coneccion);
+            for (int i = 0; i < args.Length - 2; i++)
+            {
+                cmd.Parameters.AddWithValue(args[i + 1] as string, args[i + 2]);
+                i++;
+            }
+            coneccion.Open();
+            int resultado = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+            return resultado;
+        }
+
+        /// <summary>
         /// Ejecuta un stock procedure, no tiene retorno.
         /// (SqlCommandString, "@var1",var1,"@var2",var2,...,"@varN",varN)
         /// SqlCommandString es el nombre de el SP en este caso, por ejemplo "mostrarRoles"

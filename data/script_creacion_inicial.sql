@@ -277,8 +277,8 @@ drop procedure [ingresarMedioDePagoConTarjeta]
 GO
 
 IF 
-OBJECT_ID('existenViajesConPasajesVendidosDeEsePuerto') IS NOT NULL
-DROP FUNCTION existenViajesConPasajesVendidosDeEsePuerto
+OBJECT_ID('FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto
 GO
 
 if exists (select * from dbo.sysobjects where id =
@@ -352,8 +352,8 @@ drop procedure [cancelarReservas]
 GO
 
 IF 
-OBJECT_ID('pasajeDeUnaReserva') IS NOT NULL
-DROP FUNCTION pasajeDeUnaReserva
+OBJECT_ID('FIDEOS_CON_TUCO.pasajeDeUnaReserva') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.pasajeDeUnaReserva
 GO
 
 IF 
@@ -1643,7 +1643,7 @@ GO
 
 /************************** BAJA LOGICA Puerto (DESHABILITAR)*******************************************/
 
-CREATE FUNCTION existenViajesConPasajesVendidosDeEsePuerto (@codigoPuerto int) returns bit
+CREATE FUNCTION FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto (@codigoPuerto int) returns bit
 AS
 BEGIN
 	DECLARE @resultado bit
@@ -1665,7 +1665,7 @@ GO
 CREATE PROCEDURE cancelarPasajesPorBajaDePuerto @codigoPuerto int
 AS
 BEGIN
-	IF dbo.existenViajesConPasajesVendidosDeEsePuerto(@codigoPuerto) = 1
+	IF FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto(@codigoPuerto) = 1
 		BEGIN
 		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion)
 		SELECT pasa_codigo, 'Cancelacion por puerto deshabilitado' FROM FIDEOS_CON_TUCO.Pasaje
@@ -2381,7 +2381,7 @@ GO
 --Devuelve -1 si no existe ese numero de reserva.
 --Devuelve -2 si la reserva fue cancelada.
 --Devuelve -3 si el pasaje fue cancelado.
-CREATE FUNCTION pasajeDeUnaReserva (@codigoReserva int) RETURNS int
+CREATE FUNCTION FIDEOS_CON_TUCO.pasajeDeUnaReserva (@codigoReserva int) RETURNS int
 AS
 BEGIN
 	DECLARE @codigoPasaje int
