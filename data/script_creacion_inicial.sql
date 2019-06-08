@@ -1667,7 +1667,7 @@ BEGIN
 	RETURN 0
 END
 GO
-
+/*
 CREATE PROCEDURE cancelarPasajesPorBajaDePuerto @codigoPuerto int
 AS
 BEGIN
@@ -1685,7 +1685,7 @@ BEGIN
 		END
 END
 GO
-
+*/
 CREATE PROCEDURE deshabilitarPuerto @codigoPuerto int
 AS
 BEGIN
@@ -1695,7 +1695,7 @@ BEGIN
 		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
 		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
 		WHERE reco_id = tram_por_reco_recorrido
-	EXEC cancelarPasajesPorBajaDePuerto @codigoPuerto
+	--EXEC cancelarPasajesPorBajaDePuerto @codigoPuerto
 END
 GO
 
