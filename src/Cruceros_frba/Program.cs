@@ -1,6 +1,7 @@
 ﻿using CapaDatos;
 using FrbaCrucero.CompraReservaPasaje;
 using FrbaCrucero.FormsPrincipales;
+using FrbaCrucero.PagoReserva;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

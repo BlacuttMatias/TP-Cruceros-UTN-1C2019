@@ -11,6 +11,17 @@ namespace FrbaCrucero.CompraReservaPasaje
         private int codigoCliente;
         private MedioDePago medioDePago;
         private List<Pasaje> pasajes = new List<Pasaje>();
+        private bool esUnaCompraDeUnaReserva = false;
+
+        public Compra() { }
+
+        public Compra(bool esCompraDeUnaReserva)
+        {
+            this.esUnaCompraDeUnaReserva = esCompraDeUnaReserva;
+        }
+
+        public void setEsUnaCompraDeUnaReserva(bool esUnaCompraDeReserva) { this.esUnaCompraDeUnaReserva = esUnaCompraDeReserva; }
+        public bool getEsUnaCompraDeUnaReserva() { return this.esUnaCompraDeUnaReserva; }
 
         public void setCodigoCliente(int unCodigoCliente) { this.codigoCliente = unCodigoCliente; }
         public int getCodigoCliente() { return this.codigoCliente; }

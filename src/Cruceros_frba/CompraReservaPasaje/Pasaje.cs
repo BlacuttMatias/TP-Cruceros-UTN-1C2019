@@ -8,10 +8,14 @@ namespace FrbaCrucero.CompraReservaPasaje
 {
     public class Pasaje
     {
+        private int codigoPasaje;
         private double precio;
         private int codigoCliente ;
         private int codigoViaje ;
         private int codigoCabina;
+
+        public void setCodigoPasaje(int unCodigoPasaje) { this.codigoPasaje = unCodigoPasaje; }
+        public int getCodigoPasaje() { return this.codigoPasaje; }
 
         public void setPrecio(double unPrecio) { this.precio = unPrecio; }
         public double getPrecio() { return this.precio; }

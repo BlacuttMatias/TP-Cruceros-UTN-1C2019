@@ -366,6 +366,12 @@ OBJECT_ID('FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido
 GO
 
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.clienteDeUnPasaje') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.clienteDeUnPasaje
+GO
+
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -2376,11 +2382,23 @@ END
 GO
 
 
+CREATE FUNCTION FIDEOS_CON_TUCO.clienteDeUnPasaje (@codigoPasaje int) RETURNS int
+AS
+BEGIN
+	DECLARE @codigoCliente int
+	SELECT @codigoCliente = clie_codigo FROM FIDEOS_CON_TUCO.Cliente JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_codigo = @codigoPasaje)
+	WHERE clie_codigo = pasa_cliente
+	RETURN @codigoCliente
+END
+GO
+
+
 --Obtiene el pasaje de una reserva. Se usaria cuando se quiere pagar una reserva.
 --Devuelve el codigo del pasaje si tiene un pasaje esa reserva.
 --Devuelve -1 si no existe ese numero de reserva.
 --Devuelve -2 si la reserva fue cancelada.
 --Devuelve -3 si el pasaje fue cancelado.
+--Devuelve -4 si el fue pagada la reserva de ese pasaje.
 CREATE FUNCTION FIDEOS_CON_TUCO.pasajeDeUnaReserva (@codigoReserva int) RETURNS int
 AS
 BEGIN
@@ -2397,6 +2415,11 @@ BEGIN
 			WHERE canc_pasa_pasaje = rese_pasaje)
 		BEGIN
 		RETURN -3
+		END
+	ELSE IF EXISTS(SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje JOIN FIDEOS_CON_TUCO.Reserva ON (rese_codigo = @codigoReserva)
+			WHERE pasa_codigo = rese_pasaje AND pasa_compra IS NOT NULL)
+		BEGIN
+		RETURN -4
 		END
 	SELECT @codigoPasaje = rese_pasaje FROM FIDEOS_CON_TUCO.Reserva WHERE rese_codigo = @codigoReserva
 	RETURN @codigoPasaje

@@ -197,11 +197,18 @@
       <DependentUpon>frmListadosEstadisticos.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Listado.cs" />
+    <Compile Include="PagoReserva\DatosPagoReserva.cs" />
     <Compile Include="PagoReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PagoReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PagoReserva\frmPagoReserva.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PagoReserva\frmPagoReserva.designer.cs">
+      <DependentUpon>frmPagoReserva.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -273,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\frmListadosEstadisticos.resx">
       <DependentUpon>frmListadosEstadisticos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagoReserva\frmPagoReserva.resx">
+      <DependentUpon>frmPagoReserva.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

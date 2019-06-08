@@ -23,6 +23,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.compra = unaCompra;
             this.frmAnterior = unFrmAnterior;
             this.esTarjetaDeCredito = esUnaTarjetaDeCredito;
+
+            //seteo el cliente en la compra en caso de que no se haya hecho
+            this.compra.setCodigoCliente(this.compra.getPasajes()[0].getCodigoCliente());
             
         }
 
@@ -151,10 +154,39 @@ namespace FrbaCrucero.CompraReservaPasaje
                     }
                 }
 
+                int codigoMedioDePago;
+                int codigoCompra;
+
                 //persisto todos los datos
                 datosMediosDePago.persistirTarjeta(numeroTarjeta, codigoVerificador, tipoDeTarjeta, codigoEmpresa);
-                datosMediosDePago.persistirMedioDePago(compra.getMedioDePago().getCodigoTipoMedioDePago()
+                codigoMedioDePago = datosMediosDePago.persistirMedioDePago(compra.getMedioDePago().getCodigoTipoMedioDePago()
                     , numeroTarjeta, cantidadDeCuotas);
+
+
+                codigoCompra = datosMediosDePago.persistirCompra(this.compra.getCodigoCliente(), codigoMedioDePago);
+
+                MessageBox.Show(codigoCompra.ToString(), "Compra finalizada", MessageBoxButtons.OK);
+
+
+                //si ya se paga una reserva, ya está persistido el pasaje, entonces solo lo vinculo el mismo
+                //a la compra. Sino, si es una compra directa, persisto los pasajes y los agrego a la compra
+                if (this.compra.getEsUnaCompraDeUnaReserva())
+                {
+                    foreach (Pasaje pasaje in this.compra.getPasajes())
+                    {
+                        datosMediosDePago.agregarPasajeAUnaCompra(pasaje.getCodigoPasaje(), codigoCompra);
+                    }
+                }
+                else {
+                    codigoCompra = datosMediosDePago.persistirCompra(this.compra.getPasajes()[0].getCodigoCliente(), codigoMedioDePago);
+                    foreach(Pasaje pasaje in this.compra.getPasajes()){
+                        int codigoPasaje = datosMediosDePago.persistirPasaje(pasaje.getCodigoCliente(), 
+                            pasaje.getCodigoViaje(), pasaje.getCodigoCabina());
+                        datosMediosDePago.agregarPasajeAUnaCompra(codigoPasaje, codigoCompra);
+                    }
+                    
+
+                }
 
                 MessageBox.Show("Su compra se ha registrado con éxito.", "Compra finalizada", MessageBoxButtons.OK);
 
@@ -167,7 +199,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void txtNumeroTarjeta_KeyPress(object sender, KeyPressEventArgs e)
         {
             //verifico que solo se puedan escribit numeros en ese txtNumeroTarjeta
-            if (Char.IsDigit(e.KeyChar))
+            if (Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar))
             {
                 e.Handled = false;
             }
@@ -180,7 +212,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void txtCodigoVerificador_KeyPress(object sender, KeyPressEventArgs e)
         {
             //verifico que solo se puedan escribit numeros en ese txtCodigoVerificador
-            if (Char.IsDigit(e.KeyChar))
+            if (Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar))
             {
                 e.Handled = false;
             }

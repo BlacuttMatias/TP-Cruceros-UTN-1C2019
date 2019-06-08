@@ -25,6 +25,10 @@ namespace FrbaCrucero.CompraReservaPasaje
             return Coneccion.ejecutarSP("mostrarTiposDeMediosDePago");
         }
 
+        public int obtenerCodigoClienteDeUnPasajePersistido(int codigoPasaje) {
+            return Coneccion.ejecutarFunction("clienteDeUnPasaje(@codigoPasaje)", "@codigoPasaje", codigoPasaje);
+        }
+
         public void persistirTarjeta(int numeroTarjeta, int codigoVerificador, string tipoDeTarjeta, int codigoEmpresa) {
             Coneccion.ejecutarSPV("ingresarTarjeta", "@numeroTarjeta", numeroTarjeta, "@codigoVerificador"
                 , codigoVerificador, "@tipoTarjeta", tipoDeTarjeta, "@codigoEmpresa", codigoEmpresa);
@@ -37,12 +41,12 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
 
         public int persistirPasaje(int codigoCliente, int codigoViaje, int codigoCabina) {
-            return Coneccion.ejecutarSPR("@codigoPasaje", "@codigoCliente", codigoCliente
+            return Coneccion.ejecutarSPR("generarPasaje", "@codigoCliente", codigoCliente
                 , "@codigoViaje", codigoViaje, "@codigoCabina", codigoCabina);
         }
 
         public int persistirCompra(int codigoCliente, int codigoMedioDePago) {
-            return Coneccion.ejecutarSPR("@codigoCompra", "@codigoCliente", codigoCliente
+            return Coneccion.ejecutarSPR("generarCompra", "@codigoCliente", codigoCliente
                 , "@fechaSistema", Coneccion.getFechaSistema(), "@codigoMedioDePago", codigoMedioDePago);
         }
 
