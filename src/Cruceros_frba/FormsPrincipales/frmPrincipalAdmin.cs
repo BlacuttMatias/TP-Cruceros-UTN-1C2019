@@ -2,6 +2,7 @@
 using FrbaCrucero.AbmRecorrido;
 using FrbaCrucero.AbmRol;
 using FrbaCrucero.ListadoEstadistico;
+using FrbaCrucero.PagoReserva;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -149,7 +150,9 @@ namespace FrbaCrucero.FormsPrincipales
 
         private void itmPagarReserva_Click(object sender, EventArgs e)
         {
-
+            frmPagoReserva frm = new frmPagoReserva();
+            frm.MdiParent = this;
+            frm.Show();
         }
 
     }

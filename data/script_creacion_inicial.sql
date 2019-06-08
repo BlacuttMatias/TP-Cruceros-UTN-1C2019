@@ -2375,7 +2375,9 @@ BEGIN
 			JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON canc_reserva = rese_codigo WHERE rese_pasaje = @codigoPasaje)
 		BEGIN
 		DECLARE @precioPasaje numeric(10,2)
+		UPDATE FIDEOS_CON_TUCO.Pasaje SET pasa_compra = @codigoCompra WHERE pasa_codigo =  @codigoPasaje
 		SELECT @precioPasaje = pasa_precio FROM FIDEOS_CON_TUCO.Pasaje WHERE pasa_codigo = @codigoPasaje
+
 		UPDATE FIDEOS_CON_TUCO.Compra SET comp_monto_total = comp_monto_total + @precioPasaje WHERE comp_codigo = @codigoCompra
 		END
 END
@@ -2434,13 +2436,16 @@ CREATE PROCEDURE mostrarDatosFinalizadaLaCompra @codigoCompra int
 AS
 BEGIN
 	SELECT comp_codigo AS Codigo_compra, viaj_fecha_inicio AS Fecha_inicio_viaje, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion_viaje,
-		p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje, cabi_numero AS Numero_cabina 
+		p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino_final, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
+		, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje
+		, cabi_numero AS Numero_cabina 
 		,cabi_piso AS Piso_cabina, tipo_descripcion AS Tipo_Cabina, 
 		(SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
 			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
 					WHERE rese_pasaje = pasa_codigo) AND NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
-					WHERE canc_pasa_pasaje = pasa_codigo)) AS Cantidad_de_pasajeros
+					WHERE canc_pasa_pasaje = pasa_codigo)) AS Cantidad_de_pasajeros_hasta_el_momento
+		, cruc_cantidad_cabinas AS Capacidad_maxima_de_pasajeros
 	FROM FIDEOS_CON_TUCO.Compra
 	JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_compra = @codigoCompra)
 	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = pasa_viaje)

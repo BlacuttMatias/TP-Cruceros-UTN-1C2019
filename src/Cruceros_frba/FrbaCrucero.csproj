@@ -145,6 +145,12 @@
     <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompraReservaPasaje\frmDatosCompraFinalizada.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\frmDatosCompraFinalizada.Designer.cs">
+      <DependentUpon>frmDatosCompraFinalizada.cs</DependentUpon>
+    </Compile>
     <Compile Include="CompraReservaPasaje\frmMedioDePago.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -262,6 +268,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\frmModificarRolSeleccionado.resx">
       <DependentUpon>frmModificarRolSeleccionado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\frmDatosCompraFinalizada.resx">
+      <DependentUpon>frmDatosCompraFinalizada.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CompraReservaPasaje\frmMedioDePago.resx">
       <DependentUpon>frmMedioDePago.cs</DependentUpon>

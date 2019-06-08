@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaCrucero.PagoReserva;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -111,7 +112,9 @@ namespace FrbaCrucero.FormsPrincipales
 
         private void itmPagarReserva_Click(object sender, EventArgs e)
         {
-
+            frmPagoReserva frm = new frmPagoReserva();
+            frm.MdiParent = this;
+            frm.Show();
         }
 
         private void frmPrincipalCliente_Load(object sender, EventArgs e)

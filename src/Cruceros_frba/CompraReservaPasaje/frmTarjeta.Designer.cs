@@ -148,7 +148,7 @@
             this.Controls.Add(this.txtNumeroTarjeta);
             this.Controls.Add(this.lblNumeroTarjeta);
             this.Name = "frmTarjeta";
-            this.Text = "frmTarjeta";
+            this.Text = "Ingreso datos de Tarjeta";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTarjeta_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmTarjeta_FormClosed);
             this.Load += new System.EventHandler(this.frmTarjeta_Load);

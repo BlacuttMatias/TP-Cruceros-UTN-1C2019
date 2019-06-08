@@ -16,6 +16,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         public Compra compra;
         public frmMedioDePago frmAnterior;
         public bool esTarjetaDeCredito;
+        //solo lo uso para saber si el form se cerro porque se finalizo/efectuo o se cancelo la compra
+        private bool seFinalizoLaCompra;
 
         public frmTarjeta(Compra unaCompra, frmMedioDePago unFrmAnterior, bool esUnaTarjetaDeCredito)
         {
@@ -103,12 +105,16 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void frmTarjeta_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Al quererse cerrar, se pregunta si desea de verdad hacerlo
-            DialogResult respuesta = MessageBox.Show("¿Está seguro que desea cancelar la compra?", "Cancelación compra"
-                , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (respuesta == DialogResult.No) {
-                e.Cancel = true;
+            if (!this.seFinalizoLaCompra) {
+                //Al quererse cerrar, se pregunta si desea de verdad hacerlo
+                DialogResult respuesta = MessageBox.Show("¿Está seguro que desea cancelar la compra?", "Cancelación compra"
+                    , MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (respuesta == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
             }
+            
         }
 
         private void btnFinalizar_Click(object sender, EventArgs e)
@@ -157,16 +163,13 @@ namespace FrbaCrucero.CompraReservaPasaje
                 int codigoMedioDePago;
                 int codigoCompra;
 
-                //persisto todos los datos
+                //persisto todos los datos del medio de pago
                 datosMediosDePago.persistirTarjeta(numeroTarjeta, codigoVerificador, tipoDeTarjeta, codigoEmpresa);
                 codigoMedioDePago = datosMediosDePago.persistirMedioDePago(compra.getMedioDePago().getCodigoTipoMedioDePago()
                     , numeroTarjeta, cantidadDeCuotas);
 
-
+                //persisto la compra
                 codigoCompra = datosMediosDePago.persistirCompra(this.compra.getCodigoCliente(), codigoMedioDePago);
-
-                MessageBox.Show(codigoCompra.ToString(), "Compra finalizada", MessageBoxButtons.OK);
-
 
                 //si ya se paga una reserva, ya está persistido el pasaje, entonces solo lo vinculo el mismo
                 //a la compra. Sino, si es una compra directa, persisto los pasajes y los agrego a la compra
@@ -174,25 +177,36 @@ namespace FrbaCrucero.CompraReservaPasaje
                 {
                     foreach (Pasaje pasaje in this.compra.getPasajes())
                     {
-                        datosMediosDePago.agregarPasajeAUnaCompra(pasaje.getCodigoPasaje(), codigoCompra);
+                       datosMediosDePago.agregarPasajeAUnaCompra(pasaje.getCodigoPasaje(), codigoCompra);
                     }
                 }
                 else {
-                    codigoCompra = datosMediosDePago.persistirCompra(this.compra.getPasajes()[0].getCodigoCliente(), codigoMedioDePago);
                     foreach(Pasaje pasaje in this.compra.getPasajes()){
                         int codigoPasaje = datosMediosDePago.persistirPasaje(pasaje.getCodigoCliente(), 
                             pasaje.getCodigoViaje(), pasaje.getCodigoCabina());
                         datosMediosDePago.agregarPasajeAUnaCompra(codigoPasaje, codigoCompra);
                     }
                     
-
                 }
 
                 MessageBox.Show("Su compra se ha registrado con éxito.", "Compra finalizada", MessageBoxButtons.OK);
+                this.seFinalizoLaCompra = true;
+                
+                //muestro los datos de la compra
+                frmDatosCompraFinalizada frm = new frmDatosCompraFinalizada(codigoCompra);
+                frm.FormClosed += frm_FormClosed;
+                frm.Show();
+                
+                this.Hide();
 
             }
             
 
+        }
+
+        void frm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
         }
 
        

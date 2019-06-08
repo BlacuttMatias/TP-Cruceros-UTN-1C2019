@@ -126,7 +126,7 @@
             this.Controls.Add(this.cmbSemestre);
             this.Controls.Add(this.cmbAnio);
             this.Name = "frmListadosEstadisticos";
-            this.Text = "frmListadosEstadisticos";
+            this.Text = "Listado estadístico";
             this.Load += new System.EventHandler(this.frmListadosEstadisticos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridListado)).EndInit();
             this.ResumeLayout(false);

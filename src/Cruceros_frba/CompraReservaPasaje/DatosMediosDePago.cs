@@ -41,18 +41,22 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
 
         public int persistirPasaje(int codigoCliente, int codigoViaje, int codigoCabina) {
-            return Coneccion.ejecutarSPR("generarPasaje", "@codigoCliente", codigoCliente
+            return Coneccion.ejecutarSPR("generarPasaje", "@codigoPasaje", "@codigoCliente", codigoCliente
                 , "@codigoViaje", codigoViaje, "@codigoCabina", codigoCabina);
         }
 
         public int persistirCompra(int codigoCliente, int codigoMedioDePago) {
-            return Coneccion.ejecutarSPR("generarCompra", "@codigoCliente", codigoCliente
+            return Coneccion.ejecutarSPR("generarCompra", "@codigoCompra", "@codigoCliente", codigoCliente
                 , "@fechaSistema", Coneccion.getFechaSistema(), "@codigoMedioDePago", codigoMedioDePago);
         }
 
         public void agregarPasajeAUnaCompra(int codigoPasaje, int codigoCompra) {
             Coneccion.ejecutarSPV("agregarPasajeAUnaCompra", "@codigoPasaje", codigoPasaje
                 , "@codigoCompra", codigoCompra);
+        }
+
+        public DataTable mostrarDatosCompraFinalizada(int codigoCompra) {
+            return Coneccion.ejecutarSP("mostrarDatosFinalizadaLaCompra", "@codigoCompra", codigoCompra);
         }
 
     }

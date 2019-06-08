@@ -71,7 +71,7 @@
             this.Controls.Add(this.txtReserva);
             this.Controls.Add(this.lblReserva);
             this.Name = "frmPagoReserva";
-            this.Text = "frmPagoReserva";
+            this.Text = "Pago de reserva";
             this.Load += new System.EventHandler(this.frmPagoReserva_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

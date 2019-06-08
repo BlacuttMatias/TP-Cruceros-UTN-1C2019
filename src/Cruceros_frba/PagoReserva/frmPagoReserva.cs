@@ -25,6 +25,7 @@ namespace FrbaCrucero.PagoReserva
 
         private void txtReserva_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //controlo que solo puedan escribir numeros
             if (Char.IsDigit(e.KeyChar) || Char.IsControl(e.KeyChar))
             {
                 e.Handled = false;
@@ -46,29 +47,38 @@ namespace FrbaCrucero.PagoReserva
             else{
                 DatosPagoReserva datosPagoReserva = new DatosPagoReserva();
                 int codigoReserva = Convert.ToInt32(txtReserva.Text);
+
+                //obtengo el pasaje de esa reserva
                 int codigoPasaje = datosPagoReserva.obtenerPasajeDeUnaReserva(codigoReserva);
                 if (codigoPasaje == -1) {
-                    MessageBox.Show("No existe un pasaje con ese número de código", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No existe una reserva con ese número de código", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (codigoPasaje == -2) {
                     MessageBox.Show("La reserva ya fue cancelada por haber expirado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (codigoPasaje == -3)
                 {
-                    MessageBox.Show("El pasaje de esa reserva fue cancelado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("El pasaje de esta reserva fue cancelado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (codigoPasaje == -4) {
-                    MessageBox.Show("El pasaje de esa reserva ya fue pagado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("El pasaje de esta reserva ya fue pagado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
                     DatosMediosDePago datosMediosDePago = new DatosMediosDePago();
+
+                    //creo el pasaje de la reserva con su codigo y el codigo del cliente
                     Pasaje pasaje = new Pasaje();
                     pasaje.setCodigoPasaje(codigoPasaje);
                     pasaje.setCodigoCliente(datosMediosDePago.obtenerCodigoClienteDeUnPasajePersistido(codigoPasaje));
+
+                    //creo la compra y le agrego el pasaje de la reserva
                     Compra compra = new Compra(true);
                     compra.agregarPasaje(pasaje);
+
+                    //paso a otro form para que ingrese el medio de pago
                     frmMedioDePago frm = new frmMedioDePago(compra);
+
                     frm.FormClosed += frm_FormClosed;
                     frm.Show();
                     this.Hide();
