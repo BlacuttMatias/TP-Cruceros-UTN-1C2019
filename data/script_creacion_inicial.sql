@@ -856,7 +856,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Cliente](
 	[clie_nombre] [varchar](255) NOT NULL,
 	[clie_apellido] [varchar](255) NOT NULL,
 	[clie_telefono] numeric(18,0) NOT NULL,
-	[clie_mail] [varchar](255) NOT NULL,
+	[clie_mail] [varchar](255),
 	[clie_fecha_nacimiento] [datetime] NOT NULL,
 	[clie_direccion] [varchar](255) NOT NULL,
 	[clie_dni] numeric(18,0) NOT NULL,
