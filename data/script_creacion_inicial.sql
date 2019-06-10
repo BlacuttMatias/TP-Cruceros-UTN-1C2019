@@ -371,6 +371,21 @@ OBJECT_ID('FIDEOS_CON_TUCO.clienteDeUnPasaje') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.clienteDeUnPasaje
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[actualizarCrucerosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [actualizarCrucerosHabilitados]
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.unCruceroEstaHabilitado') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitado
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante
+GO
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -1649,7 +1664,7 @@ GO
 
 /************************** BAJA LOGICA Puerto (DESHABILITAR)*******************************************/
 
-CREATE FUNCTION FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto (@codigoPuerto int) returns bit
+CREATE FUNCTION FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto (@codigoPuerto int, @fechaSistema datetime) returns bit
 AS
 BEGIN
 	DECLARE @resultado bit
@@ -1658,9 +1673,9 @@ BEGIN
 		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = tram_por_reco_recorrido)
 		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
-		WHERE pasa_viaje = viaj_codigo AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+		WHERE pasa_viaje = viaj_codigo AND viaj_fecha_inicio >= @fechaSistema AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
 			JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo) AND 
-			NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo))
+			NOT EXISTS (SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)) 
 		BEGIN
 		RETURN 1
 		END
@@ -1668,13 +1683,13 @@ BEGIN
 END
 GO
 /*
-CREATE PROCEDURE cancelarPasajesPorBajaDePuerto @codigoPuerto int
+CREATE PROCEDURE cancelarPasajesPorBajaDePuerto @codigoPuerto int, @fechaSistema datetime
 AS
 BEGIN
 	IF FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto(@codigoPuerto) = 1
 		BEGIN
-		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion)
-		SELECT pasa_codigo, 'Cancelacion por puerto deshabilitado' FROM FIDEOS_CON_TUCO.Pasaje
+		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
+		SELECT pasa_codigo, 'Cancelacion por puerto deshabilitado', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
 		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
 		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = tram_por_reco_recorrido)
@@ -1695,7 +1710,6 @@ BEGIN
 		JOIN [FIDEOS_CON_TUCO].[Tramo] ON (tram_puerto_origen = @codigoPuerto OR tram_puerto_destino = @codigoPuerto)
 		JOIN [FIDEOS_CON_TUCO].[Tramos_por_recorrido] ON (tram_por_reco_tramo = tram_codigo)
 		WHERE reco_id = tram_por_reco_recorrido
-	--EXEC cancelarPasajesPorBajaDePuerto @codigoPuerto
 END
 GO
 
@@ -1909,6 +1923,63 @@ GO
 
 /*######################## [04]::[ABM Cruceros] ############################*/
 
+
+/******************************* funciones para determinar si un crucero esta habilitado en una fecha *********************************/
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante (@codigoCrucero varchar(255), @fechaInicio datetime, @fechaFin datetime) RETURNS bit
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Registro_baja JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo) 
+			WHERE regi_crucero = @codigoCrucero AND tipo_baja_descripcion = 'Temporal'
+			AND (
+				(regi_fecha_de_baja <= @fechaInicio AND @fechaInicio < regi_fecha_de_alta)
+				OR (regi_fecha_de_baja <= @fechaFin AND @fechaFin <= regi_fecha_de_alta)
+				OR (@fechaInicio <= regi_fecha_de_baja AND regi_fecha_de_baja <= @fechaFin)
+				OR (@fechaInicio < regi_fecha_de_alta AND regi_fecha_de_alta <= @fechaFin)
+			))
+			OR EXISTS (SELECT * FROM FIDEOS_CON_TUCO.Registro_baja JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo) 
+			WHERE regi_crucero = @codigoCrucero AND tipo_baja_descripcion = 'Permanente'
+			AND (regi_fecha_de_baja < @fechaInicio OR regi_fecha_de_baja < @fechaFin))
+		BEGIN
+		RETURN 1
+		END
+	RETURN 0
+END
+GO
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitado (@codigoCrucero varchar(255), @fechaSistema datetime) RETURNS bit
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Registro_baja JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo) 
+			WHERE regi_crucero = @codigoCrucero AND tipo_baja_descripcion = 'Temporal'
+			AND regi_fecha_de_baja <= @fechaSistema AND @fechaSistema < regi_fecha_de_alta)
+			OR EXISTS (SELECT * FROM FIDEOS_CON_TUCO.Registro_baja JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo) 
+			WHERE regi_crucero = @codigoCrucero AND tipo_baja_descripcion = 'Permanente'
+			AND regi_fecha_de_baja < @fechaSistema)
+		BEGIN
+		RETURN 0
+		END
+	RETURN 1
+END
+GO
+
+
+
+/************************** ACTUALIZACION de cruceros habilitados *******************************************/
+--se llama al comienzo de la App para actualizar el campo cruc_esta_habilitado de los cruceros cuya fecha de alta en la baja ya se cumplio
+
+CREATE PROCEDURE actualizarCrucerosHabilitados @fechaSistema datetime
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 1 FROM FIDEOS_CON_TUCO.Crucero
+		WHERE FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 AND cruc_esta_habilitado = 0
+END
+GO
+
+
+
 /************************** CREACION de tipos de baja de los cruceros *******************************************/
 
 CREATE PROCEDURE cargarTiposdeBajasDeCrucerosIniciales
@@ -2078,8 +2149,10 @@ BEGIN
 		END
 	ELSE IF EXISTS(SELECT viaj_codigo FROM FIDEOS_CON_TUCO.Viaje 
 			JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = @codigoCrucero)
-			WHERE viaj_fecha_inicio NOT BETWEEN @fechaInicio AND @fechaFinalizacion 
-				AND viaj_fecha_finalizacion NOT BETWEEN @fechaInicio AND @fechaFinalizacion)
+			WHERE (viaj_fecha_inicio  BETWEEN @fechaInicio AND @fechaFinalizacion) 
+				OR (viaj_fecha_finalizacion_estimada  BETWEEN @fechaInicio AND @fechaFinalizacion)
+				OR (@fechaInicio BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)
+				OR (@fechaFinalizacion BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada))
 		BEGIN
 		SET @resultado = -1
 		END
@@ -2258,10 +2331,11 @@ GO
 CREATE PROCEDURE mostrarCabinasDisponiblesDeUnViaje @codigoViaje int
 AS
 BEGIN
-	SELECT cabi_codigo AS Codigo, cabi_numero AS Numero, cabi_piso AS Piso, tipo_descripcion AS Tipo, (tipo_porcentaje_recargo-1)*100 AS Porcetaje_recargo
+	SELECT cabi_codigo AS Codigo, cabi_numero AS Numero, cabi_piso AS Piso, tipo_descripcion AS Tipo, reco_precio*tipo_porcentaje_recargo AS Precio
 		FROM FIDEOS_CON_TUCO.Cabina
 		JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
 		JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = @codigoViaje)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
 		WHERE cabi_crucero = viaj_crucero AND NOT EXISTS(SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
 				WHERE pasa_cabina = cabi_codigo AND pasa_viaje = viaj_codigo
 				AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
@@ -2437,7 +2511,7 @@ AS
 BEGIN
 	SELECT comp_codigo AS Codigo_compra, viaj_fecha_inicio AS Fecha_inicio_viaje, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion_viaje,
 		p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino_final, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
-		, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje
+		, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje, pasa_precio AS Precio
 		, cabi_numero AS Numero_cabina 
 		,cabi_piso AS Piso_cabina, tipo_descripcion AS Tipo_Cabina, 
 		(SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using FrbaCrucero.UserLogin;
 using FrbaCrucero.FormsPrincipales;
+using CapaDatos;
 
 namespace FrbaCrucero
 {
@@ -22,7 +23,7 @@ namespace FrbaCrucero
 
         private void frmInicio_Load(object sender, EventArgs e)
         {
-
+            Coneccion.ejecutarSPV("actualizarCrucerosHabilitados", "@fechaSistema", Coneccion.getFechaSistema());
         }
 
         private void button1_Click(object sender, EventArgs e)
