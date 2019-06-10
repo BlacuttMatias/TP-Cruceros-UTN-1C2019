@@ -126,7 +126,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
                 dni = Convert.ToInt32(txtDni.Text);
                 DataTable dataTableCliente = datosCliente.obtenerDatosCliente(dni);
-                if (dataTableCliente.Rows.Count > 1)
+                if (dataTableCliente.Rows.Count >= 1)
                 {
                     mostrarPosiblesClientesEnListBox(dataTableCliente);
                 }
