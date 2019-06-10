@@ -386,7 +386,50 @@ OBJECT_ID('FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarCrucero]
+GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[agregarCabinaAUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [agregarCabinaAUnCrucero]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarMarcas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarMarcas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarModelos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarModelos]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarTipoCabina]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarTipoCabinas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarCruceros]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarCruceros]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarCabinasDeUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarCabinasDeUnCrucero]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarTipoBaja]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarTipoBaja]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[modificarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [modificarCrucero]
+GO
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1621,12 +1664,12 @@ BEGIN
 	EXEC agregarUsuario 'admin', 'w23e', @resultado
 	EXEC agregarUsuario 'BlacuttMatias', 'w23e', @resultado
 	EXEC agregarUsuario 'MonjaLucas', 'w23e', @resultado
-	EXEC agregarUsuario 'MontiFederico', 'w23e', @resultado
+	EXEC agregarUsuario 'MontiFernando', 'w23e', @resultado
 	EXEC agregarUsuario 'MauroGaston', 'w23e', @resultado
 	EXEC agregarRolAUnUsuario 'Administrativo', 'admin'
 	EXEC agregarRolAUnUsuario 'Administrativo', 'BlacuttMatias' 
 	EXEC agregarRolAUnUsuario 'Administrativo', 'MonjaLucas'
-	EXEC agregarRolAUnUsuario 'Administrativo', 'MontiFederico' 
+	EXEC agregarRolAUnUsuario 'Administrativo', 'MontiFernando' 
 	EXEC agregarRolAUnUsuario 'Administrativo', 'MauroGaston' 
 END
 GO
@@ -1995,50 +2038,140 @@ GO
 
 /*************************** ALTA CRUCEROS ***************************/
 
-CREATE PROCEDURE cargarCrucero @marca int, @cantidad_cabinas int, @modelo int, @fechaSistema datetime
-AS
+CREATE PROCEDURE agregarCrucero @cruceroCodigo varchar(255),@cruceroMarca varchar(255), @cruceroModelo varchar(255),@cantidadCabinas int,@fecha DateTime, @resultado int output
+AS 
 BEGIN
-	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_marca, cruc_cantidad_cabinas, cruc_fecha_de_alta, cruc_modelo, cruc_esta_habilitado)
-				VALUES (@marca, @cantidad_cabinas, @fechaSistema, @modelo, 1)
+	DECLARE @codigoMarca int
+	DECLARE @codigoModelo int
+	SELECT @codigoMarca = marc_codigo FROM FIDEOS_CON_TUCO.Marca WHERE marc_descripcion = @cruceroMarca
+	SELECT @codigoModelo = mode_codigo FROM FIDEOS_CON_TUCO.Modelo WHERE mode_descripcion = @cruceroModelo
+	IF NOT EXISTS(SELECT usua_username FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @cruceroCodigo)
+		BEGIN
+		INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo,cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado, cruc_fecha_de_alta) 
+			VALUES (@cruceroCodigo,@codigoMarca, @codigoModelo, @cantidadCabinas, 1, @fecha) 
+		SET @resultado = 1
+		END
+	ELSE
+		SET @resultado = 0
 END
 GO
 
-/*************************** MODIFICAR MARCA DE CRUCEROS ***************************/
-	
-CREATE PROCEDURE actualizarMarca @codigo int, @marca_codigo int
+CREATE PROCEDURE agregarCabinaAUnCrucero @cabiCrucero varchar(255),@cabiNumero int,@cabiPiso int, @cabiTipo varchar(255)
 AS
 BEGIN
-	UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_marca = @marca_codigo WHERE cruc_codigo = @codigo;
+	DECLARE @codigoTipoCabina int
+	SELECT @codigoTipoCabina = tipo_codigo FROM FIDEOS_CON_TUCO.Tipo_cabina WHERE tipo_descripcion = @cabiTipo
+	IF NOT EXISTS (SELECT cabi_codigo FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @cabiCrucero AND cabi_piso = @cabiPiso AND cabi_numero=@cabiNumero)
+			INSERT INTO FIDEOS_CON_TUCO.Cabina(cabi_crucero, cabi_piso,cabi_numero,cabi_tipo) VALUES (@cabiCrucero, @cabiPiso,@cabiNumero,@codigoTipoCabina)
+END
+GO
+/*************************** MODIFICAR MARCAS DE CRUCERO ***************************/
+CREATE PROCEDURE mostrarMarcas
+AS
+BEGIN
+	SELECT marc_codigo as Codigo, marc_descripcion as Marca FROM FIDEOS_CON_TUCO.Marca
+END
+GO
+/*************************** MODIFICAR MODELOS DE CRUCERO ***************************/
+CREATE PROCEDURE mostrarModelos
+AS
+BEGIN
+	SELECT mode_codigo as Codigo, mode_descripcion as Modelo FROM FIDEOS_CON_TUCO.Modelo
+END
+GO
+/*************************** MOSTRAR CRUCEROS ***************************/
+CREATE PROCEDURE mostrarCruceros
+AS
+BEGIN
+	SELECT [cruc_codigo] as Codigo, 
+		[marc_descripcion] as Marca,
+		[mode_descripcion] as Modelo,
+		[cruc_cantidad_cabinas] as 'Cantidad de Cabinas',
+		[cruc_fecha_de_alta] as 'Fecha de Alta',
+		CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
+		     WHEN cruc_esta_habilitado = 0 THEN 'NO'
+		END as Habilitado
+	FROM [FIDEOS_CON_TUCO].[Crucero]
+	JOIN [FIDEOS_CON_TUCO].[Marca] on ([cruc_marca]=marc_codigo)
+	JOIN [FIDEOS_CON_TUCO].[Modelo] on ([cruc_modelo]=mode_codigo)
+END
+GO
+/*************************** MODIFICAR CRUCEROS ***************************/
+CREATE PROCEDURE modificarCrucero @cruceroCodigo Varchar(255), @cruceroMarca Varchar(255), @cruceroModelo Varchar(255)
+AS
+BEGIN
+	UPDATE [FIDEOS_CON_TUCO].[Crucero] SET cruc_marca = @cruceroMarca, cruc_modelo = @cruceroModelo WHERE cruc_codigo = @cruceroCodigo
 END
 GO
 
-/*************************** LISTADO DE CABINAS A MODIFICAR  ***************************/
+/*************************** LISTADO DE CABINAS  ***************************/
 
-CREATE PROCEDURE listadoCabinas @crucero_codigo varchar(255)
+CREATE PROCEDURE mostrarCabinasDeUnCrucero @cruceroCodigo varchar(255)
 AS
 BEGIN
-	SELECT cabi_codigo, cabi_tipo, cabi_numero FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @crucero_codigo
+	SELECT [cabi_codigo] as Codigo
+      ,[cabi_numero] as Numero
+      ,[cabi_piso] as Piso
+      ,[tipo_descripcion] as Descripcion
+      ,[cabi_crucero] as Crucero
+  FROM [GD1C2019].[FIDEOS_CON_TUCO].[Cabina]
+  JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_cabina] on (cabi_tipo=tipo_codigo)
+  WHERE cabi_crucero=@cruceroCodigo
+  Order by cabi_piso,cabi_numero
 END
 GO
 
 /*************************** LISTADO DE TIPOS DE CABINAS  ***************************/
 
-CREATE PROCEDURE listadoTipoCabinas
+CREATE PROCEDURE mostrarTipoCabinas
 AS
 BEGIN
-	SELECT tipo_descripcion FROM FIDEOS_CON_TUCO.Tipo_cabina
+	SELECT tipo_codigo as Codigo, tipo_descripcion as Cabina FROM FIDEOS_CON_TUCO.Tipo_cabina
 END
 GO
-
+/*************************** LISTADO DE TIPOS DE BAJAS  ***************************/
+CREATE PROCEDURE mostrarTipoBaja
+AS
+BEGIN
+	SELECT [tipo_baja_codigo] as Codigo
+			,[tipo_baja_descripcion] as Descripcion
+	FROM [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja]
+END
+GO
+/*************************** LISTADO DE TIPOS DE BAJAS  ***************************/
+CREATE PROCEDURE mostrarBajas
+AS
+BEGIN
+SELECT [cruc_codigo] as Codigo
+      ,[cruc_fecha_de_alta] as 'Fecha Creacion'
+      ,[tipo_baja_descripcion] as 'Tipo Baja'
+      ,[regi_fecha_de_baja] as 'Fecha de Baja'
+      ,[regi_fecha_de_alta] as 'Fecha de Alta'
+  FROM [GD1C2019].[FIDEOS_CON_TUCO].[Crucero]
+  Left JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Registro_baja] on (regi_crucero=cruc_codigo)
+  Left JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja] on (regi_tipo=tipo_baja_codigo)
+END
+GO
 /*************************** MODIFICAR TIPO DE CABINA ***************************/
 
-CREATE PROCEDURE modificarTipoCabina @cabina_codigo int, @cabina_tipo int
+--CREATE PROCEDURE modificarTipoCabina @cabina_codigo int, @cabina_tipo int
+--AS
+--BEGIN
+--	UPDATE FIDEOS_CON_TUCO.Cabina SET cabi_tipo = @cabina_tipo WHERE cabi_codigo = @cabina_codigo
+--END
+--GO
+
+/*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
+/*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
+
+CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
 AS
 BEGIN
-	UPDATE FIDEOS_CON_TUCO.Cabina SET cabi_tipo = @cabina_tipo WHERE cabi_codigo = @cabina_codigo
+	UPDATE FIDEOS_CON_TUCO.Viaje 
+	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) , viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
+	WHERE viaj_crucero = @crucero_codigo
 END
 GO
-
 /*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
 /*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
 

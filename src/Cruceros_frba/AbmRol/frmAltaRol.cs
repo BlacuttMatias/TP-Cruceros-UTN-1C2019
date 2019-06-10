@@ -12,10 +12,22 @@ namespace FrbaCrucero.AbmRol
 {
     public partial class frmAltaRol : Form
     {
+        Rol abm = new Rol();
         public frmAltaRol()
         {
             InitializeComponent();
+            this.Load += FrmAltaRol_Load;
         }
+
+        private void FrmAltaRol_Load(object sender, EventArgs e)
+        {
+            DataTable listaDeFuncionalidades = abm.getFuncionalidades(nombreRol.Text);
+            foreach (DataRow fila in listaDeFuncionalidades.Rows)
+            {
+                listFuncionalidadesNoAgregadas.Items.Add(fila[0].ToString());
+            }
+        }
+
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string curItem = listFuncionalidadesNoAgregadas.SelectedItem.ToString();
@@ -41,9 +53,13 @@ namespace FrbaCrucero.AbmRol
 
         private void agregarRol_Click(object sender, EventArgs e)
         {
+            
+        }
+        private void agregarRol()
+        {
             if (nombreRol.Text != "")
             {
-                Rol abm = new Rol();
+                
                 if (abm.crearRol(nombreRol.Text) == 0)
                 {
                     MessageBox.Show("El rol que ingresó ya existe. Ingrese otro rol", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -53,20 +69,10 @@ namespace FrbaCrucero.AbmRol
                     DialogResult result = MessageBox.Show("Rol creado exitosamente", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     if (result == DialogResult.OK)
                     {
-                        DialogResult result2 = MessageBox.Show("Seleccione la funcionalidad que desea agregar", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        if (result2 == DialogResult.OK)
-                        {
-                            nombreRol.Enabled = false;
-                            btnAgregarRol.Enabled = false;
-                            listFuncionalidadesNoAgregadas.Enabled = true;
-                            listFuncionalidadesAAgregar.Enabled = true;
-                            btnAgregarFuncionalidades.Enabled = true;
-                            DataTable listaDeFuncionalidades = abm.getFuncionalidades(nombreRol.Text); 
-                            foreach (DataRow fila in listaDeFuncionalidades.Rows) 
-                            {
-                                listFuncionalidadesNoAgregadas.Items.Add(fila[0].ToString());
-                            }
-                        }
+                        nombreRol.Enabled = false;
+                        listFuncionalidadesNoAgregadas.Enabled = true;
+                        listFuncionalidadesAAgregar.Enabled = true;
+                        btnAgregarFuncionalidades.Enabled = true;
                     }
                 }
             }
@@ -75,9 +81,9 @@ namespace FrbaCrucero.AbmRol
                 MessageBox.Show("Nombre de rol vacío. Inserte el nombre del rol", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void btnAgregarFuncionalidades_Click(object sender, EventArgs e)
         {
+            agregarRol();
             int cantidad = listFuncionalidadesAAgregar.Items.Count;
             Rol abm = new Rol();
             if (listFuncionalidadesAAgregar.Items.Count<1)
@@ -106,11 +112,7 @@ namespace FrbaCrucero.AbmRol
                         }
                         else
                         {
-                            nombreRol.Enabled = true;
-                            btnAgregarRol.Enabled = true;
-                            listFuncionalidadesNoAgregadas.Items.Clear();
-                            listFuncionalidadesNoAgregadas.Enabled = false;
-                            btnAgregarFuncionalidades.Enabled = false;
+                            this.Close();
                         }
                     }
                 }
@@ -118,7 +120,6 @@ namespace FrbaCrucero.AbmRol
                 {
                     MessageBox.Show("Todas las funcionalidades del sistema han sido asignadas al rol. Ingrese un nuevo rol", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     nombreRol.Enabled = true;
-                    btnAgregarRol.Enabled = true;
                     listFuncionalidadesNoAgregadas.Items.Clear();
                     listFuncionalidadesNoAgregadas.Enabled = false;
                     btnAgregarFuncionalidades.Enabled = false;

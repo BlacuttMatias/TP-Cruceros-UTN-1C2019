@@ -31,7 +31,6 @@
             this.lblNombre = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.nombreRol = new System.Windows.Forms.TextBox();
-            this.btnAgregarRol = new System.Windows.Forms.Button();
             this.listFuncionalidadesNoAgregadas = new System.Windows.Forms.ListBox();
             this.listFuncionalidadesAAgregar = new System.Windows.Forms.ListBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -69,17 +68,6 @@
             this.nombreRol.Name = "nombreRol";
             this.nombreRol.Size = new System.Drawing.Size(349, 20);
             this.nombreRol.TabIndex = 2;
-            // 
-            // btnAgregarRol
-            // 
-            this.btnAgregarRol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAgregarRol.Location = new System.Drawing.Point(381, 41);
-            this.btnAgregarRol.Name = "btnAgregarRol";
-            this.btnAgregarRol.Size = new System.Drawing.Size(75, 25);
-            this.btnAgregarRol.TabIndex = 3;
-            this.btnAgregarRol.Text = "Crear Rol";
-            this.btnAgregarRol.UseVisualStyleBackColor = true;
-            this.btnAgregarRol.Click += new System.EventHandler(this.agregarRol_Click);
             // 
             // listFuncionalidadesNoAgregadas
             // 
@@ -137,7 +125,7 @@
             this.btnAgregarFuncionalidades.Name = "btnAgregarFuncionalidades";
             this.btnAgregarFuncionalidades.Size = new System.Drawing.Size(187, 23);
             this.btnAgregarFuncionalidades.TabIndex = 8;
-            this.btnAgregarFuncionalidades.Text = "Confirmar Funcionalidades";
+            this.btnAgregarFuncionalidades.Text = "Confirmar Rol";
             this.btnAgregarFuncionalidades.UseVisualStyleBackColor = true;
             this.btnAgregarFuncionalidades.Click += new System.EventHandler(this.btnAgregarFuncionalidades_Click);
             // 
@@ -149,7 +137,6 @@
             this.Controls.Add(this.btnAgregarFuncionalidades);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.btnAgregarRol);
             this.Controls.Add(this.nombreRol);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblNombre);
@@ -169,7 +156,6 @@
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox nombreRol;
-        private System.Windows.Forms.Button btnAgregarRol;
         private System.Windows.Forms.ListBox listFuncionalidadesNoAgregadas;
         private System.Windows.Forms.ListBox listFuncionalidadesAAgregar;
         private System.Windows.Forms.Splitter splitter1;

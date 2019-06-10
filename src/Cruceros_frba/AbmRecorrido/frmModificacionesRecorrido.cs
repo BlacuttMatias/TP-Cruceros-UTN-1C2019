@@ -59,7 +59,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void txtBoxFiltroOrigen_TextChanged(object sender, EventArgs e)
         {
-            filtroDestino = txtBoxFiltroDestino.Text;
+            filtroOrigen = txtBoxFiltroOrigen.Text;
             dt.DefaultView.RowFilter = actualizarFiltro(filtroOrigen, filtroDestino, filtroPrecio, filtroID);
         }
 

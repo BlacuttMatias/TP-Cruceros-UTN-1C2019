@@ -33,13 +33,13 @@
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblError = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblCiudadReq = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblCiudad = new System.Windows.Forms.Label();
-            this.lblCiudadReq = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblError = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,6 +86,36 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Crear Puerto";
             // 
+            // lblError
+            // 
+            this.lblError.AutoSize = true;
+            this.lblError.ForeColor = System.Drawing.Color.Red;
+            this.lblError.Location = new System.Drawing.Point(317, 214);
+            this.lblError.Name = "lblError";
+            this.lblError.Size = new System.Drawing.Size(180, 25);
+            this.lblError.TabIndex = 8;
+            this.lblError.Text = "Campos Requeridos";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(405, 167);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(20, 25);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "*";
+            // 
+            // lblCiudadReq
+            // 
+            this.lblCiudadReq.AutoSize = true;
+            this.lblCiudadReq.ForeColor = System.Drawing.Color.Red;
+            this.lblCiudadReq.Location = new System.Drawing.Point(405, 80);
+            this.lblCiudadReq.Name = "lblCiudadReq";
+            this.lblCiudadReq.Size = new System.Drawing.Size(20, 25);
+            this.lblCiudadReq.TabIndex = 6;
+            this.lblCiudadReq.Text = "*";
+            // 
             // btnLimpiar
             // 
             this.btnLimpiar.Location = new System.Drawing.Point(9, 242);
@@ -125,36 +155,6 @@
             this.lblCiudad.Size = new System.Drawing.Size(72, 25);
             this.lblCiudad.TabIndex = 2;
             this.lblCiudad.Text = "Ciudad";
-            // 
-            // lblCiudadReq
-            // 
-            this.lblCiudadReq.AutoSize = true;
-            this.lblCiudadReq.ForeColor = System.Drawing.Color.Red;
-            this.lblCiudadReq.Location = new System.Drawing.Point(405, 80);
-            this.lblCiudadReq.Name = "lblCiudadReq";
-            this.lblCiudadReq.Size = new System.Drawing.Size(20, 25);
-            this.lblCiudadReq.TabIndex = 6;
-            this.lblCiudadReq.Text = "*";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(405, 167);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(20, 25);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "*";
-            // 
-            // lblError
-            // 
-            this.lblError.AutoSize = true;
-            this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(317, 214);
-            this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(180, 25);
-            this.lblError.TabIndex = 8;
-            this.lblError.Text = "Campos Requeridos";
             // 
             // frmAltaPuerto
             // 

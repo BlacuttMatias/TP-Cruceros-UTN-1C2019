@@ -22,7 +22,7 @@ namespace FrbaCrucero.AbmPuerto
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if(txtCiudad.Text!="" && txtDescripcion.Text!="")
+            if(txtCiudad.Text!="")
             {
                 this.lblError.Hide();
                 this.label1.Hide();
