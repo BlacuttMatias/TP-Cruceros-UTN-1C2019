@@ -1778,7 +1778,7 @@ END
 GO
 
 
-CREATE PROCEDURE agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @idRecorrido int
+CREATE PROCEDURE agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @idRecorrido int
 AS
 BEGIN
 	DECLARE @codigoPuertoOrigen int
@@ -1786,7 +1786,7 @@ BEGIN
 	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
 	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
 	IF NOT EXISTS (SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino)
-		INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino) VALUES (@codigoPuertoOrigen, @codigoPuertoDestino)
+		INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino, tram_precio) VALUES (@codigoPuertoOrigen, @codigoPuertoDestino, @precio)
 	DECLARE @codigoTramo int
 	SELECT @codigoTramo = tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino
 	INSERT INTO FIDEOS_CON_TUCO.Tramos_por_recorrido(tram_por_reco_tramo, tram_por_reco_recorrido) VALUES (@codigoTramo, @idRecorrido)
@@ -2150,7 +2150,7 @@ GO
 
 
 CREATE PROCEDURE ingresarCliente @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
-	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime, @codigoCliente int output
+	, @direccion varchar(255), @fechaNacimiento datetime, @codigoCliente int output, @mail varchar(255) = NULL
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Cliente(clie_nombre, clie_apellido, clie_dni, clie_telefono, clie_mail, clie_direccion, clie_fecha_nacimiento)
@@ -2170,7 +2170,7 @@ END
 GO
 
 CREATE PROCEDURE actualizarCliente @codigoCliente int, @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
-	, @mail varchar(255), @direccion varchar(255), @fechaNacimiento datetime
+	, @direccion varchar(255), @fechaNacimiento datetime, @mail varchar(255) = NULL
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Cliente SET clie_nombre = @nombre, clie_apellido = @apellido, clie_telefono = @telefono, clie_mail = @mail
