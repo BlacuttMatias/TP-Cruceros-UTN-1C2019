@@ -205,6 +205,7 @@
             this.MinimumSize = new System.Drawing.Size(816, 513);
             this.Name = "frmModificacionesRecorrido";
             this.Text = "ABM Recorrido";
+            this.Activated += new System.EventHandler(this.frmModificacionesRecorrido_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gBoxFiltros.ResumeLayout(false);

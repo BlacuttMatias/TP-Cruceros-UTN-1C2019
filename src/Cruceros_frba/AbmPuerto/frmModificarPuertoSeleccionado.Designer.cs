@@ -36,7 +36,6 @@
             this.lblCiudad = new System.Windows.Forms.Label();
             this.lblDescripcion = new System.Windows.Forms.Label();
             this.lblErrorCiudad = new System.Windows.Forms.Label();
-            this.lblErrorDescripcion = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -122,18 +121,6 @@
             this.lblErrorCiudad.TabIndex = 8;
             this.lblErrorCiudad.Text = "*";
             // 
-            // lblErrorDescripcion
-            // 
-            this.lblErrorDescripcion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblErrorDescripcion.AutoSize = true;
-            this.lblErrorDescripcion.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorDescripcion.Location = new System.Drawing.Point(408, 114);
-            this.lblErrorDescripcion.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblErrorDescripcion.Name = "lblErrorDescripcion";
-            this.lblErrorDescripcion.Size = new System.Drawing.Size(20, 25);
-            this.lblErrorDescripcion.TabIndex = 9;
-            this.lblErrorDescripcion.Text = "*";
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -152,7 +139,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(496, 256);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.lblErrorDescripcion);
             this.Controls.Add(this.lblErrorCiudad);
             this.Controls.Add(this.lblDescripcion);
             this.Controls.Add(this.lblCiudad);
@@ -180,7 +166,6 @@
         private System.Windows.Forms.Label lblCiudad;
         private System.Windows.Forms.Label lblDescripcion;
         private System.Windows.Forms.Label lblErrorCiudad;
-        private System.Windows.Forms.Label lblErrorDescripcion;
         private System.Windows.Forms.Label label1;
     }
 }

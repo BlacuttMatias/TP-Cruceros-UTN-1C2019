@@ -22,7 +22,6 @@ namespace FrbaCrucero.AbmPuerto
         {
             InitializeComponent();
             lblErrorCiudad.Hide();
-            lblErrorDescripcion.Hide();
             label1.Hide();
             puer_codigo = Convert.ToInt32(puer_Codigo);
             lblTitulo.Text = "Codigo:" + puer_codigo;
@@ -40,7 +39,6 @@ namespace FrbaCrucero.AbmPuerto
             if(txtBoxCiudad.Text=="" || txtBoxDescripcion.Text=="")
             {
                 lblErrorCiudad.Show();
-                lblErrorDescripcion.Show();
                 label1.Show();
             }
             else
@@ -52,7 +50,6 @@ namespace FrbaCrucero.AbmPuerto
                 if (!this.ckBoxHabilitado.Checked)
                 {
                     abm.deshabilitarPuerto(puer_codigo);
-                    MessageBox.Show("Tenes que devolver la guita JO JO JO, A devolver la guita...Por Deshabilitaar.", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else
                 {

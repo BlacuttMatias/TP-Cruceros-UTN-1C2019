@@ -138,6 +138,7 @@ namespace FrbaCrucero.AbmRecorrido
                 }
                 
             }
+            Precio = 0;
             listBox1.Enabled = false;
             btnCrearTramo.Enabled = true;
             dataGridView1.Enabled = true;

@@ -446,7 +446,10 @@ OBJECT_ID('FIDEOS_CON_TUCO.precioDeUnPasaje') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.precioDeUnPasaje
 GO
 
-
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[cruceroTieneViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [cruceroTieneViajes]
+GO
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -2170,6 +2173,18 @@ SELECT [cruc_codigo] as Codigo
   Left JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja] on (regi_tipo=tipo_baja_codigo)
 END
 GO
+/*************************** Consulta de Viajes Existentes de un Crucero  ***************************/
+CREATE PROCEDURE cruceroTieneViajes @codigoCrucero varchar(255), @fecha DateTime, @respuesta int output
+AS
+BEGIN
+	IF EXISTS(SELECT COUNT(*) FROM [GD1C2019].[FIDEOS_CON_TUCO].[Viaje] WHERE viaj_crucero=@codigoCrucero 
+	AND YEAR(viaj_fecha_inicio) >= YEAR(@fecha)
+	AND MONTH(viaj_fecha_inicio) >= MONTH(@fecha)
+	AND DAY(viaj_fecha_inicio) >= DAY(@fecha))
+		SET @respuesta = 1
+	ElSE
+		SET @respuesta = 0
+END
 /*************************** MODIFICAR TIPO DE CABINA ***************************/
 
 --CREATE PROCEDURE modificarTipoCabina @cabina_codigo int, @cabina_tipo int

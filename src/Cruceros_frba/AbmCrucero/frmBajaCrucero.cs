@@ -14,8 +14,6 @@ namespace FrbaCrucero.AbmCrucero
     public partial class frmBajaCrucero : Form
     {
         DataTable dt;
-        string filtroMarca = "";
-        string filtroModelo = "";
         string filtro = "";
         string filtroCodigoCrucero = "";
         public frmBajaCrucero()
@@ -42,7 +40,6 @@ namespace FrbaCrucero.AbmCrucero
             {
                 DataGridViewRow Fila = this.dataGridView1.Rows[e.RowIndex];
                 DataRow row = dt.Rows[e.RowIndex];
-                //Fila.Cells["Codigo"].Value, Fila.Cells["Fecha Creacion"].Value, Fila.Cells["Tipo Baja"].Value, Fila.Cells["Fecha de Baja"].Value, Fila.Cells["Fecha de Alta"].Value};
                 var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(DateTime.Now);
                 var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(DateTime.Now);
                 var fechaAlta = row.Field<DateTime?>("Fecha de Alta").GetValueOrDefault(DateTime.Now);
@@ -62,28 +59,14 @@ namespace FrbaCrucero.AbmCrucero
             this.Enabled = true;
         }
 
-        //private void txtBoxFiltroMarca_TextChanged(object sender, EventArgs e)
-        //{
-        //    filtroMarca = txtBoxFiltroMarca.Text;
-        //    dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero/*, filtroMarca, filtroModelo*/);
-        //}
-
-        //private void txtBoxFiltroModelo_TextChanged(object sender, EventArgs e)
-        //{
-        //    filtroModelo = txtBoxFiltroModelo.Text;
-        //    dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero/*, filtroMarca, filtroModelo*/);
-        //}
-
         private void txtBoxFiltroCodigo_TextChanged(object sender, EventArgs e)
         {
             filtroCodigoCrucero = txtBoxFiltroCodigo.Text;
-            dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero/*, filtroMarca, filtroModelo*/);
+            dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero);
         }
-        private string actualizarFiltro(string codigo/*, string marca, string modelo*/)
+        private string actualizarFiltro(string codigo)
         {
             filtro = string.Format("Codigo Like '%{0}%'", codigo);
-            //filtro += string.Format("And Marca Like '%{0}%'", marca);
-            //filtro += string.Format("And Modelo Like '%{0}%'", modelo);
             return filtro;
         }
 

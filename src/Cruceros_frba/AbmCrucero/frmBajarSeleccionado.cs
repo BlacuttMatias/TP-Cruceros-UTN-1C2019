@@ -57,7 +57,19 @@ namespace FrbaCrucero.AbmCrucero
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Crucero abm = new Crucero();
+            if(abm.tieneViajes(codigo,Coneccion.getFechaSistema())==1)
+            {
+                DialogResult r;
+                r = MessageBox.Show($"Advertencia el Crucero {codigo} tiene viajes programados.\n¿Desea continuar?", "FrbaCruceros", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (r == DialogResult.Yes)
+                {
+                    abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
+                }
+                else
+                    this.Close();
+            }
             abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
+            MessageBox.Show($"El Crucero {codigo} fue dado de baja de forma {comboBox1.Text}", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
