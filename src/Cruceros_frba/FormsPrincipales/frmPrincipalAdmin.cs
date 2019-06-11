@@ -1,6 +1,7 @@
 ﻿using FrbaCrucero.AbmPuerto;
 using FrbaCrucero.AbmRecorrido;
 using FrbaCrucero.AbmRol;
+using FrbaCrucero.CompraReservaPasaje;
 using FrbaCrucero.ListadoEstadistico;
 using FrbaCrucero.PagoReserva;
 using System;
@@ -140,12 +141,16 @@ namespace FrbaCrucero.FormsPrincipales
 
         private void itmCompra_Click(object sender, EventArgs e)
         {
-
+            frmCliente frm = new frmCliente(true);
+            frm.MdiParent = this;
+            frm.Show();
         }
 
         private void itmReservar_Click(object sender, EventArgs e)
         {
-
+            frmCliente frm = new frmCliente(false);
+            frm.MdiParent = this;
+            frm.Show();
         }
 
         private void itmPagarReserva_Click(object sender, EventArgs e)

@@ -41,6 +41,8 @@
             this.btnAtras = new System.Windows.Forms.Button();
             this.toolTipNumeroTarjeta = new System.Windows.Forms.ToolTip(this.components);
             this.toolTipCodigoVerificador = new System.Windows.Forms.ToolTip(this.components);
+            this.lblMontoTotal = new System.Windows.Forms.Label();
+            this.txtMontoTotal = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblNumeroTarjeta
@@ -114,7 +116,7 @@
             // 
             // btnFinalizar
             // 
-            this.btnFinalizar.Location = new System.Drawing.Point(498, 262);
+            this.btnFinalizar.Location = new System.Drawing.Point(500, 311);
             this.btnFinalizar.Name = "btnFinalizar";
             this.btnFinalizar.Size = new System.Drawing.Size(118, 35);
             this.btnFinalizar.TabIndex = 8;
@@ -124,7 +126,7 @@
             // 
             // btnAtras
             // 
-            this.btnAtras.Location = new System.Drawing.Point(29, 262);
+            this.btnAtras.Location = new System.Drawing.Point(29, 313);
             this.btnAtras.Name = "btnAtras";
             this.btnAtras.Size = new System.Drawing.Size(115, 33);
             this.btnAtras.TabIndex = 9;
@@ -132,11 +134,29 @@
             this.btnAtras.UseVisualStyleBackColor = true;
             this.btnAtras.Click += new System.EventHandler(this.btnAtras_Click);
             // 
+            // lblMontoTotal
+            // 
+            this.lblMontoTotal.AutoSize = true;
+            this.lblMontoTotal.Location = new System.Drawing.Point(50, 243);
+            this.lblMontoTotal.Name = "lblMontoTotal";
+            this.lblMontoTotal.Size = new System.Drawing.Size(131, 17);
+            this.lblMontoTotal.TabIndex = 10;
+            this.lblMontoTotal.Text = "Monto total a pagar";
+            // 
+            // txtMontoTotal
+            // 
+            this.txtMontoTotal.Location = new System.Drawing.Point(213, 238);
+            this.txtMontoTotal.Name = "txtMontoTotal";
+            this.txtMontoTotal.Size = new System.Drawing.Size(100, 22);
+            this.txtMontoTotal.TabIndex = 11;
+            // 
             // frmTarjeta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 322);
+            this.ClientSize = new System.Drawing.Size(654, 382);
+            this.Controls.Add(this.txtMontoTotal);
+            this.Controls.Add(this.lblMontoTotal);
             this.Controls.Add(this.btnAtras);
             this.Controls.Add(this.btnFinalizar);
             this.Controls.Add(this.cmbCantidadCuotas);
@@ -171,5 +191,7 @@
         private System.Windows.Forms.Button btnAtras;
         private System.Windows.Forms.ToolTip toolTipNumeroTarjeta;
         private System.Windows.Forms.ToolTip toolTipCodigoVerificador;
+        private System.Windows.Forms.Label lblMontoTotal;
+        private System.Windows.Forms.TextBox txtMontoTotal;
     }
 }

@@ -21,9 +21,12 @@ namespace FrbaCrucero.CompraReservaPasaje
         public frmCabinasDisponibles(int codigoViaje, int codigoCliente)
         {
             InitializeComponent();
+            dataGridCabinasDisponibles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridCabinasDisponibles.MultiSelect = true;
+            dataGridCabinasDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             #region Llenar Grid
             GestionCompra gestion = new GestionCompra();
-            cabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);
+            dataGridCabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);
             #endregion
             this.codigoCliente = codigoCliente;
             this.codigoViaje = codigoViaje;
@@ -37,19 +40,19 @@ namespace FrbaCrucero.CompraReservaPasaje
             if (respuesta == DialogResult.Yes)
             {
 
-                int cantCabinas = cabinasDisponibles.SelectedRows.Count;
+                int cantCabinas = dataGridCabinasDisponibles.SelectedRows.Count;
                 if (cantCabinas > 0) //Me fijo si selecciono alguna cabina
                 {
-                    foreach (DataGridViewRow row in cabinasDisponibles.SelectedRows)
+                    foreach (DataGridViewRow row in dataGridCabinasDisponibles.SelectedRows)
                     {
                         #region Creacion de Pasaje
                         Pasaje nuevoPasaje = new Pasaje();
                         int codigoCabina = (int)(row.Cells[0].Value);
-                        // int precioViaje = (int)(row.Cells[ACA VA EL INDICE DEL VALOR EN EL DATAGRID].Value);
+                        double precioViaje = Convert.ToDouble(row.Cells["Precio"].Value);
                         nuevoPasaje.setCodigoCabina(codigoCabina);
                         nuevoPasaje.setCodigoCliente(codigoCliente);
                         nuevoPasaje.setCodigoViaje(codigoViaje);
-                        //nuevoPasaje.setPrecio(precioViaje);
+                        nuevoPasaje.setPrecio(precioViaje);
                         #endregion
 
                         #region Llenar Compra
@@ -67,8 +70,14 @@ namespace FrbaCrucero.CompraReservaPasaje
 
                 frmMedioDePago frm = new frmMedioDePago(nuevaCompra);
                 frm.Show();
+                frm.FormClosed += frm_FormClosed;
                 this.Hide();
             }
+        }
+
+        void frm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -18,10 +18,12 @@ namespace FrbaCrucero.CompraReservaPasaje
         private int codigoCliente;
         private int dni;
         private bool seEscogioUnClienteExistente;
+        private bool esUnaCompra;
 
-        public frmCliente()
+        public frmCliente(bool esCompra)
         {
             InitializeComponent();
+            this.esUnaCompra = esCompra;
         }
 
         private void frmCliente_Load(object sender, EventArgs e)
@@ -120,6 +122,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void txtDni_TextChanged(object sender, EventArgs e)
         {
             listBoxNombres.Visible = false;
+            listBoxNombres.Items.Clear();
             DatosCliente datosCliente = new DatosCliente();
 
             if (txtDni.TextLength > 0) {
@@ -140,13 +143,16 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void listBoxNombres_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            DatosCliente datosCliente = new DatosCliente();
-            DataTable dataTableCliente = datosCliente.obtenerDatosCliente(dni);
-            llenarCamposConDatosCliente(dataTableCliente.Rows[listBoxNombres.SelectedIndex]);
-            listBoxNombres.Visible = false;
-            listBoxNombres.Items.Clear();
-            seEscogioUnClienteExistente = true;
-            txtDni.Enabled = false;
+            if (listBoxNombres.SelectedItem != null) {
+                DatosCliente datosCliente = new DatosCliente();
+                DataTable dataTableCliente = datosCliente.obtenerDatosCliente(dni);
+                llenarCamposConDatosCliente(dataTableCliente.Rows[listBoxNombres.SelectedIndex]);
+                listBoxNombres.Visible = false;
+                listBoxNombres.Items.Clear();
+                seEscogioUnClienteExistente = true;
+                txtDni.Enabled = false;
+            }
+            
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
@@ -183,10 +189,18 @@ namespace FrbaCrucero.CompraReservaPasaje
                         , this.dni, telefono, mail, direccion, fechaNacimiento);
                 }
 
-                //Aca se deberia llamar al siguiente formulario pasandole el codigoCliente
+                frmBusquedaPasaje frm = new frmBusquedaPasaje(codigoCliente, this.esUnaCompra);
+                this.Hide();
+                frm.FormClosed += frm_FormClosed;
+                frm.Show();
 
             }
             
+        }
+
+        void frm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.Close();
         }
 
         private void btnDeshacer_Click(object sender, EventArgs e)

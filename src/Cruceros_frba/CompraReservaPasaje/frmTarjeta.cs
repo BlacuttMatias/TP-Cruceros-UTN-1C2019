@@ -28,6 +28,10 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             //seteo el cliente en la compra en caso de que no se haya hecho
             this.compra.setCodigoCliente(this.compra.getPasajes()[0].getCodigoCliente());
+
+            double montoTotal = this.compra.getPasajes().Sum(pasaje => pasaje.getPrecio());
+            txtMontoTotal.Enabled = false;
+            txtMontoTotal.Text = "$ " + montoTotal.ToString();
             
         }
 

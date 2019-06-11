@@ -68,5 +68,9 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
         #endregion
 
+        public DataTable mostrarTodosLosViajesDisponibles() {
+            return Coneccion.ejecutarSP("mostrarTodosLosViajesParaComprar", "@fechaSistema", Coneccion.getFechaSistema());
+        }
+
     }
 }

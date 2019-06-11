@@ -19,17 +19,18 @@ namespace FrbaCrucero.CompraReservaPasaje
         public frmCabinasParaReserva(int viaje, int cliente)
         {
             InitializeComponent();
+            dataGridCabinasDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             codigoCliente = cliente;
             codigoViaje = viaje;
             #region Llenar Grid
             GestionCompra gestion = new GestionCompra();
-            cabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);
+            dataGridCabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);
             #endregion
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int cantCabinas = cabinasDisponibles.SelectedRows.Count;
+            int cantCabinas = dataGridCabinasDisponibles.SelectedRows.Count;
             if (cantCabinas != 1)
             {
                 MessageBox.Show("Hubo un error con la seleccion de la cabina deseada, intente otra vez.", "Error en seleccion de cabina", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -38,7 +39,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 #region Creacion de Pasaje
                 Pasaje nuevoPasaje = new Pasaje();
-                int codigoCabina = (int)(cabinasDisponibles.SelectedRows[0].Cells[0].Value);
+                int codigoCabina = (int)(dataGridCabinasDisponibles.SelectedRows[0].Cells[0].Value);
                 // int precioViaje = (int)(row.Cells[ACA VA EL INDICE DEL VALOR EN EL DATAGRID].Value);
                 nuevoPasaje.setCodigoCabina(codigoCabina);
                 nuevoPasaje.setCodigoCliente(codigoCliente);
@@ -56,13 +57,15 @@ namespace FrbaCrucero.CompraReservaPasaje
 
                 if (respuesta == DialogResult.No)
                 {
-                    this.Hide();
+                    this.Close();
                 }
                 else
                 {
-                    frmBusquedaPasaje frm = new frmBusquedaPasaje();
+                    /*frmBusquedaPasaje frm = new frmBusquedaPasaje(this.codigoCliente);
                     frm.Show();
-                    this.Hide();
+                    this.Hide();*/
+                    GestionCompra gestion = new GestionCompra();
+                    dataGridCabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);
                 }
                 #endregion
             }

@@ -407,7 +407,7 @@ drop procedure [mostrarModelos]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTipoCabina]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+object_id(N'[mostrarTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [mostrarTipoCabinas]
 GO
 
@@ -430,6 +430,18 @@ if exists (select * from dbo.sysobjects where id =
 object_id(N'[modificarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure [modificarCrucero]
 GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarBajas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarBajas]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[mostrarTodosLosViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [mostrarTodosLosViajesParaComprar]
+GO
+
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1045,7 +1057,7 @@ GO
 
 CREATE TABLE [FIDEOS_CON_TUCO].[Pasaje](
 	[pasa_codigo] int IDENTITY(1,1) NOT NULL,
-	[pasa_precio] numeric (10,0),
+	[pasa_precio] numeric (10,2),
 	[pasa_cliente] int NOT NULL,
 	[pasa_viaje] int NOT NULL,
 	[pasa_cabina] int NOT NULL,
@@ -1385,12 +1397,12 @@ GO
 /**********************************Carga de Cancelaciones de reservas**************************************************************************/
 
 
---INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
---SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
---FROM [FIDEOS_CON_TUCO].[Reserva]
---JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
---WHERE pasa_compra IS NULL
---GO
+INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
+SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
+FROM [FIDEOS_CON_TUCO].[Reserva]
+JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
+WHERE pasa_compra IS NULL
+GO
 
 
 
@@ -2172,17 +2184,6 @@ BEGIN
 	WHERE viaj_crucero = @crucero_codigo
 END
 GO
-/*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
-/*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
-
-CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
-AS
-BEGIN
-	UPDATE FIDEOS_CON_TUCO.Viaje 
-	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) , viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
-	WHERE viaj_crucero = @crucero_codigo
-END
-GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
@@ -2458,6 +2459,30 @@ END
 GO
 
 
+/************************** LISTADO de TODOS los viajes para comprar *******************************************/
+
+
+
+CREATE PROCEDURE mostrarTodosLosViajesParaComprar @fechaSistema date
+AS 
+BEGIN
+	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
+		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
+			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
+			WHERE pasa_viaje = viaj_codigo AND (pasa_compra IS NOT NULL 
+				OR NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo))
+			) AS t1) AS Cantidad_cabinas_disponibles,
+		FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
+		FROM FIDEOS_CON_TUCO.Viaje 
+		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
+		WHERE CONVERT(DATE, viaj_fecha_inicio) >= @fechaSistema AND viaj_recorrido = reco_id AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+END
+GO
+
+
 /************************** LISTADO de cabinas disponibles de un viaje *******************************************/
 
 
@@ -2644,7 +2669,7 @@ AS
 BEGIN
 	SELECT comp_codigo AS Codigo_compra, viaj_fecha_inicio AS Fecha_inicio_viaje, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion_viaje,
 		p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino_final, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
-		, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje, pasa_precio AS Precio
+		, cruc_codigo AS ID_Crucero, pasa_codigo AS Codigo_pasaje, '$ ' + CONVERT(varchar(20), pasa_precio) AS Precio
 		, cabi_numero AS Numero_cabina 
 		,cabi_piso AS Piso_cabina, tipo_descripcion AS Tipo_Cabina, 
 		(SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
