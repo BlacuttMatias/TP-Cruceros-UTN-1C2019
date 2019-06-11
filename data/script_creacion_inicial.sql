@@ -2560,7 +2560,7 @@ AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Reserva(rese_fecha, rese_pasaje)
 		VALUES(@fechaSistema, @codigoPasaje)
-	SET @codigoPasaje = SCOPE_IDENTITY()
+	SET @codigoReserva = SCOPE_IDENTITY()
 END
 GO
 
