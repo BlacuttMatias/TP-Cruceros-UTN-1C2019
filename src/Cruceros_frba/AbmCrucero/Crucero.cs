@@ -10,9 +10,9 @@ namespace FrbaCrucero.AbmCrucero
 {
     class Crucero
     {
-        public int crearCrucero(string codigoCrucero,string marcaCrucero,string modeloCrucero,int cantidadCabinas,DateTime fecha)
+        public int crearCrucero(string codigoCrucero, string marcaCrucero, string modeloCrucero, int cantidadCabinas, DateTime fecha)
         {//[dbo].[agregarCrucero] @cruceroCodigo varchar(255),@cruceroMarca varchar(255), @cruceroModelo varchar(255),@cantidadCabinas int,@fecha DateTime, @resultado int 
-            return Coneccion.ejecutarSPR("agregarCrucero","@resultado", "@cruceroCodigo", codigoCrucero, "@cruceroMarca", marcaCrucero, "@cruceroModelo", modeloCrucero, "@cantidadCabinas", cantidadCabinas, "@fecha", fecha);
+            return Coneccion.ejecutarSPR("agregarCrucero", "@resultado", "@cruceroCodigo", codigoCrucero, "@cruceroMarca", marcaCrucero, "@cruceroModelo", modeloCrucero, "@cantidadCabinas", cantidadCabinas, "@fecha", fecha);
         }
 
         public DataTable mostrarTipoBaja()
@@ -44,21 +44,21 @@ namespace FrbaCrucero.AbmCrucero
         }
         public DataTable mostrarTipoCabina()
         {
-            return Coneccion.ejecutarSP("mostrarTipoCabinas");  
+            return Coneccion.ejecutarSP("mostrarTipoCabinas");
         }
 
         public DataTable mostrarCabinasDeUnCrucero(string codigoCrucero)
         {
-            return Coneccion.ejecutarSP("mostrarCabinasDeUnCrucero","@cruceroCodigo",codigoCrucero);
+            return Coneccion.ejecutarSP("mostrarCabinasDeUnCrucero", "@cruceroCodigo", codigoCrucero);
         }
 
         public void modificarCrucero(string codigo, string text1, string text2)
         {
-            Coneccion.ejecutarSPR("modificarCrucero","@cruceroCodigo", codigo, "@cruceroMarca", text1, "@cruceroModelo", text2);
+            Coneccion.ejecutarSPR("modificarCrucero", "@cruceroCodigo", codigo, "@cruceroMarca", text1, "@cruceroModelo", text2);
         }
         public void bajaCrucero(string codigo, DateTime baja, DateTime alta, string tipoBaja)
         {//[bajaCrucero] @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
-            Coneccion.ejecutarSP("bajaCrucero", "@codigo", codigo, "@tipoBaja",tipoBaja, "@fechaSistema",baja, "@fechaAlta",alta);
+            Coneccion.ejecutarSP("bajaCrucero", "@codigo", codigo, "@tipoBaja", tipoBaja, "@fechaSistema", baja, "@fechaAlta", alta);
         }
     }
     public class nodoCabina
@@ -70,5 +70,5 @@ namespace FrbaCrucero.AbmCrucero
             cabinas = new List<int>();
         }
     }
-    
+
 }

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    
+
     public partial class frmAltaCrucero : Form
     {
         Crucero abm;
@@ -28,7 +28,7 @@ namespace FrbaCrucero.AbmCrucero
         AbmRecorrido.Debugger debugger;
         List<nodoCabina> cabinas = new List<nodoCabina>();
         //List<Button> listaTrack = new List<Button>();
-        
+
         string checkmark = "✔";
         private void frmAltaCrucero_Load(object sender, EventArgs e)
         {
@@ -37,11 +37,11 @@ namespace FrbaCrucero.AbmCrucero
             abm = new Crucero();
             DataTable dtMarcas = abm.mostrarMarcas();
             llenarCB(cBoxMarca, dtMarcas, "Marca");
-            
+
             DataTable dtModelos = abm.mostrarModelos();
             llenarCB(cBoxModelo, dtModelos, "Modelo");
             cBoxModelo.Enabled = false;
-            
+
             dtCabinas = abm.mostrarTipoCabina();
 
             foreach (DataRow row in dtCabinas.Rows)
@@ -63,7 +63,7 @@ namespace FrbaCrucero.AbmCrucero
             //add your three controls
             superTabla.Controls.Add(new Label() { Text = descripcionCabina }, 0, superTabla.RowCount - 1);
             Button m = new Button();
-            m.Name = "0"+(superTabla.RowCount - 1);
+            m.Name = "0" + (superTabla.RowCount - 1);
             m.Text = "-";
             m.Height = 20;
             m.Width = 20;
@@ -84,14 +84,14 @@ namespace FrbaCrucero.AbmCrucero
         {
             Button b = sender as Button;
             TableLayoutPanelCellPosition a = superTabla.GetPositionFromControl(b);
-            int c = Convert.ToInt32(superTabla.GetControlFromPosition(a.Column - 1, a.Row).Text)+1;
-            superTabla.GetControlFromPosition(a.Column-1, a.Row).Text=""+c;
+            int c = Convert.ToInt32(superTabla.GetControlFromPosition(a.Column - 1, a.Row).Text) + 1;
+            superTabla.GetControlFromPosition(a.Column - 1, a.Row).Text = "" + c;
             guardarTabla();
         }
         private void guardarTabla()
         {
             nodoCabina n;
-            if (cabinas.Count<=piso)
+            if (cabinas.Count <= piso)
             {
                 n = new nodoCabina();
                 for (int i = 0; i < superTabla.RowCount - 1; i++)
@@ -107,12 +107,12 @@ namespace FrbaCrucero.AbmCrucero
                 n = cabinas[piso];
                 for (int i = 0; i < superTabla.RowCount - 1; i++)
                 {
-                    n.cabinas[i]= Convert.ToInt32(superTabla.GetControlFromPosition(2, i + 1).Text);
+                    n.cabinas[i] = Convert.ToInt32(superTabla.GetControlFromPosition(2, i + 1).Text);
                     n.piso = piso;
                 }
                 debugger.log("Se modifico piso:" + n.piso + ":" + piso + "\nCabina estandar:" + n.cabinas[0] + "\nCabina Exterior:" + n.cabinas[1] + "\nSuite:" + n.cabinas[2] + "\nCabina Balcón:" + n.cabinas[3] + "\nEjecutivo" + n.cabinas[4]);
             }
-            
+
         }
         private void cargarTabla()
         {
@@ -133,14 +133,14 @@ namespace FrbaCrucero.AbmCrucero
         {
             Button b = sender as Button;
             TableLayoutPanelCellPosition a = superTabla.GetPositionFromControl(b);
-            int c = Convert.ToInt32(superTabla.GetControlFromPosition(a.Column+1, a.Row).Text) - 1;
-            if(c>=0)
+            int c = Convert.ToInt32(superTabla.GetControlFromPosition(a.Column + 1, a.Row).Text) - 1;
+            if (c >= 0)
             {
                 superTabla.GetControlFromPosition(a.Column + 1, a.Row).Text = "" + c;
                 guardarTabla();
             }
         }
-        
+
         private void imprimir(List<int> c)
         {
             Console.Write("\n");
@@ -201,10 +201,10 @@ namespace FrbaCrucero.AbmCrucero
             cBoxMarca.Text = "";
             cBoxModelo.Text = "";
             cBoxModelo.Enabled = false;
-            
-            for(int i=0;i<superTabla.RowCount-1;i++)
+
+            for (int i = 0; i < superTabla.RowCount - 1; i++)
             {
-                superTabla.GetControlFromPosition(2, i+1).Text = "0";
+                superTabla.GetControlFromPosition(2, i + 1).Text = "0";
             }
 
             superTabla.Enabled = false;
@@ -249,7 +249,7 @@ namespace FrbaCrucero.AbmCrucero
             {
                 for (int i = 0; i <= a.cabinas.Count - 1; i++)
                 {
-                    contador +=a.cabinas[i];
+                    contador += a.cabinas[i];
                 }
             }
             return contador;

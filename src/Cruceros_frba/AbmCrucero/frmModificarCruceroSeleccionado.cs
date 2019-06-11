@@ -39,8 +39,8 @@ namespace FrbaCrucero.AbmCrucero
             foreach (DataRow r in dt.Rows)
             {
                 int unPiso = Convert.ToInt32(r["Piso"]);
-                string cabinaTipo =r["Descripcion"] as string;
-                if (cabinas.Exists(x=>x.piso==unPiso))
+                string cabinaTipo = r["Descripcion"] as string;
+                if (cabinas.Exists(x => x.piso == unPiso))
                 {
                     nodoCabina nodo = cabinas.Find(x => x.piso == unPiso);
                     nodo.cabinas[tipoCabinas.IndexOf(cabinaTipo)]++;
@@ -119,14 +119,14 @@ namespace FrbaCrucero.AbmCrucero
 
         private void cBoxModelo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             debugger.log($"Codigo:{codigo} Marca:{cBoxMarca.Text} Modelo:{cBoxModelo.Text}");
-            abm.modigicarCrucero(codigo, cBoxMarca.Text, cBoxModelo.Text);
-                //MessageBox.Show($"Ya existe:{codigo}", "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            abm.modificarCrucero(codigo, cBoxMarca.Text, cBoxModelo.Text);
+            //MessageBox.Show($"Ya existe:{codigo}", "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

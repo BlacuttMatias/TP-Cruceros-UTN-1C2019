@@ -43,7 +43,7 @@ namespace FrbaCrucero.AbmCrucero
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow Fila = this.dataGridView1.Rows[e.RowIndex];
-                object[] args = { Fila.Cells["Codigo"].Value, Fila.Cells["Marca"].Value, Fila.Cells["Modelo"].Value, Fila.Cells["Cantidad de Cabinas"].Value, Fila.Cells["Fecha de Alta"].Value};
+                object[] args = { Fila.Cells["Codigo"].Value, Fila.Cells["Marca"].Value, Fila.Cells["Modelo"].Value, Fila.Cells["Cantidad de Cabinas"].Value, Fila.Cells["Fecha de Alta"].Value };
                 frmModificarCruceroSeleccionado frmModificarCruceroSeleccionado = new frmModificarCruceroSeleccionado(args);
                 frmModificarCruceroSeleccionado.Show();
                 this.Enabled = false;
@@ -76,13 +76,13 @@ namespace FrbaCrucero.AbmCrucero
         {
 
             filtroCodigoCrucero = txtBoxFiltroID.Text;
-            dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero,filtroMarca, filtroModelo);
+            dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero, filtroMarca, filtroModelo);
         }
-        private string actualizarFiltro(string codigo,string marca, string modelo)
+        private string actualizarFiltro(string codigo, string marca, string modelo)
         {
-            filtro = string.Format("Codigo Like '%{0}%'",codigo);
-            filtro += string.Format("And Marca Like '%{0}%'",marca);
-            filtro += string.Format("And Modelo Like '%{0}%'",modelo);
+            filtro = string.Format("Codigo Like '%{0}%'", codigo);
+            filtro += string.Format("And Marca Like '%{0}%'", marca);
+            filtro += string.Format("And Modelo Like '%{0}%'", modelo);
             return filtro;
         }
 

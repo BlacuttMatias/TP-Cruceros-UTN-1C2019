@@ -15,7 +15,7 @@ namespace FrbaCrucero.AbmCrucero
     public partial class frmBajarSeleccionado : Form
     {
         DataTable dt;
-        Crucero abm=new Crucero();
+        Crucero abm = new Crucero();
         string codigo = "";
         public frmBajarSeleccionado(params object[] args)
         {
@@ -42,7 +42,7 @@ namespace FrbaCrucero.AbmCrucero
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(new Regex(@"[(Permanente)(Temporal)]").IsMatch(comboBox1.Text))
+            if (new Regex(@"[(Permanente)(Temporal)]").IsMatch(comboBox1.Text))
             {
                 comboBox1.ForeColor = Color.Black;
                 btnAceptar.Enabled = true;
@@ -64,7 +64,7 @@ namespace FrbaCrucero.AbmCrucero
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             comboBox1.Text = "";
-            
+
             btnAceptar.Enabled = false;
         }
     }

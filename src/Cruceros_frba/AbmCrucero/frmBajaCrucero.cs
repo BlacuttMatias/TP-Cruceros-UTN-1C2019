@@ -43,7 +43,7 @@ namespace FrbaCrucero.AbmCrucero
                 DataGridViewRow Fila = this.dataGridView1.Rows[e.RowIndex];
                 DataRow row = dt.Rows[e.RowIndex];
                 //Fila.Cells["Codigo"].Value, Fila.Cells["Fecha Creacion"].Value, Fila.Cells["Tipo Baja"].Value, Fila.Cells["Fecha de Baja"].Value, Fila.Cells["Fecha de Alta"].Value};
-                var fechaCreacion= row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(DateTime.Now);
+                var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(DateTime.Now);
                 var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(DateTime.Now);
                 var fechaAlta = row.Field<DateTime?>("Fecha de Alta").GetValueOrDefault(DateTime.Now);
                 frmBajarSeleccionado frmBajarSeleccionado = new frmBajarSeleccionado(Fila.Cells["Codigo"].Value as string, fechaCreacion, Fila.Cells["Tipo Baja"].Value as string, fechaBaja, fechaAlta);
