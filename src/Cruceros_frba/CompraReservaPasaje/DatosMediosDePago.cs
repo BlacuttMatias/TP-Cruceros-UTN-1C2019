@@ -29,6 +29,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             return Coneccion.ejecutarFunction("clienteDeUnPasaje(@codigoPasaje)", "@codigoPasaje", codigoPasaje);
         }
 
+        public double obtenerPrecioDeUnPasaje(int codigoPasaje)
+        {
+            return Coneccion.ejecutarFunctionDouble("precioDeUnPasaje(@codigoPasaje)", "@codigoPasaje", codigoPasaje);
+        }
+
         public void persistirTarjeta(int numeroTarjeta, int codigoVerificador, string tipoDeTarjeta, int codigoEmpresa) {
             Coneccion.ejecutarSPV("ingresarTarjeta", "@numeroTarjeta", numeroTarjeta, "@codigoVerificador"
                 , codigoVerificador, "@tipoTarjeta", tipoDeTarjeta, "@codigoEmpresa", codigoEmpresa);

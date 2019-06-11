@@ -441,6 +441,12 @@ object_id(N'[mostrarTodosLosViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProc
 drop procedure [mostrarTodosLosViajesParaComprar]
 GO
 
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.precioDeUnPasaje') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.precioDeUnPasaje
+GO
+
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -2612,6 +2618,16 @@ BEGIN
 
 		UPDATE FIDEOS_CON_TUCO.Compra SET comp_monto_total = comp_monto_total + @precioPasaje WHERE comp_codigo = @codigoCompra
 		END
+END
+GO
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.precioDeUnPasaje (@codigoPasaje int) RETURNS numeric(10,2)
+AS
+BEGIN
+	DECLARE @precio numeric(10, 2)
+	SELECT @precio = pasa_precio FROM FIDEOS_CON_TUCO.Pasaje WHERE pasa_codigo = @codigoPasaje 
+	RETURN @precio
 END
 GO
 

@@ -45,6 +45,21 @@ namespace CapaDatos
             return resultado;
         }
 
+        public static double ejecutarFunctionDouble(params object[] args)
+        {
+            SqlConnection coneccion = new SqlConnection(Coneccion.Con);
+            SqlCommand cmd = new SqlCommand("SELECT FIDEOS_CON_TUCO." + args[0].ToString(), coneccion);
+            for (int i = 0; i < args.Length - 2; i++)
+            {
+                cmd.Parameters.AddWithValue(args[i + 1] as string, args[i + 2]);
+                i++;
+            }
+            coneccion.Open();
+            double resultado = Convert.ToDouble(cmd.ExecuteScalar().ToString());
+
+            return resultado;
+        }
+
         /// <summary>
         /// Ejecuta un stock procedure, no tiene retorno.
         /// (SqlCommandString, "@var1",var1,"@var2",var2,...,"@varN",varN)

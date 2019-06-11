@@ -71,6 +71,7 @@ namespace FrbaCrucero.PagoReserva
                     Pasaje pasaje = new Pasaje();
                     pasaje.setCodigoPasaje(codigoPasaje);
                     pasaje.setCodigoCliente(datosMediosDePago.obtenerCodigoClienteDeUnPasajePersistido(codigoPasaje));
+                    pasaje.setPrecio(datosMediosDePago.obtenerPrecioDeUnPasaje(codigoPasaje));
 
                     //creo la compra y le agrego el pasaje de la reserva
                     Compra compra = new Compra(true);
