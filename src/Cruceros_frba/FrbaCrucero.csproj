@@ -45,42 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbmCrucero\Crucero.cs" />
-    <Compile Include="AbmCrucero\frmABMCruceroMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmABMCruceroMain.Designer.cs">
-      <DependentUpon>frmABMCruceroMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\frmAltaCrucero.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmAltaCrucero.Designer.cs">
-      <DependentUpon>frmAltaCrucero.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\frmBajaCrucero.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmBajaCrucero.Designer.cs">
-      <DependentUpon>frmBajaCrucero.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\frmBajarSeleccionado.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmBajarSeleccionado.Designer.cs">
-      <DependentUpon>frmBajarSeleccionado.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\frmModificacionCrucero.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmModificacionCrucero.Designer.cs">
-      <DependentUpon>frmModificacionCrucero.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\frmModificarCruceroSeleccionado.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\frmModificarCruceroSeleccionado.Designer.cs">
-      <DependentUpon>frmModificarCruceroSeleccionado.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmPuerto\frmABMPuertoMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -284,24 +248,6 @@
     </Compile>
     <Compile Include="UserLogin\Login.cs" />
     <Compile Include="UserLogin\LoginControl.cs" />
-    <EmbeddedResource Include="AbmCrucero\frmABMCruceroMain.resx">
-      <DependentUpon>frmABMCruceroMain.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\frmAltaCrucero.resx">
-      <DependentUpon>frmAltaCrucero.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\frmBajaCrucero.resx">
-      <DependentUpon>frmBajaCrucero.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\frmBajarSeleccionado.resx">
-      <DependentUpon>frmBajarSeleccionado.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\frmModificacionCrucero.resx">
-      <DependentUpon>frmModificacionCrucero.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\frmModificarCruceroSeleccionado.resx">
-      <DependentUpon>frmModificarCruceroSeleccionado.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AbmPuerto\frmABMPuertoMain.resx">
       <DependentUpon>frmABMPuertoMain.cs</DependentUpon>
     </EmbeddedResource>

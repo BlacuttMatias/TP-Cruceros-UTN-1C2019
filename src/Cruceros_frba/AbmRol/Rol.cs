@@ -42,7 +42,7 @@ namespace FrbaCrucero.AbmRol
         #region Asignar una Funcionalidad a un Rol
         public void agregarFuncionalidadARol(String nombreRol, String nombreFuncionalidad)
         {
-            Coneccion.ejecutarSPV("FIDEOS_CON_TUCO.AgregarFuncionalidadARol", "@nombreRol", nombreRol, "@funcionalidad", nombreFuncionalidad);
+            Coneccion.ejecutarSPV("AgregarFuncionalidadARol", "@nombreRol", nombreRol, "@funcionalidad", nombreFuncionalidad);
         }
         #endregion
 

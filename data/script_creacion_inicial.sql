@@ -12,268 +12,268 @@ drop procedure [FIDEOS_CON_TUCO].[AgregarFuncionalidadARol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarRol]
+object_id(N'[FIDEOS_CON_TUCO].[agregarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarRol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[actualizarNombreRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [actualizarNombreRol]
+object_id(N'[FIDEOS_CON_TUCO].[actualizarNombreRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarNombreRol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[habilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [habilitarRol]
+object_id(N'[FIDEOS_CON_TUCO].[habilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[habilitarRol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[deshabilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [deshabilitarRol]
+object_id(N'[FIDEOS_CON_TUCO].[deshabilitarRol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[deshabilitarRol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[eliminarFuncionalidadARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [eliminarFuncionalidadARol]
+object_id(N'[FIDEOS_CON_TUCO].[eliminarFuncionalidadARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[eliminarFuncionalidadARol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarFuncionalidadesNoAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarFuncionalidadesNoAgregadasARol]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarFuncionalidadesNoAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarFuncionalidadesNoAgregadasARol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarRoles]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarRoles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarRoles]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarFuncionalidadesAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarFuncionalidadesAgregadasARol]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarFuncionalidadesAgregadasARol]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarFuncionalidadesAgregadasARol]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarRolesHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarRolesHabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarRolesHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarRolesHabilitados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[sumaDeIntentosFallidos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [sumaDeIntentosFallidos]
+object_id(N'[FIDEOS_CON_TUCO].[sumaDeIntentosFallidos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[sumaDeIntentosFallidos]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[adminLogin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [adminLogin]
+object_id(N'[FIDEOS_CON_TUCO].[adminLogin]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[adminLogin]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarPuerto]
+object_id(N'[FIDEOS_CON_TUCO].[agregarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarPuerto]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[modificarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [modificarPuerto]
+object_id(N'[FIDEOS_CON_TUCO].[modificarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[modificarPuerto]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[habilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [habilitarPuerto]
+object_id(N'[FIDEOS_CON_TUCO].[habilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[habilitarPuerto]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[deshabilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [deshabilitarPuerto]
+object_id(N'[FIDEOS_CON_TUCO].[deshabilitarPuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[deshabilitarPuerto]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarPuertos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarPuertos]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarPuertos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarPuertos]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarPuertosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarPuertosHabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarPuertosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarPuertosHabilitados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarPuertosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarPuertosDeshabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarPuertosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarPuertosDeshabilitados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[agregarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarTramoAUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarTramoAUnRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[agregarTramoAUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarTramoAUnRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[modificarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [modificarRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[modificarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[modificarRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[eliminarTramoDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [eliminarTramoDeUnRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[eliminarTramoDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[eliminarTramoDeUnRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[habilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [habilitarRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[habilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[habilitarRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[deshabilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [deshabilitarRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[deshabilitarRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[deshabilitarRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarRecorridos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarRecorridos]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarRecorridos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarRecorridos]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarRecorridosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarRecorridosHabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarRecorridosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarRecorridosHabilitados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarRecorridosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarRecorridosDeshabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarRecorridosDeshabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarRecorridosDeshabilitados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTramosDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarTramosDeUnRecorrido]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarTramosDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarTramosDeUnRecorrido]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarUsuario]
+object_id(N'[FIDEOS_CON_TUCO].[agregarUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarUsuario]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarRolAUnUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarRolAUnUsuario]
+object_id(N'[FIDEOS_CON_TUCO].[agregarRolAUnUsuario]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarRolAUnUsuario]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[crearUsuariosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [crearUsuariosIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[crearUsuariosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[crearUsuariosIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarLosCincoRecorridosConMasPasajesComprados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarLosCincoRecorridosConMasPasajesComprados]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarLosCincoRecorridosConMasPasajesComprados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarLosCincoRecorridosConMasPasajesComprados]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarLosCincoCrucerosConMasDiasFueraDeServicio]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarLosCincoCrucerosConMasDiasFueraDeServicio]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarLosCincoCrucerosConMasDiasFueraDeServicio]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarLosCincoCrucerosConMasDiasFueraDeServicio]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[generarViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [generarViaje]
+object_id(N'[FIDEOS_CON_TUCO].[generarViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[generarViaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[ingresarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [ingresarCliente]
+object_id(N'[FIDEOS_CON_TUCO].[ingresarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[ingresarCliente]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[traerCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [traerCliente]
+object_id(N'[FIDEOS_CON_TUCO].[traerCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[traerCliente]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[actualizarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [actualizarCliente]
+object_id(N'[FIDEOS_CON_TUCO].[actualizarCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarCliente]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarViajesParaComprar]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarViajesParaComprar]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarCabinasDisponiblesDeUnViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarCabinasDisponiblesDeUnViaje]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarCabinasDisponiblesDeUnViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarCabinasDisponiblesDeUnViaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarTiposdeBajasDeCrucerosIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarTiposdeBajasDeCrucerosIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarTiposDeMediosDePagoIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarTiposDeMediosDePagoIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[cargarTiposDeMediosDePagoIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarTiposDeMediosDePagoIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarEmpresasDeTarjetasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarEmpresasDeTarjetasIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[cargarEmpresasDeTarjetasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarEmpresasDeTarjetasIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarCantidadDeCuotasDeEmpresasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarCantidadDeCuotasDeEmpresasIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[cargarCantidadDeCuotasDeEmpresasIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarCantidadDeCuotasDeEmpresasIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[generarPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [generarPasaje]
+object_id(N'[FIDEOS_CON_TUCO].[generarPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[generarPasaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[generarReservaDeUnPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [generarReservaDeUnPasaje]
+object_id(N'[FIDEOS_CON_TUCO].[generarReservaDeUnPasaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[generarReservaDeUnPasaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[generarCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [generarCompra]
+object_id(N'[FIDEOS_CON_TUCO].[generarCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[generarCompra]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarPasajeAUnaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarPasajeAUnaCompra]
+object_id(N'[FIDEOS_CON_TUCO].[agregarPasajeAUnaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarPasajeAUnaCompra]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTiposDeMediosDePago]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarTiposDeMediosDePago]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarTiposDeMediosDePago]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarTiposDeMediosDePago]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarEmpresasDeTarjetas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarEmpresasDeTarjetas]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarEmpresasDeTarjetas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarEmpresasDeTarjetas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarCuotasDeUnaEmpresa]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarCuotasDeUnaEmpresa]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarCuotasDeUnaEmpresa]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarCuotasDeUnaEmpresa]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[ingresarTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [ingresarTarjeta]
+object_id(N'[FIDEOS_CON_TUCO].[ingresarTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[ingresarTarjeta]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[ingresarMedioDePagoConTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [ingresarMedioDePagoConTarjeta]
+object_id(N'[FIDEOS_CON_TUCO].[ingresarMedioDePagoConTarjeta]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[ingresarMedioDePagoConTarjeta]
 GO
 
 IF 
@@ -282,73 +282,73 @@ DROP FUNCTION FIDEOS_CON_TUCO.existenViajesConPasajesVendidosDeEsePuerto
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cancelarPasajesPorBajaDePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cancelarPasajesPorBajaDePuerto]
+object_id(N'[FIDEOS_CON_TUCO].[cancelarPasajesPorBajaDePuerto]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelarPasajesPorBajaDePuerto]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarTiposdeBajasDeCrucerosIniciales]
+object_id(N'[FIDEOS_CON_TUCO].[cargarTiposdeBajasDeCrucerosIniciales]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarTiposdeBajasDeCrucerosIniciales]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cargarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cargarCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[cargarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cargarCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[actualizarMarca]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [actualizarMarca]
+object_id(N'[FIDEOS_CON_TUCO].[actualizarMarca]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarMarca]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[listadoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [listadoCabinas]
+object_id(N'[FIDEOS_CON_TUCO].[listadoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[listadoCabinas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[listadoTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [listadoTipoCabinas]
+object_id(N'[FIDEOS_CON_TUCO].[listadoTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[listadoTipoCabinas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[modificarTipoCabina]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [modificarTipoCabina]
+object_id(N'[FIDEOS_CON_TUCO].[modificarTipoCabina]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[modificarTipoCabina]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[corrimientoDiasViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [corrimientoDiasViaje]
+object_id(N'[FIDEOS_CON_TUCO].[corrimientoDiasViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[corrimientoDiasViaje]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[crucerosDisponibles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [crucerosDisponibles]
+object_id(N'[FIDEOS_CON_TUCO].[crucerosDisponibles]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[crucerosDisponibles]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[reemplazoCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [reemplazoCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[reemplazoCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[reemplazoCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cancelacionViajes]
+object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelacionViajes]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[bajaCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [bajaCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[bajaCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[bajaCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarDatosFinalizadaLaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarDatosFinalizadaLaCompra]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarDatosFinalizadaLaCompra]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarDatosFinalizadaLaCompra]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cancelarReservas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cancelarReservas]
+object_id(N'[FIDEOS_CON_TUCO].[cancelarReservas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelarReservas]
 GO
 
 IF 
@@ -372,8 +372,8 @@ DROP FUNCTION FIDEOS_CON_TUCO.clienteDeUnPasaje
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[actualizarCrucerosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [actualizarCrucerosHabilitados]
+object_id(N'[FIDEOS_CON_TUCO].[actualizarCrucerosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarCrucerosHabilitados]
 GO
 
 IF 
@@ -387,58 +387,58 @@ DROP FUNCTION FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[agregarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[agregarCabinaAUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [agregarCabinaAUnCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[agregarCabinaAUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarCabinaAUnCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarMarcas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarMarcas]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarMarcas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarMarcas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarModelos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarModelos]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarModelos]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarModelos]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarTipoCabinas]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarTipoCabinas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarTipoCabinas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarCruceros]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarCruceros]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarCruceros]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarCruceros]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarCabinasDeUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarCabinasDeUnCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarCabinasDeUnCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarCabinasDeUnCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTipoBaja]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarTipoBaja]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarTipoBaja]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarTipoBaja]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[modificarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [modificarCrucero]
+object_id(N'[FIDEOS_CON_TUCO].[modificarCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[modificarCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarBajas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarBajas]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarBajas]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarBajas]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[mostrarTodosLosViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [mostrarTodosLosViajesParaComprar]
+object_id(N'[FIDEOS_CON_TUCO].[mostrarTodosLosViajesParaComprar]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarTodosLosViajesParaComprar]
 GO
 
 IF 
@@ -447,8 +447,8 @@ DROP FUNCTION FIDEOS_CON_TUCO.precioDeUnPasaje
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[cruceroTieneViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [cruceroTieneViajes]
+object_id(N'[FIDEOS_CON_TUCO].[cruceroTieneViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cruceroTieneViajes]
 GO
 
 /************************************************************************************************************/
@@ -1427,7 +1427,7 @@ GO
 
 /************* AGREGAR ROL *************/
 
-CREATE PROCEDURE agregarRol @rolAgregar varchar(255), @flag int output /* El flag está para devolver un mensaje según la situación que se presente*/
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRol @rolAgregar varchar(255), @flag int output /* El flag está para devolver un mensaje según la situación que se presente*/
 AS
 BEGIN
 	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
@@ -1454,7 +1454,7 @@ GO
 
 /************* MODIFICAR NOMBRE *************/
 
-CREATE PROCEDURE actualizarNombreRol @codigo int, @nombreRol varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarNombreRol @codigo int, @nombreRol varchar(255)
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Rol SET rol_descripcion = @nombreRol WHERE rol_codigo = @codigo;
@@ -1463,7 +1463,7 @@ GO
 
 /************* ELIMINAR UNA FUNCIONALIDAD DE UN ROL  *************/
 
-CREATE PROCEDURE eliminarFuncionalidadARol @nombreFuncionalidad varchar(255), @codigoRol int
+CREATE PROCEDURE FIDEOS_CON_TUCO.eliminarFuncionalidadARol @nombreFuncionalidad varchar(255), @codigoRol int
 AS
 BEGIN
 	DELETE FROM FIDEOS_CON_TUCO.Funcionalidad_Por_Rol WHERE func_por_rol_funcionalidad = (SELECT func_codigo
@@ -1482,7 +1482,7 @@ GO
 
 /************* DESHABILITAR UN ROL *************/
 
-CREATE PROCEDURE deshabilitarRol @codigo int
+CREATE PROCEDURE FIDEOS_CON_TUCO.deshabilitarRol @codigo int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 0 WHERE rol_codigo = @codigo;
@@ -1492,7 +1492,7 @@ GO
 
 /************* HABILITAR UN ROL *************/
 
-CREATE PROCEDURE habilitarRol @codigo int
+CREATE PROCEDURE FIDEOS_CON_TUCO.habilitarRol @codigo int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Rol SET rol_esta_habilitado = 1 WHERE rol_codigo = @codigo
@@ -1504,7 +1504,7 @@ GO
 
 /************* SP PARA MOSTRAR FUNCINALIDADES CANDIDATAS A SER AGREGADAS A UN ROL *************/
 
-CREATE PROCEDURE mostrarFuncionalidadesNoAgregadasARol @nombreRol varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarFuncionalidadesNoAgregadasARol @nombreRol varchar(255)
 AS
 BEGIN
 	SELECT func_descripcion FROM FIDEOS_CON_TUCO.Funcionalidad
@@ -1515,7 +1515,7 @@ GO
 
 /************* SP PARA MOSTRAR TODOS LOS ROLES (SIRVE PARA ALTA Y BAJA DE ROLES YA CREADOS) *************/
 
-CREATE PROCEDURE mostrarRoles
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRoles
 AS
 BEGIN
 	SELECT rol_codigo AS Codigo, 
@@ -1529,7 +1529,7 @@ GO
 
 /************* SP PARA MOSTRAR FUNCINALIDADES QUE PUEDEN SER ELIMINADAS DE UN ROL *************/
 
-CREATE PROCEDURE mostrarFuncionalidadesAgregadasARol @nombreRol varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarFuncionalidadesAgregadasARol @nombreRol varchar(255)
 AS
 BEGIN
 	SELECT func_descripcion FROM FIDEOS_CON_TUCO.Funcionalidad
@@ -1540,7 +1540,7 @@ GO
 
 /************* SP PARA MOSTRAR LOS ROLES QUE PUEDEN SER ELIMINADOS *************/
 
-CREATE PROCEDURE mostrarRolesHabilitados
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRolesHabilitados
 AS
 BEGIN
 	SELECT rol_codigo AS Codigo, rol_descripcion AS Descripcion FROM FIDEOS_CON_TUCO.Rol
@@ -1557,7 +1557,7 @@ GO
 
 /************* SUMA DE INTENTOS FALLIDOS  *************/
 
-CREATE PROCEDURE sumaDeIntentosFallidos @username varchar(255), @intentos_fallidos int
+CREATE PROCEDURE FIDEOS_CON_TUCO.sumaDeIntentosFallidos @username varchar(255), @intentos_fallidos int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Usuario SET usua_intentos_fallidos = usua_intentos_fallidos + 1 WHERE usua_username = @username
@@ -1569,7 +1569,7 @@ GO
 
 /************* CANCELAR RESERVAS EN EL LOGIN  *************/
 
-CREATE PROCEDURE cancelarReservas @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.cancelarReservas @fechaSistema datetime
 AS
 DECLARE @reserva_codigo int
 DECLARE @reserva_fecha datetime
@@ -1585,7 +1585,7 @@ GO
 
 /************* LOGIN  *************/
 
-CREATE PROCEDURE adminLogin @username varchar(255), @password varchar(255), @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.adminLogin @username varchar(255), @password varchar(255), @fechaSistema datetime
 AS
 DECLARE @usua_contrasenia varchar(255)
 DECLARE @usua_intentos_fallidos int
@@ -1593,14 +1593,14 @@ SELECT  @usua_contrasenia = usua_contrasenia, @usua_intentos_fallidos = usua_int
 /*IF POR SI NO ES LA CONTRASEÑA*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) <> @usua_contrasenia)
-		EXEC sumaDeIntentosFallidos @username, @usua_intentos_fallidos
+		EXEC FIDEOS_CON_TUCO.sumaDeIntentosFallidos @username, @usua_intentos_fallidos
 END
 /*IF PARA VER SI ES LA CONTRASEÑA CORRECTA*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) = @usua_contrasenia and @usua_intentos_fallidos < 3)
 		BEGIN
 		UPDATE	FIDEOS_CON_TUCO.Usuario SET	usua_intentos_fallidos = 0 WHERE usua_username = @username
-		EXEC cancelarReservas @fechaSistema
+		EXEC FIDEOS_CON_TUCO.cancelarReservas @fechaSistema
 		END
 END
 /*SELECT PARA MOSTRAR EL USUARIO INGRESADO*/
@@ -1650,7 +1650,7 @@ GO
 /*######################## CREACION USUARIOS ADMINISTRATIVOS ############################*/
 
 
-CREATE PROCEDURE agregarUsuario @username varchar(255), @contrasenia varchar(255), @resultado int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarUsuario @username varchar(255), @contrasenia varchar(255), @resultado int output
 AS 
 BEGIN
 	IF NOT EXISTS(SELECT usua_username FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username)
@@ -1665,7 +1665,7 @@ END
 GO
 
 
-CREATE PROCEDURE agregarRolAUnUsuario @nombreRol varchar(255), @username varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRolAUnUsuario @nombreRol varchar(255), @username varchar(255)
 AS
 BEGIN
 	IF NOT EXISTS (SELECT rol_por_usua_rol FROM FIDEOS_CON_TUCO.Rol_por_usuario 
@@ -1678,24 +1678,24 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE crearUsuariosIniciales
+CREATE PROCEDURE FIDEOS_CON_TUCO.crearUsuariosIniciales
 AS
 BEGIN
 	DECLARE @resultado int
-	EXEC agregarUsuario 'admin', 'w23e', @resultado
-	EXEC agregarUsuario 'BlacuttMatias', 'w23e', @resultado
-	EXEC agregarUsuario 'MonjaLucas', 'w23e', @resultado
-	EXEC agregarUsuario 'MontiFernando', 'w23e', @resultado
-	EXEC agregarUsuario 'MauroGaston', 'w23e', @resultado
-	EXEC agregarRolAUnUsuario 'Administrativo', 'admin'
-	EXEC agregarRolAUnUsuario 'Administrativo', 'BlacuttMatias' 
-	EXEC agregarRolAUnUsuario 'Administrativo', 'MonjaLucas'
-	EXEC agregarRolAUnUsuario 'Administrativo', 'MontiFernando' 
-	EXEC agregarRolAUnUsuario 'Administrativo', 'MauroGaston' 
+	EXEC FIDEOS_CON_TUCO.agregarUsuario 'admin', 'w23e', @resultado
+	EXEC FIDEOS_CON_TUCO.agregarUsuario 'BlacuttMatias', 'w23e', @resultado
+	EXEC FIDEOS_CON_TUCO.agregarUsuario 'MonjaLucas', 'w23e', @resultado
+	EXEC FIDEOS_CON_TUCO.agregarUsuario 'MontiFernando', 'w23e', @resultado
+	EXEC FIDEOS_CON_TUCO.agregarUsuario 'MauroGaston', 'w23e', @resultado
+	EXEC FIDEOS_CON_TUCO.agregarRolAUnUsuario 'Administrativo', 'admin'
+	EXEC FIDEOS_CON_TUCO.agregarRolAUnUsuario 'Administrativo', 'BlacuttMatias' 
+	EXEC FIDEOS_CON_TUCO.agregarRolAUnUsuario 'Administrativo', 'MonjaLucas'
+	EXEC FIDEOS_CON_TUCO.agregarRolAUnUsuario 'Administrativo', 'MontiFernando' 
+	EXEC FIDEOS_CON_TUCO.agregarRolAUnUsuario 'Administrativo', 'MauroGaston' 
 END
 GO
 
-EXEC crearUsuariosIniciales
+EXEC FIDEOS_CON_TUCO.crearUsuariosIniciales
 GO
 
 
@@ -1704,7 +1704,7 @@ GO
 
 /************************** ALTA Puerto*******************************************/
 
-CREATE PROCEDURE agregarPuerto @ciudad varchar(255), @resultado int output, @descripcion varchar(255)= NULL
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarPuerto @ciudad varchar(255), @resultado int output, @descripcion varchar(255)= NULL
 AS 
 BEGIN
 	IF NOT EXISTS(SELECT * FROM [FIDEOS_CON_TUCO].[Puerto] WHERE puer_ciudad = @ciudad AND puer_descripcion = @descripcion)
@@ -1719,7 +1719,7 @@ GO
 
 /************************** MODIFICACION Puerto*******************************************/
 
-CREATE PROCEDURE modificarPuerto @codigoPuerto int, @ciudad varchar(255), @descripcion varchar(255) = NULL
+CREATE PROCEDURE FIDEOS_CON_TUCO.modificarPuerto @codigoPuerto int, @ciudad varchar(255), @descripcion varchar(255) = NULL
 AS
 BEGIN
 	UPDATE [FIDEOS_CON_TUCO].[Puerto] SET puer_ciudad = @ciudad, puer_descripcion = @descripcion WHERE puer_codigo = @codigoPuerto
@@ -1765,7 +1765,7 @@ BEGIN
 END
 GO
 */
-CREATE PROCEDURE deshabilitarPuerto @codigoPuerto int
+CREATE PROCEDURE FIDEOS_CON_TUCO.deshabilitarPuerto @codigoPuerto int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 0 WHERE puer_codigo = @codigoPuerto
@@ -1779,7 +1779,7 @@ GO
 
 /************************** HABILITAR Puerto *******************************************/
 
-CREATE PROCEDURE habilitarPuerto @codigoPuerto int
+CREATE PROCEDURE FIDEOS_CON_TUCO.habilitarPuerto @codigoPuerto int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Puerto SET puer_esta_habilitado = 1 WHERE puer_codigo = @codigoPuerto
@@ -1788,7 +1788,7 @@ GO
 
 /************************** LISTADO Todos los Puertos *******************************************/
 
-CREATE PROCEDURE mostrarPuertos
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertos
 AS
 BEGIN
 	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
@@ -1804,7 +1804,7 @@ GO
 
 /************************** LISTADO Puertos habilitados *******************************************/
 
-CREATE PROCEDURE mostrarPuertosHabilitados 
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertosHabilitados 
 AS
 BEGIN
 	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
@@ -1818,7 +1818,7 @@ GO
 
 /************************** LISTADO Puertos deshabilitados *******************************************/
 
-CREATE PROCEDURE mostrarPuertosDeshabilitados 
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertosDeshabilitados 
 AS
 BEGIN
 	SELECT puer_codigo AS Codigo, puer_ciudad AS Ciudad, 
@@ -1837,7 +1837,7 @@ GO
 /************************** ALTA Recorrido*******************************************/
 
 --si el resultado fue exitoso, devuelve el id del recorrido ingresado
-CREATE PROCEDURE agregarRecorrido @ciudadPuertoOrigen varchar (255), @ciudadPuertoDestino varchar(255), @precio numeric (10,2), @resultado int output, @codigoRecorrido int = NULL
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRecorrido @ciudadPuertoOrigen varchar (255), @ciudadPuertoDestino varchar(255), @precio numeric (10,2), @resultado int output, @codigoRecorrido int = NULL
 AS
 BEGIN
 	DECLARE @codigoPuertoOrigen int
@@ -1856,7 +1856,7 @@ END
 GO
 
 
-CREATE PROCEDURE agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @idRecorrido int
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @idRecorrido int
 AS
 BEGIN
 	DECLARE @codigoPuertoOrigen int
@@ -1875,7 +1875,7 @@ GO
 /************************** MODIFICACION Recorrido*******************************************/
 
 
-CREATE PROCEDURE modificarRecorrido @idRecorrido int, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @codigoRecorrido int = NULL
+CREATE PROCEDURE FIDEOS_CON_TUCO.modificarRecorrido @idRecorrido int, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @codigoRecorrido int = NULL
 AS
 BEGIN
 	DECLARE @codigoPuertoOrigen int
@@ -1889,7 +1889,7 @@ END
 GO
 
 
-CREATE PROCEDURE eliminarTramoDeUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @idRecorrido int
+CREATE PROCEDURE FIDEOS_CON_TUCO.eliminarTramoDeUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @idRecorrido int
 AS
 BEGIN
 	DECLARE @codigoPuertoOrigen int
@@ -1905,7 +1905,7 @@ GO
 
 /************************** BAJA LOGICA Recorrido (DESHABILITAR) *******************************************/
 
-CREATE PROCEDURE deshabilitarRecorrido @idRecorrido int
+CREATE PROCEDURE FIDEOS_CON_TUCO.deshabilitarRecorrido @idRecorrido int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Recorrido SET reco_esta_habilitado = 0 WHERE reco_id = @idRecorrido
@@ -1914,7 +1914,7 @@ GO
 
 /************************** HABILITAR Recorrido *******************************************/
 
-CREATE PROCEDURE habilitarRecorrido @idRecorrido int, @resultado int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.habilitarRecorrido @idRecorrido int, @resultado int output
 AS
 BEGIN
 	--Verifico que el recorrido que se desea habilitar no tenga un puerto deshabilitado
@@ -1934,7 +1934,7 @@ GO
 
 /************************** LISTADO Recorridos *******************************************/
 
-CREATE PROCEDURE mostrarRecorridos
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRecorridos
 AS
 BEGIN
 	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, 
@@ -1948,7 +1948,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE mostrarRecorridosHabilitados
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRecorridosHabilitados
 AS
 BEGIN
 	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio
@@ -1959,7 +1959,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE mostrarRecorridosDeshabilitados
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRecorridosDeshabilitados
 AS
 BEGIN
 	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio
@@ -1972,7 +1972,7 @@ GO
 
 /************************** LISTADO Tramos de un Recorrido *******************************************/
 
-CREATE PROCEDURE mostrarTramosDeUnRecorrido @idRecorrido int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTramosDeUnRecorrido @idRecorrido int
 AS
 BEGIN
 	SELECT tram_codigo AS Codigo, puertoOrigen.puer_codigo AS Puerto_origen, puertoDestino.puer_codigo AS Puerto_destino
@@ -2034,7 +2034,7 @@ GO
 /************************** ACTUALIZACION de cruceros habilitados *******************************************/
 --se llama al comienzo de la App para actualizar el campo cruc_esta_habilitado de los cruceros cuya fecha de alta en la baja ya se cumplio
 
-CREATE PROCEDURE actualizarCrucerosHabilitados @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarCrucerosHabilitados @fechaSistema datetime
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 1 FROM FIDEOS_CON_TUCO.Crucero
@@ -2046,7 +2046,7 @@ GO
 
 /************************** CREACION de tipos de baja de los cruceros *******************************************/
 
-CREATE PROCEDURE cargarTiposdeBajasDeCrucerosIniciales
+CREATE PROCEDURE FIDEOS_CON_TUCO.cargarTiposdeBajasDeCrucerosIniciales
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Tipo_baja(tipo_baja_descripcion) VALUES ('Permanente')
@@ -2054,12 +2054,12 @@ BEGIN
 END
 GO
 
-EXEC cargarTiposdeBajasDeCrucerosIniciales
+EXEC FIDEOS_CON_TUCO.cargarTiposdeBajasDeCrucerosIniciales
 GO
 
 /*************************** ALTA CRUCEROS ***************************/
 
-CREATE PROCEDURE agregarCrucero @cruceroCodigo varchar(255),@cruceroMarca varchar(255), @cruceroModelo varchar(255),@cantidadCabinas int,@fecha DateTime, @resultado int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarCrucero @cruceroCodigo varchar(255),@cruceroMarca varchar(255), @cruceroModelo varchar(255),@cantidadCabinas int,@fecha DateTime, @resultado int output
 AS 
 BEGIN
 	DECLARE @codigoMarca int
@@ -2077,7 +2077,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE agregarCabinaAUnCrucero @cabiCrucero varchar(255),@cabiNumero int,@cabiPiso int, @cabiTipo varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarCabinaAUnCrucero @cabiCrucero varchar(255),@cabiNumero int,@cabiPiso int, @cabiTipo varchar(255)
 AS
 BEGIN
 	DECLARE @codigoTipoCabina int
@@ -2087,21 +2087,21 @@ BEGIN
 END
 GO
 /*************************** MODIFICAR MARCAS DE CRUCERO ***************************/
-CREATE PROCEDURE mostrarMarcas
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarMarcas
 AS
 BEGIN
 	SELECT marc_codigo as Codigo, marc_descripcion as Marca FROM FIDEOS_CON_TUCO.Marca
 END
 GO
 /*************************** MODIFICAR MODELOS DE CRUCERO ***************************/
-CREATE PROCEDURE mostrarModelos
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarModelos
 AS
 BEGIN
 	SELECT mode_codigo as Codigo, mode_descripcion as Modelo FROM FIDEOS_CON_TUCO.Modelo
 END
 GO
 /*************************** MOSTRAR CRUCEROS ***************************/
-CREATE PROCEDURE mostrarCruceros
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCruceros
 AS
 BEGIN
 	SELECT [cruc_codigo] as Codigo, 
@@ -2118,7 +2118,7 @@ BEGIN
 END
 GO
 /*************************** MODIFICAR CRUCEROS ***************************/
-CREATE PROCEDURE modificarCrucero @cruceroCodigo Varchar(255), @cruceroMarca Varchar(255), @cruceroModelo Varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.modificarCrucero @cruceroCodigo Varchar(255), @cruceroMarca Varchar(255), @cruceroModelo Varchar(255)
 AS
 BEGIN
 	UPDATE [FIDEOS_CON_TUCO].[Crucero] SET cruc_marca = @cruceroMarca, cruc_modelo = @cruceroModelo WHERE cruc_codigo = @cruceroCodigo
@@ -2127,7 +2127,7 @@ GO
 
 /*************************** LISTADO DE CABINAS  ***************************/
 
-CREATE PROCEDURE mostrarCabinasDeUnCrucero @cruceroCodigo varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCabinasDeUnCrucero @cruceroCodigo varchar(255)
 AS
 BEGIN
 	SELECT [cabi_codigo] as Codigo
@@ -2144,14 +2144,14 @@ GO
 
 /*************************** LISTADO DE TIPOS DE CABINAS  ***************************/
 
-CREATE PROCEDURE mostrarTipoCabinas
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTipoCabinas
 AS
 BEGIN
 	SELECT tipo_codigo as Codigo, tipo_descripcion as Cabina FROM FIDEOS_CON_TUCO.Tipo_cabina
 END
 GO
 /*************************** LISTADO DE TIPOS DE BAJAS  ***************************/
-CREATE PROCEDURE mostrarTipoBaja
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTipoBaja
 AS
 BEGIN
 	SELECT [tipo_baja_codigo] as Codigo
@@ -2160,7 +2160,7 @@ BEGIN
 END
 GO
 /*************************** LISTADO DE TIPOS DE BAJAS  ***************************/
-CREATE PROCEDURE mostrarBajas
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarBajas
 AS
 BEGIN
 SELECT [cruc_codigo] as Codigo
@@ -2174,7 +2174,7 @@ SELECT [cruc_codigo] as Codigo
 END
 GO
 /*************************** Consulta de Viajes Existentes de un Crucero  ***************************/
-CREATE PROCEDURE cruceroTieneViajes @codigoCrucero varchar(255), @fecha DateTime, @respuesta int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroTieneViajes @codigoCrucero varchar(255), @fecha DateTime, @respuesta int output
 AS
 BEGIN
 	IF EXISTS(SELECT COUNT(*) FROM [GD1C2019].[FIDEOS_CON_TUCO].[Viaje] WHERE viaj_crucero=@codigoCrucero 
@@ -2185,6 +2185,7 @@ BEGIN
 	ElSE
 		SET @respuesta = 0
 END
+GO
 /*************************** MODIFICAR TIPO DE CABINA ***************************/
 
 --CREATE PROCEDURE modificarTipoCabina @cabina_codigo int, @cabina_tipo int
@@ -2197,7 +2198,7 @@ END
 /*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
 /*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
 
-CREATE PROCEDURE corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
+CREATE PROCEDURE FIDEOS_CON_TUCO.corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje 
@@ -2208,7 +2209,7 @@ GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
-CREATE PROCEDURE crucerosDisponibles @codigo_crucero varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.crucerosDisponibles @codigo_crucero varchar(255)
 AS
 DECLARE @viaje_codigo int
 DECLARE @viaje_fecha_inicio datetime
@@ -2228,7 +2229,7 @@ GO
 /*************************** REEMPLAZO DE CRUCERO EN VIAJE ***************************/
 /*Se debe ejecutar después de elegir un crucero en crucerosDisponibles*/
 
-CREATE PROCEDURE reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero_codigo WHERE viaj_codigo = @crucero_codigo
@@ -2237,7 +2238,7 @@ GO
 
 /*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
 
-CREATE PROCEDURE cancelacionViajes @crucero_codigo varchar(255), @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajes @crucero_codigo varchar(255), @fechaSistema datetime
 AS
 DECLARE @pasaje_codigo int
 BEGIN
@@ -2263,7 +2264,7 @@ que cruceros poner para el viaje*/
 /*Si la baja es temporal y se deciden no cancelar el viaje, ejecutar el SP "corrimientoDiasViajes" para que se reprogramen automaticamente
 los viajes*/
 
-CREATE PROCEDURE bajaCrucero @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.bajaCrucero @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
 AS
 DECLARE @tipo_baja int
 BEGIN
@@ -2294,7 +2295,7 @@ GO
 --resultado = -2 -> El crucero esta deshabilitado
 --resultado = -3 -> El recorrido esta deshabilitado
 
-CREATE PROCEDURE generarViaje @idRecorrido int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFinalizacion datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.generarViaje @idRecorrido int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFinalizacion datetime
 	, @fechaSistema datetime, @resultado int output
 AS
 BEGIN
@@ -2336,7 +2337,7 @@ GO
 /************************** CREACION de tipos de medios de pago, empresas de tarjetas y cantidad de cuotas disponibles *******************************************/
 
 
-CREATE PROCEDURE cargarTiposDeMediosDePagoIniciales
+CREATE PROCEDURE FIDEOS_CON_TUCO.cargarTiposDeMediosDePagoIniciales
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Tipo_medio_de_pago(tipo_medi_descripcion) VALUES ('Tarjeta de credito')
@@ -2344,7 +2345,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE cargarEmpresasDeTarjetasIniciales
+CREATE PROCEDURE FIDEOS_CON_TUCO.cargarEmpresasDeTarjetasIniciales
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Empresa_tarjeta(empr_descripcion) VALUES('Visa')
@@ -2352,7 +2353,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE cargarCantidadDeCuotasDeEmpresasIniciales
+CREATE PROCEDURE FIDEOS_CON_TUCO.cargarCantidadDeCuotasDeEmpresasIniciales
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Cantidad_cuotas(cant_cantidad, cant_empresa)
@@ -2368,16 +2369,16 @@ BEGIN
 END
 GO
 
-EXEC cargarTiposDeMediosDePagoIniciales
-EXEC cargarEmpresasDeTarjetasIniciales
-EXEC cargarCantidadDeCuotasDeEmpresasIniciales
+EXEC FIDEOS_CON_TUCO.cargarTiposDeMediosDePagoIniciales
+EXEC FIDEOS_CON_TUCO.cargarEmpresasDeTarjetasIniciales
+EXEC FIDEOS_CON_TUCO.cargarCantidadDeCuotasDeEmpresasIniciales
 GO
 
 
 /************************** Manejo de CLIENTES *******************************************/
 
 
-CREATE PROCEDURE ingresarCliente @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
+CREATE PROCEDURE FIDEOS_CON_TUCO.ingresarCliente @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
 	, @direccion varchar(255), @fechaNacimiento datetime, @codigoCliente int output, @mail varchar(255) = NULL
 AS
 BEGIN
@@ -2388,7 +2389,7 @@ END
 GO
 
 
-CREATE PROCEDURE traerCliente @dni numeric(18,0)
+CREATE PROCEDURE FIDEOS_CON_TUCO.traerCliente @dni numeric(18,0)
 AS
 BEGIN
 	SELECT clie_codigo AS ID, clie_nombre AS Nombre, clie_apellido AS Apellido, clie_dni AS DNI, clie_telefono AS Telefono, clie_mail AS Mail,
@@ -2397,7 +2398,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE actualizarCliente @codigoCliente int, @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarCliente @codigoCliente int, @nombre varchar(255), @apellido varchar(255), @dni numeric(18,0), @telefono numeric(18,0)
 	, @direccion varchar(255), @fechaNacimiento datetime, @mail varchar(255) = NULL
 AS
 BEGIN
@@ -2457,7 +2458,7 @@ GO
 /************************** LISTADO de viajes para comprar *******************************************/
 
 
-CREATE PROCEDURE mostrarViajesParaComprar @fechaInicio date, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarViajesParaComprar @fechaInicio date, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255)
 AS 
 BEGIN
 	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
@@ -2484,7 +2485,7 @@ GO
 
 
 
-CREATE PROCEDURE mostrarTodosLosViajesParaComprar @fechaSistema date
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTodosLosViajesParaComprar @fechaSistema date
 AS 
 BEGIN
 	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
@@ -2507,7 +2508,7 @@ GO
 /************************** LISTADO de cabinas disponibles de un viaje *******************************************/
 
 
-CREATE PROCEDURE mostrarCabinasDisponiblesDeUnViaje @codigoViaje int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCabinasDisponiblesDeUnViaje @codigoViaje int
 AS
 BEGIN
 	SELECT cabi_codigo AS Codigo, cabi_numero AS Numero, cabi_piso AS Piso, tipo_descripcion AS Tipo, reco_precio*tipo_porcentaje_recargo AS Precio
@@ -2530,21 +2531,21 @@ GO
 /************************** MANEJO de medios de pago *******************************************/
 
 
-CREATE PROCEDURE mostrarTiposDeMediosDePago
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTiposDeMediosDePago
 AS
 BEGIN
 	SELECT tipo_medi_codigo, tipo_medi_descripcion FROM FIDEOS_CON_TUCO.Tipo_medio_de_pago
 END
 GO
 
-CREATE PROCEDURE mostrarEmpresasDeTarjetas
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarEmpresasDeTarjetas
 AS
 BEGIN
 	SELECT empr_codigo, empr_descripcion FROM FIDEOS_CON_TUCO.Empresa_tarjeta
 END
 GO
 
-CREATE PROCEDURE mostrarCuotasDeUnaEmpresa @codigoEmpresa int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCuotasDeUnaEmpresa @codigoEmpresa int
 AS
 BEGIN
 	SELECT cant_cantidad FROM FIDEOS_CON_TUCO.Cantidad_cuotas WHERE cant_empresa = @codigoEmpresa
@@ -2552,7 +2553,7 @@ END
 GO
 
 --@tipoTarjeta debe ser 'DEBITO' O 'CREDITO'
-CREATE PROCEDURE ingresarTarjeta @numeroTarjeta numeric(20,0), @codigoVerificador int, @tipoTarjeta varchar(255), @codigoEmpresa int
+CREATE PROCEDURE FIDEOS_CON_TUCO.ingresarTarjeta @numeroTarjeta numeric(20,0), @codigoVerificador int, @tipoTarjeta varchar(255), @codigoEmpresa int
 AS
 BEGIN
 	IF NOT EXISTS(SELECT tarj_numero FROM FIDEOS_CON_TUCO.Tarjeta WHERE tarj_numero = @numeroTarjeta)
@@ -2563,7 +2564,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE ingresarMedioDePagoConTarjeta @tipoMedioDePago int, @numeroTarjeta numeric (20,0), @cantidadDeCuotas int, @codigoMedioDePago int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.ingresarMedioDePagoConTarjeta @tipoMedioDePago int, @numeroTarjeta numeric (20,0), @cantidadDeCuotas int, @codigoMedioDePago int output
 AS
 BEGIN
 	IF NOT EXISTS(SELECT medi_codigo FROM FIDEOS_CON_TUCO.Medio_de_pago WHERE medi_tarjeta = @numeroTarjeta 
@@ -2585,7 +2586,7 @@ GO
 /************************** GENERACION DE PASAJE, COMPRAS Y RESERVAS *******************************************/
 
 
-CREATE PROCEDURE generarPasaje @codigoCliente int, @codigoViaje int, @codigoCabina int, @codigoPasaje int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.generarPasaje @codigoCliente int, @codigoViaje int, @codigoCabina int, @codigoPasaje int output
 AS
 BEGIN
 	DECLARE @precioPasaje int
@@ -2601,7 +2602,7 @@ END
 GO
 
 
-CREATE PROCEDURE generarReservaDeUnPasaje @codigoPasaje int, @fechaSistema datetime, @codigoReserva int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.generarReservaDeUnPasaje @codigoPasaje int, @fechaSistema datetime, @codigoReserva int output
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Reserva(rese_fecha, rese_pasaje)
@@ -2611,7 +2612,7 @@ END
 GO
 
 
-CREATE PROCEDURE generarCompra @codigoCliente int, @fechaSistema datetime, @codigoMedioDePago int, @codigoCompra int output
+CREATE PROCEDURE FIDEOS_CON_TUCO.generarCompra @codigoCliente int, @fechaSistema datetime, @codigoMedioDePago int, @codigoCompra int output
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Compra(comp_cliente, comp_fecha, comp_medio_de_pago, comp_monto_total)
@@ -2621,7 +2622,7 @@ END
 GO
 
 
-CREATE PROCEDURE agregarPasajeAUnaCompra @codigoPasaje int, @codigoCompra int
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarPasajeAUnaCompra @codigoPasaje int, @codigoCompra int
 AS
 BEGIN
 	IF NOT EXISTS(SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva 
@@ -2695,7 +2696,7 @@ GO
 /************************** LISTADO con la información de la compra hecha *******************************************/
 
 
-CREATE PROCEDURE mostrarDatosFinalizadaLaCompra @codigoCompra int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarDatosFinalizadaLaCompra @codigoCompra int
 AS
 BEGIN
 	SELECT comp_codigo AS Codigo_compra, viaj_fecha_inicio AS Fecha_inicio_viaje, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion_viaje,
@@ -2726,7 +2727,7 @@ GO
 /*######################## [10]::[LISTADOS ESTADISTICOS] ############################*/
 
 --TOP 5 DE LOS RECORRIDOS CON MAS PASAJES VENDIDOS
-CREATE PROCEDURE mostrarLosCincoRecorridosConMasPasajesComprados @anio int, @semestre int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoRecorridosConMasPasajesComprados @anio int, @semestre int
 AS
 BEGIN
 	DECLARE @mesInicial int
@@ -2758,7 +2759,7 @@ END
 GO
 
 --TOP 5 DE LOS RECORRIDOS CON MAS CABINAS LIBRES EN CADA UNO DE LOS VIAJES
-CREATE PROCEDURE mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje @anio int, @semestre int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoRecorridosConMasCabinasLibresEnCadaViaje @anio int, @semestre int
 AS
 BEGIN
 	DECLARE @mesInicial int
@@ -2793,7 +2794,7 @@ GO
 
 
 --TOP 5 DE LOS CRUCEROS CON MAS DÍAS FUERA DE SERVICIO
-CREATE PROCEDURE mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int
 AS
 BEGIN
 	DECLARE @mesInicial int

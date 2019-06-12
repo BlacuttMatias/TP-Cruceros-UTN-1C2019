@@ -69,7 +69,7 @@ namespace CapaDatos
         public static void ejecutarSPV(params object[] args)
         {
             SqlConnection coneccion = new SqlConnection(Coneccion.Con);
-            SqlCommand cmd = new SqlCommand(args[0].ToString(), coneccion);
+            SqlCommand cmd = new SqlCommand("FIDEOS_CON_TUCO." + args[0].ToString(), coneccion);
             cmd.CommandType = CommandType.StoredProcedure;
             for (int i = 0; i < args.Length - 2; i++)
             {
@@ -93,7 +93,7 @@ namespace CapaDatos
             try
             {
                 SqlConnection coneccion = new SqlConnection(Coneccion.Con);
-                SqlCommand cmd = new SqlCommand(args[0].ToString(), coneccion);
+                SqlCommand cmd = new SqlCommand("FIDEOS_CON_TUCO." + args[0].ToString(), coneccion);
                 cmd.CommandType = CommandType.StoredProcedure;
                 for (int i = 1; i < args.Length - 2; i++)
                 {
@@ -126,7 +126,7 @@ namespace CapaDatos
             coneccion.ConnectionString = Coneccion.Con;
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = coneccion;
-            cmd.CommandText = args[0].ToString();
+            cmd.CommandText = "FIDEOS_CON_TUCO." + args[0].ToString();
             cmd.CommandType = CommandType.StoredProcedure;
             FrbaCrucero.AbmRecorrido.Debugger debugger = new FrbaCrucero.AbmRecorrido.Debugger();
             for (int i = 0; i < args.Length - 2; i++)

@@ -21,11 +21,6 @@ namespace FrbaCrucero
             InitializeComponent();
         }
 
-        private void frmInicio_Load(object sender, EventArgs e)
-        {
-            Coneccion.ejecutarSPV("actualizarCrucerosHabilitados", "@fechaSistema", Coneccion.getFechaSistema());
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             frmLogin frm = new frmLogin();
@@ -45,6 +40,11 @@ namespace FrbaCrucero
             this.Hide();
             frm.ShowDialog();
             this.Close();
+        }
+
+        private void frmInicio_Load(object sender, EventArgs e)
+        {
+            Coneccion.ejecutarSPV("actualizarCrucerosHabilitados", "@fechaSistema", Coneccion.getFechaSistema());
         }
     }
 }
