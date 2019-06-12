@@ -332,8 +332,13 @@ drop procedure [FIDEOS_CON_TUCO].[reemplazoCrucero]
 GO
 
 if exists (select * from dbo.sysobjects where id =
-object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [FIDEOS_CON_TUCO].[cancelacionViajes]
+object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajesParaBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelacionViajesParaBajaPermanente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajesParaBajaTemporal]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelacionViajesParaBajaTemporal]
 GO
 
 if exists (select * from dbo.sysobjects where id =
@@ -2237,23 +2242,34 @@ GO
 
 /*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajes @crucero_codigo varchar(255), @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajesParaBajaPermanente @codigoCrucero varchar(255), @fechaSistema datetime, @fechaBaja datetime
 AS
-DECLARE @pasaje_codigo int
 BEGIN
-	DECLARE cPasajes CURSOR FOR SELECT pasa_codigo	FROM FIDEOS_CON_TUCO.Crucero	JOIN FIDEOS_CON_TUCO.Viaje ON (cruc_codigo = viaj_crucero) 
-																					JOIN FIDEOS_CON_TUCO.Pasaje ON (viaj_codigo = pasa_viaje)
-												WHERE cruc_codigo = @crucero_codigo
-	OPEN cPasajes
-	FETCH NEXT FROM cPasajes INTO @pasaje_codigo
-	WHILE (@@FETCH_STATUS = 0)
-	BEGIN
-		INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
-					VALUES (@pasaje_codigo,'Baja del crucero', @fechaSistema)
-		FETCH NEXT FROM cPasajes INTO @pasaje_codigo
-	END
-	CLOSE cPasajes
-	DEALLOCATE cPasajes
+	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
+	SELECT pasa_codigo, 'Cancelación por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
+	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_crucero = @codigoCrucero)
+	WHERE pasa_viaje = viaj_codigo AND viaj_fecha_inicio >= @fechaBaja
+	AND NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+		JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)
+END
+GO
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajesParaBajaTemporal @codigoCrucero varchar(255)
+	, @fechaSistema datetime, @fechaBaja datetime, @fechaAlta datetime
+AS
+BEGIN
+	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
+	SELECT pasa_codigo, 'Cancelación por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
+	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_crucero = @codigoCrucero)
+	WHERE pasa_viaje = viaj_codigo 
+	AND (
+		(@fechaBaja <= viaj_fecha_inicio AND viaj_fecha_inicio < @fechaAlta)
+		OR (@fechaBaja <= viaj_fecha_finalizacion_estimada AND viaj_fecha_finalizacion_estimada <= @fechaAlta)
+		OR (viaj_fecha_inicio <= @fechaBaja AND @fechaBaja <= viaj_fecha_finalizacion_estimada)
+		OR (viaj_fecha_inicio < @fechaAlta AND @fechaAlta <= viaj_fecha_finalizacion_estimada)
+	)
+	AND NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
+		JOIN FIDEOS_CON_TUCO.Reserva ON (rese_pasaje = pasa_codigo) WHERE canc_reserva = rese_codigo)
 END
 GO
 
