@@ -456,6 +456,16 @@ object_id(N'[FIDEOS_CON_TUCO].[cruceroTieneViajes]') and OBJECTPROPERTY(id, N'Is
 drop procedure [FIDEOS_CON_TUCO].[cruceroTieneViajes]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[correrViajesSuperpuestosUnDia]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[correrViajesSuperpuestosUnDia]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[modificarViajesSuperpuestosConMismoCrucero]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[modificarViajesSuperpuestosConMismoCrucero]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1419,7 +1429,47 @@ GO
 --GO
 
 
+/********************************** Modificación de viajes que se realizan al mismo tiempo con el mismo crucero*********************************/  
 
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.correrViajesSuperpuestosUnDia @codigoViaje int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFin datetime
+AS
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_fecha_inicio = DATEADD(DAY, 1, viaj_fecha_inicio),
+	viaj_fecha_finalizacion_estimada = DATEADD(DAY, 1, viaj_fecha_finalizacion_estimada),
+	viaj_fecha_finalizacion = DATEADD(DAY, 1, viaj_fecha_finalizacion)
+	WHERE viaj_crucero = @codigoCrucero AND viaj_codigo <> @codigoViaje AND
+	(
+	viaj_fecha_inicio BETWEEN @fechaInicio AND @fechaFin
+	OR viaj_fecha_finalizacion_estimada BETWEEN @fechaInicio AND @fechaFin
+	OR @fechaInicio BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada
+	OR @fechaFin BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada
+	)
+END
+GO
+
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.modificarViajesSuperpuestosConMismoCrucero
+AS
+BEGIN
+	DECLARE @codigoViaje int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFin datetime
+	DECLARE c1 CURSOR DYNAMIC FOR SELECT viaj_codigo, viaj_crucero, viaj_fecha_inicio, viaj_fecha_finalizacion_estimada
+	FROM FIDEOS_CON_TUCO.Viaje ORDER BY viaj_crucero, viaj_fecha_inicio
+	FOR UPDATE 
+	OPEN c1
+	FETCH NEXT FROM c1 INTO @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		EXEC correrViajesSuperpuestosUnDia @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
+		FETCH NEXT FROM c1 INTO @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
+	END
+	CLOSE c1
+	DEALLOCATE c1
+END
+GO
+
+EXEC FIDEOS_CON_TUCO.modificarViajesSuperpuestosConMismoCrucero
 
 
 
