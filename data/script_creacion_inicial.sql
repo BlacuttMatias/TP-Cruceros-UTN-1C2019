@@ -1406,12 +1406,12 @@ GO
 /**********************************Carga de Cancelaciones de reservas**************************************************************************/
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
-SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
-FROM [FIDEOS_CON_TUCO].[Reserva]
-JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
-WHERE pasa_compra IS NULL
-GO
+--INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
+--SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
+--FROM [FIDEOS_CON_TUCO].[Reserva]
+--JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
+--WHERE pasa_compra IS NULL
+--GO
 
 
 
@@ -1571,15 +1571,14 @@ GO
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.cancelarReservas @fechaSistema datetime
 AS
-DECLARE @reserva_codigo int
-DECLARE @reserva_fecha datetime
 BEGIN
-	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_reserva(canc_reserva, canc_fecha, canc_detalle)
-	SELECT R1.rese_codigo, @fechaSistema, 'Reserva vencida' FROM FIDEOS_CON_TUCO.Reserva R1
-	WHERE R1.rese_codigo NOT IN (SELECT canc_reserva FROM FIDEOS_CON_TUCO.Cancelacion_reserva)
-	AND DATEDIFF(DAY, @fechaSistema, rese_fecha) >= 4
-	AND R1.rese_codigo NOT IN (SELECT R2.rese_codigo FROM FIDEOS_CON_TUCO.Pasaje	JOIN FIDEOS_CON_TUCO.Compra on (pasa_compra = comp_codigo)
-																					JOIN FIDEOS_CON_TUCO.Reserva R2 on (pasa_codigo = rese_pasaje))
+	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_reserva(canc_fecha, canc_reserva, canc_detalle)
+	SELECT @fechaSistema, rese_codigo, 'Reserva expirada' FROM FIDEOS_CON_TUCO.Reserva
+	JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_codigo = rese_pasaje)
+	WHERE DATEDIFF(DAY, rese_fecha, @fechaSistema) > 3 
+	AND pasa_compra IS NULL
+	AND NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE rese_pasaje = canc_pasa_pasaje)
+	AND NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cancelacion_reserva WHERE rese_codigo = canc_reserva)
 END
 GO
 
