@@ -16,10 +16,10 @@ namespace FrbaCrucero.AbmCrucero
         List<nodoCabina> cabinas = new List<nodoCabina>();
         string codigo = "";
         DataTable dt = new DataTable();
+        Crucero abm = new Crucero();
         public frmModificarCruceroSeleccionado(params object[] args)
         {
             InitializeComponent();
-            this.Load += frmAltaCrucero_Load;
             btnAceptar.Enabled = false;
             codigo = args[0] as string;
             lblCodigo.Text += $" {codigo}";
@@ -58,7 +58,13 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificarCruceroSeleccionado_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            Crucero abm = new Crucero();
+            DataTable dtMarcas = abm.mostrarMarcas();
+            llenarCB(cBoxMarca, dtMarcas, "Marca");
+
+            DataTable dtModelos = abm.mostrarModelos();
+            llenarCB(cBoxModelo, dtModelos, "Modelo");
+
+
             dt = abm.mostrarCabinasDeUnCrucero(codigo);
             dataGridView1.DataSource = dt;
             llenarLista();
@@ -71,22 +77,8 @@ namespace FrbaCrucero.AbmCrucero
                     log += "\n" + $"{i}:{c}";
                 }
 
-                debugger.log(log);
+                //debugger.log(log);
             }
-        }
-
-        Crucero abm;
-        AbmRecorrido.Debugger debugger;
-        private void frmAltaCrucero_Load(object sender, EventArgs e)
-        {
-            debugger = new AbmRecorrido.Debugger();
-            debugger.Show();
-            abm = new Crucero();
-            DataTable dtMarcas = abm.mostrarMarcas();
-            llenarCB(cBoxMarca, dtMarcas, "Marca");
-
-            DataTable dtModelos = abm.mostrarModelos();
-            llenarCB(cBoxModelo, dtModelos, "Modelo");
         }
 
         private void imprimir(List<int> c)
@@ -97,6 +89,7 @@ namespace FrbaCrucero.AbmCrucero
         }
         private void llenarCB(ComboBox cb, DataTable source, string columna)
         {
+            cb.Items.Clear();
             foreach (DataRow marca in source.Rows)
                 cb.Items.Add(marca[columna]);
         }
@@ -124,7 +117,7 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            debugger.log($"Codigo:{codigo} Marca:{cBoxMarca.Text} Modelo:{cBoxModelo.Text}");
+            //debugger.log($"Codigo:{codigo} Marca:{cBoxMarca.Text} Modelo:{cBoxModelo.Text}");
             abm.modificarCrucero(codigo, cBoxMarca.Text, cBoxModelo.Text);
             //MessageBox.Show($"Ya existe:{codigo}", "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

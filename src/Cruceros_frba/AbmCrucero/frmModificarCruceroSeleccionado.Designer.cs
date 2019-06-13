@@ -137,7 +137,6 @@
             this.MinimumSize = new System.Drawing.Size(426, 327);
             this.Name = "frmModificarCruceroSeleccionado";
             this.Text = "frm";
-            this.Activated += new System.EventHandler(this.frmModificarCruceroSeleccionado_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

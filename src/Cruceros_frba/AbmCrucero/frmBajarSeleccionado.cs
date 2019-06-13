@@ -57,7 +57,7 @@ namespace FrbaCrucero.AbmCrucero
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Crucero abm = new Crucero();
-            if(abm.tieneViajes(codigo,Coneccion.getFechaSistema())==1)
+            if (abm.tieneViajes(codigo, Coneccion.getFechaSistema()) == 1)
             {
                 DialogResult r;
                 r = MessageBox.Show($"Advertencia el Crucero {codigo} tiene viajes programados.\n¿Desea continuar?", "FrbaCruceros", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
