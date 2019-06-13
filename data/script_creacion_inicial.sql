@@ -476,6 +476,48 @@ object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsP
 drop procedure [FIDEOS_CON_TUCO].[cancelacionViajes]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[mostrarPuertosDeUnRecorrido]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarPuertosDeUnRecorrido]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[mostrarCrucerosParaUnViaje]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarCrucerosParaUnViaje]
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.cantidadCabinasEstandar') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.cantidadCabinasEstandar
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.cantidadCabinasExteriores') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.cantidadCabinasExteriores
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.cantidadCabinasSuites') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.cantidadCabinasSuites
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.cantidadCabinasBalcones') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.cantidadCabinasBalcones
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.cantidadCabinasEjecutivas') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.cantidadCabinasEjecutivas
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.unCruceroTieneViajesDurante') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.unCruceroTieneViajesDurante
+GO
+
+
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1431,12 +1473,12 @@ GO
 /**********************************Carga de Cancelaciones de reservas**************************************************************************/
 
 
---INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
---SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
---FROM [FIDEOS_CON_TUCO].[Reserva]
---JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
---WHERE pasa_compra IS NULL
---GO
+INSERT INTO [FIDEOS_CON_TUCO].[Cancelacion_reserva] (canc_reserva, canc_fecha)
+SELECT rese_codigo, DATEADD(DAY, 4, rese_fecha)
+FROM [FIDEOS_CON_TUCO].[Reserva]
+JOIN [FIDEOS_CON_TUCO].[Pasaje] ON (pasa_codigo = rese_pasaje)
+WHERE pasa_compra IS NULL
+GO
 
 
 /********************************** Modificación de viajes que se realizan al mismo tiempo con el mismo crucero*********************************/  
@@ -2363,6 +2405,110 @@ GO
 
 
 /*######################## [07]::[GENERAR VIAJE] ############################*/
+
+
+/******************** SPs para mostrar los datos a ingresar para generar el viaje ****************************************************/ 
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertosDeUnRecorrido
+AS
+BEGIN
+	SELECT FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
+END
+GO
+
+CREATE FUNCTION FIDEOS_CON_TUCO.cantidadCabinasEstandar (@codigoCrucero varchar(255)) RETURNS int
+AS
+BEGIN
+	DECLARE @cantidadCabinas int
+	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina estandar'
+	RETURN @cantidadCabinas
+END
+GO
+
+CREATE FUNCTION FIDEOS_CON_TUCO.cantidadCabinasExteriores (@codigoCrucero varchar(255)) RETURNS int
+AS
+BEGIN
+	DECLARE @cantidadCabinas int
+	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina exterior'
+	RETURN @cantidadCabinas
+END
+GO
+
+CREATE FUNCTION FIDEOS_CON_TUCO.cantidadCabinasSuites (@codigoCrucero varchar(255)) RETURNS int
+AS
+BEGIN
+	DECLARE @cantidadCabinas int
+	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Suite'
+	RETURN @cantidadCabinas
+END
+GO
+
+CREATE FUNCTION FIDEOS_CON_TUCO.cantidadCabinasBalcones (@codigoCrucero varchar(255)) RETURNS int
+AS
+BEGIN
+	DECLARE @cantidadCabinas int
+	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Balcón'
+	RETURN @cantidadCabinas
+END
+GO
+
+CREATE FUNCTION FIDEOS_CON_TUCO.cantidadCabinasEjecutivas (@codigoCrucero varchar(255)) RETURNS int
+AS
+BEGIN
+	DECLARE @cantidadCabinas int
+	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Ejecutivo'
+	RETURN @cantidadCabinas
+END
+GO
+
+
+CREATE FUNCTION FIDEOS_CON_TUCO.unCruceroTieneViajesDurante (@codigoCrucero varchar(255), @fechaInicio datetime, @fechaFin datetime) RETURNS bit
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Viaje WHERE viaj_crucero = @codigoCrucero
+		AND (
+			(viaj_fecha_inicio BETWEEN @fechaInicio AND @fechaFin)
+			OR (viaj_fecha_finalizacion_estimada BETWEEN @fechaInicio AND @fechaFin)
+			OR (@fechaInicio BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)
+			OR (@fechaFin BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)
+		)
+		)
+		BEGIN
+		RETURN 1
+		END
+	RETURN 0
+END
+GO
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCrucerosParaUnViaje @fechaInicio datetime, @fechaFin datetime
+AS
+BEGIN
+	SELECT cruc_codigo AS Codigo
+		, marc_descripcion AS Marca
+		, mode_descripcion AS Modelo
+		, FIDEOS_CON_TUCO.cantidadCabinasEstandar(cruc_codigo) AS Cantidad_Cabinas_Estándar
+		, FIDEOS_CON_TUCO.cantidadCabinasExteriores(cruc_codigo) AS Cantidad_Cabinas_Exteriores
+		, FIDEOS_CON_TUCO.cantidadCabinasSuites(cruc_codigo) AS Cantidad_Cabinas_Suites
+		, FIDEOS_CON_TUCO.cantidadCabinasBalcones(cruc_codigo) AS Cantidad_Cabinas_Balcones
+		, FIDEOS_CON_TUCO.cantidadCabinasEjecutivas(cruc_codigo) AS Cantidad_Cabinas_Ejecutivas
+		, cruc_cantidad_cabinas AS Cantidad_Total_Cabinas
+	FROM FIDEOS_CON_TUCO.Crucero
+	JOIN FIDEOS_CON_TUCO.Marca ON (cruc_marca = marc_codigo)
+	JOIN FIDEOS_CON_TUCO.Modelo ON (cruc_modelo = mode_codigo)
+	WHERE FIDEOS_CON_TUCO.unCruceroTieneViajesDurante(cruc_codigo, @fechaInicio, @fechaFin) = 0
+END
+GO
+
+
+/*******************************************  Generacion del viaje *****************************************************/
+
 
 --Errores
 --resultado = 0 -> la fecha de inicio del viajes es menor que la actual
