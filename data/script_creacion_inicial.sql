@@ -516,7 +516,20 @@ OBJECT_ID('FIDEOS_CON_TUCO.unCruceroTieneViajesDurante') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.unCruceroTieneViajesDurante
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[cruceroDisponible]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cruceroDisponible]
+GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[cruceroNuevoIgualAnterior]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cruceroNuevoIgualAnterior]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[reasignarPasajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[reasignarPasajes]
+GO
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -2315,7 +2328,7 @@ GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
-CREATE PROCEDURE cruceroDisponible @codigo_crucero varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroDisponible @codigo_crucero varchar(255)
 AS
 DECLARE @viaje_codigo int
 DECLARE @viaje_fecha_inicio datetime
@@ -2353,7 +2366,7 @@ GO
 
 /*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA ***************************/
 
-CREATE PROCEDURE cruceroNuevoIgualAnterior @codigo_cruc_nuevo varchar(255), @codigo_cruc_ant varchar(255), @fechaSistema datetime
+CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroNuevoIgualAnterior @codigo_cruc_nuevo varchar(255), @codigo_cruc_ant varchar(255), @fechaSistema datetime
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo, cruc_marca, cruc_cantidad_cabinas, cruc_fecha_de_alta, cruc_modelo, cruc_esta_habilitado)
@@ -2365,7 +2378,7 @@ GO
 /*************************** REASIGNACIÓN DE PASAJES ***************************/
 /*Realizar este SP luego de asignar el nuevo crucero al viaje*/
 
-CREATE PROCEDURE reasignarPasajes @codigo_crucero varchar(255), @codigo_viaje int
+CREATE PROCEDURE FIDEOS_CON_TUCO.reasignarPasajes @codigo_crucero varchar(255), @codigo_viaje int
 AS
 DECLARE @codigo_pasaje int
 DECLARE @tipo_cabina int
@@ -2392,7 +2405,7 @@ GO
 /*************************** REEMPLAZO DE CRUCERO EN VIAJE ***************************/
 /*Se debe ejecutar después de elegir un crucero en crucerosDisponibles*/
 
-/*CREATE PROCEDURE reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
+/*CREATE PROCEDURE FIDEOS_CON_TUCO.reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero_codigo WHERE viaj_codigo = @viaje_codigo
