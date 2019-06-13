@@ -466,6 +466,16 @@ object_id(N'[FIDEOS_CON_TUCO].[modificarViajesSuperpuestosConMismoCrucero]') and
 drop procedure [FIDEOS_CON_TUCO].[modificarViajesSuperpuestosConMismoCrucero]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[mostrarViajesParaComprarParaUnCliente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[mostrarViajesParaComprarParaUnCliente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[cancelacionViajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cancelacionViajes]
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -1396,7 +1406,7 @@ GO
 UPDATE [FIDEOS_CON_TUCO].[Reserva] SET rese_pasaje = p2.pasa_codigo FROM [FIDEOS_CON_TUCO].[Reserva]
 JOIN [FIDEOS_CON_TUCO].[Pasaje] p1 ON (p1.pasa_codigo = rese_pasaje)
 JOIN [FIDEOS_CON_TUCO].[Pasaje] p2 ON (p2.pasa_cliente = p1.pasa_cliente AND p2.pasa_viaje = p1.pasa_viaje AND p2.pasa_compra IS NOT NULL)
-JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = p2.pasa_compra)
+JOIN [FIDEOS_CON_TUCO].[Compra] ON (comp_codigo = p2.pasa_compra) 
 WHERE DATEDIFF(DAY, rese_fecha, comp_fecha) <= 3
 GO
 
@@ -1470,7 +1480,7 @@ END
 GO
 
 EXEC FIDEOS_CON_TUCO.modificarViajesSuperpuestosConMismoCrucero
-
+GO
 
 
 /************************** STORED PROCEDURES **************************/
@@ -2546,6 +2556,50 @@ END
 GO
 
 
+/************************** LISTADO de viajes para comprar para un cliente, mostrando solo viajes no solapados *******************************************/
+
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarViajesParaComprarParaUnCliente @fechaInicio date, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @codigoCliente int
+AS 
+BEGIN
+	SELECT v1.viaj_codigo AS Codigo_de_viaje, v1.viaj_fecha_inicio AS Fecha_de_inicio, v1.viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
+		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
+			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
+			WHERE pasa_viaje = v1.viaj_codigo AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+				WHERE canc_pasa_pasaje = pasa_codigo)
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo)
+			) AS t1) AS Cantidad_cabinas_disponibles,
+		FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
+		FROM FIDEOS_CON_TUCO.Viaje v1
+		JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_ciudad = @ciudadPuertoOrigen)
+		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
+		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = v1.viaj_crucero)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_codigo AND reco_puerto_destino = p2.puer_codigo)
+		WHERE CONVERT(DATE, v1.viaj_fecha_inicio) = @fechaInicio 
+		AND v1.viaj_recorrido = reco_id 
+		AND reco_esta_habilitado = 1 
+		AND cruc_esta_habilitado = 1
+			AND NOT EXISTS(
+				SELECT * FROM FIDEOS_CON_TUCO.Viaje v2 JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_viaje = v2.viaj_codigo)
+				WHERE NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo)
+					AND pasa_cliente = @codigoCliente 
+					AND v1.viaj_recorrido <> v2.viaj_recorrido
+					AND (
+						v2.viaj_fecha_inicio BETWEEN v1.viaj_fecha_inicio AND v1.viaj_fecha_finalizacion_estimada
+						OR v2.viaj_fecha_finalizacion_estimada BETWEEN v1.viaj_fecha_inicio AND v1.viaj_fecha_finalizacion_estimada
+						OR v1.viaj_fecha_inicio BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
+						OR v1.viaj_fecha_finalizacion_estimada BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
+					)
+				)
+END
+GO
+
+
 /************************** LISTADO de TODOS los viajes para comprar *******************************************/
 
 
@@ -2556,16 +2610,17 @@ BEGIN
 	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
 		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
 			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
-			WHERE pasa_viaje = viaj_codigo AND (pasa_compra IS NOT NULL 
-				OR NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
+			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+				WHERE canc_pasa_pasaje = pasa_codigo)
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
-					WHERE rese_pasaje = pasa_codigo))
+					WHERE rese_pasaje = pasa_codigo)
 			) AS t1) AS Cantidad_cabinas_disponibles,
 		FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
 		FROM FIDEOS_CON_TUCO.Viaje 
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
-		WHERE CONVERT(DATE, viaj_fecha_inicio) >= @fechaSistema AND viaj_recorrido = reco_id AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		WHERE CONVERT(DATE, viaj_fecha_inicio) >= @fechaSistema AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
 END
 GO
 

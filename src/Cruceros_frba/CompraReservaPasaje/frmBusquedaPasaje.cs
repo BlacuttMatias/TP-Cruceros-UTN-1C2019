@@ -55,7 +55,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             #region LLENAR GRID
 
             
-            this.dataGridViajesDisponibles.DataSource = gestion.mostrarTodosLosViajesDisponibles();
+            //this.dataGridViajesDisponibles.DataSource = gestion.mostrarTodosLosViajesDisponibles();
 
             #endregion
 
@@ -81,7 +81,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             else
             {
-                this.dataGridViajesDisponibles.DataSource = gestion.filtrarViaje(dtpFechaPartida.Value, cmbPuertoOrigen.Text, cmbPuertoDestino.Text);
+                this.dataGridViajesDisponibles.DataSource = 
+                    gestion.mostrarViajesDisponiblesParaUnCliente(dtpFechaPartida.Value
+                    , cmbPuertoOrigen.Text, cmbPuertoDestino.Text, this.codigoCliente);
             }
         }
 
