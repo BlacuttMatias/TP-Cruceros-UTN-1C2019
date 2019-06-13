@@ -223,7 +223,7 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            debugger.log($"Codigo:{textBox1.Text} Marca:{cBoxMarca.Text} Modelo:{cBoxModelo.Text} CantidadCabinas:{contarCabinas()}");
+            debugger.log(string.Format("Codigo:{0} Marca:{1} Modelo:{2} CantidadCabinas:{3}",textBox1.Text,cBoxMarca.Text,cBoxModelo.Text,contarCabinas()));
             if (abm.crearCrucero(textBox1.Text, cBoxMarca.Text, cBoxModelo.Text, contarCabinas(), dateTimePicker1.Value) == 1)
             {
                 foreach (nodoCabina a in cabinas)
@@ -232,14 +232,14 @@ namespace FrbaCrucero.AbmCrucero
                     string[] cabs = { "Cabina Estandar", "Cabina Exterior", "Suite", "Cabina Balcón", "Ejecutivo" };
                     for (int i = 0; i <= a.cabinas.Count - 1; i++)
                     {
-                        log += $" {cabs[i]}:{a.cabinas[i]}";
+                        log += string.Format(" {0}:{1}",cabs[i],a.cabinas[i]);
                         abm.agregarCabinaAUnCrucero(textBox1.Text, i, a.piso, cabs[i]);
                     }
                     debugger.log(log);
                 }
             }
             else
-                MessageBox.Show($"Ya existe:{textBox1.Text}", "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format("Ya existe:{0}", textBox1.Text), "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private int contarCabinas()

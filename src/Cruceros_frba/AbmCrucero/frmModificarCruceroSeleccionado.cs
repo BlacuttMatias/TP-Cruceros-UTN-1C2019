@@ -22,7 +22,7 @@ namespace FrbaCrucero.AbmCrucero
             InitializeComponent();
             btnAceptar.Enabled = false;
             codigo = args[0] as string;
-            lblCodigo.Text += $" {codigo}";
+            lblCodigo.Text += string.Format(" {0}",codigo);
             cBoxMarca.Text = args[1] as string;
             cBoxModelo.Text = args[2] as string;
             Load += new EventHandler(frmModificarCruceroSeleccionado_Load);
@@ -70,11 +70,11 @@ namespace FrbaCrucero.AbmCrucero
             llenarLista();
             foreach (nodoCabina n in cabinas)
             {
-                string log = $"{nameof(n.piso)}:{n.piso}";
+                string log = string.Format("{0}:{1}","Piso",n.piso);
                 int i = 0;
                 foreach (int c in n.cabinas)
                 {
-                    log += "\n" + $"{i}:{c}";
+                    log += "\n" + string.Format("{0}:{1}",i,c);
                 }
 
                 //debugger.log(log);

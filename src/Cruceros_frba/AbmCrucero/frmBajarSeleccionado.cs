@@ -22,7 +22,7 @@ namespace FrbaCrucero.AbmCrucero
             InitializeComponent();
             this.Load += FrmBajarSeleccionado_Load;
             codigo = args[0] as string;
-            lblCodigo.Text += $":{codigo}";
+            lblCodigo.Text += string.Format(":{0}",codigo);
             dtpBaja.Value = Convert.ToDateTime(args[3]);
             dtpAlta.Value = Convert.ToDateTime(args[4]);
             btnAceptar.Enabled = false;
@@ -60,7 +60,7 @@ namespace FrbaCrucero.AbmCrucero
             if (abm.tieneViajes(codigo, Coneccion.getFechaSistema()) == 1)
             {
                 DialogResult r;
-                r = MessageBox.Show($"Advertencia el Crucero {codigo} tiene viajes programados.\n¿Desea continuar?", "FrbaCruceros", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                r = MessageBox.Show(string.Format("Advertencia el Crucero {0} tiene viajes programados.\n¿Desea continuar?",codigo), "FrbaCruceros", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (r == DialogResult.Yes)
                 {
                     abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
@@ -69,7 +69,7 @@ namespace FrbaCrucero.AbmCrucero
                     this.Close();
             }
             abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
-            MessageBox.Show($"El Crucero {codigo} fue dado de baja de forma {comboBox1.Text}", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma {1}",codigo,comboBox1.Text), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 

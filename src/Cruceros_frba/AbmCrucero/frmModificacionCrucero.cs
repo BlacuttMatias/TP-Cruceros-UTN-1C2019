@@ -100,7 +100,7 @@ namespace FrbaCrucero.AbmCrucero
         {
             AbmRecorrido.Debugger debugger = new AbmRecorrido.Debugger();
             debugger.Show();
-            debugger.log($"Fecha de Alta = #{dateTimePicker1.Value}#");
+            debugger.log(string.Format("Fecha de Alta = #{0}#", dateTimePicker1.Value));
         }
     }
 }
