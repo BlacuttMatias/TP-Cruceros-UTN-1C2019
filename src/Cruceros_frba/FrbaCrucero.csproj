@@ -205,11 +205,18 @@
     <Compile Include="frmInicio.Designer.cs">
       <DependentUpon>frmInicio.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeneracionViaje\DatosViaje.cs" />
     <Compile Include="GeneracionViaje\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GeneracionViaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneracionViaje\frmGenerarViaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneracionViaje\frmGenerarViaje.designer.cs">
+      <DependentUpon>frmGenerarViaje.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -319,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmInicio.resx">
       <DependentUpon>frmInicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneracionViaje\frmGenerarViaje.resx">
+      <DependentUpon>frmGenerarViaje.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\frmListadosEstadisticos.resx">
       <DependentUpon>frmListadosEstadisticos.cs</DependentUpon>

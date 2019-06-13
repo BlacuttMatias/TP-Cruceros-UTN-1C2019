@@ -88,7 +88,7 @@
             // itmSalir
             // 
             this.itmSalir.Name = "itmSalir";
-            this.itmSalir.Size = new System.Drawing.Size(152, 24);
+            this.itmSalir.Size = new System.Drawing.Size(107, 24);
             this.itmSalir.Text = "Salir";
             this.itmSalir.Click += new System.EventHandler(this.itmSalir_Click);
             // 
@@ -145,6 +145,7 @@
             this.itmGenerarViaje.Name = "itmGenerarViaje";
             this.itmGenerarViaje.Size = new System.Drawing.Size(231, 24);
             this.itmGenerarViaje.Text = "Generar un nuevo Viaje";
+            this.itmGenerarViaje.Click += new System.EventHandler(this.itmGenerarViaje_Click);
             // 
             // itmCompra
             // 
@@ -270,7 +271,7 @@
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "ToolStrip";
             // 
-            // frmPrincipal
+            // frmPrincipalAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -281,7 +282,7 @@
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "frmPrincipal";
+            this.Name = "frmPrincipalAdmin";
             this.Text = "Cruceros FRBA ";
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             this.menuStrip.ResumeLayout(false);
