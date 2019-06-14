@@ -2333,7 +2333,7 @@ GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
-CREATE FUNCTION FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero_anterior int, @codigo_crucero_nuevo int)
+CREATE FUNCTION FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero_anterior varchar(255), @codigo_crucero_nuevo varchar(255))
 RETURNS bit
 AS
 BEGIN
