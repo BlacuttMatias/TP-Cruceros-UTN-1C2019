@@ -116,19 +116,23 @@ namespace FrbaCrucero.AbmRecorrido
             debugger.Show();
             if (idRecorrido != 0)
             {
+                MessageBox.Show("Su recorrido se ha generado con éxito", "FrbaCruceros", MessageBoxButtons.OK);
                 foreach (TramoElegido t in listaTramos)
                 {
                     abm.agregarTramoAUnRecorrido(t.origen, t.destino, t.precio, idRecorrido);
                     debugger.log("Origen:" + t.origen + " Destino:" + t.destino + " Precio:" + t.precio + " idRecorrido:" + idRecorrido);
                 }
-            } 
-            else
-            {
-                MessageBox.Show("No se inserto el Recorrido", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            debugger.QSP1("mostrarRecorridos");
-            debugger.QSP2("mostrarTramosDeUnRecorrido","@idRecorrido",idRecorrido);
-            debugger.QQ1("SELECT P1.puer_ciudad, P2.puer_ciudad FROM [FIDEOS_CON_TUCO].[Tramo] join [FIDEOS_CON_TUCO].[Puerto] as P1 on([tram_puerto_origen] = P1.[puer_codigo]) join [FIDEOS_CON_TUCO].[Puerto] as P2 on([tram_puerto_origen] = P2.[puer_codigo])");
+            else if (idRecorrido == 0)
+            {
+                MessageBox.Show("No se inserto el Recorrido, porque ya existe uno con ese origen, destino y precio", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else {
+                debugger.QSP1("FIDEOS_CON_TUCO.mostrarRecorridos");
+                debugger.QSP2("FIDEOS_CON_TUCO.mostrarTramosDeUnRecorrido", "@idRecorrido", idRecorrido);
+                debugger.QQ1("SELECT P1.puer_ciudad, P2.puer_ciudad FROM [FIDEOS_CON_TUCO].[Tramo] join [FIDEOS_CON_TUCO].[Puerto] as P1 on([tram_puerto_origen] = P1.[puer_codigo]) join [FIDEOS_CON_TUCO].[Puerto] as P2 on([tram_puerto_origen] = P2.[puer_codigo])");
+            }
+
         }
 
         private void btnCrearTramo_Click(object sender, EventArgs e)

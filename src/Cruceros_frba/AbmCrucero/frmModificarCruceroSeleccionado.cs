@@ -49,8 +49,8 @@ namespace FrbaCrucero.AbmCrucero
                 {
                     nodoCabina nodo = new nodoCabina();
                     nodo.piso = unPiso;
-                    for (int i = 0; i < 5; i++)
-                        nodo.cabinas.Add(0);
+                    for (int i = 0; i < 5; i++) 
+                        nodo.cabinas.Add(0); 
                     nodo.cabinas[tipoCabinas.IndexOf(cabinaTipo)]++;
                 }
             }
@@ -58,6 +58,7 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificarCruceroSeleccionado_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
+
             DataTable dtMarcas = abm.mostrarMarcas();
             llenarCB(cBoxMarca, dtMarcas, "Marca");
 

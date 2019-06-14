@@ -34,6 +34,7 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificacionCrucero_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
+            MessageBox.Show("ESTO NO LO LLEGAMOS A TERMINAR, NO SE MOLESTEN EN PROBARLO PORQUE ROMPE", "NO FUNCIONA", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Crucero abm = new Crucero();
             dt = abm.mostrarCruceros();
             dataGridView1.DataSource = dt;
