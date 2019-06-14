@@ -106,29 +106,30 @@
             // itmRoles
             // 
             this.itmRoles.Name = "itmRoles";
-            this.itmRoles.Size = new System.Drawing.Size(149, 24);
+            this.itmRoles.Size = new System.Drawing.Size(152, 24);
             this.itmRoles.Text = "Roles";
             this.itmRoles.Click += new System.EventHandler(this.itmRoles_Click);
             // 
             // itmPuertos
             // 
             this.itmPuertos.Name = "itmPuertos";
-            this.itmPuertos.Size = new System.Drawing.Size(149, 24);
+            this.itmPuertos.Size = new System.Drawing.Size(152, 24);
             this.itmPuertos.Text = "Puertos";
             this.itmPuertos.Click += new System.EventHandler(this.itmPuertos_Click);
             // 
             // itmRecorridos
             // 
             this.itmRecorridos.Name = "itmRecorridos";
-            this.itmRecorridos.Size = new System.Drawing.Size(149, 24);
+            this.itmRecorridos.Size = new System.Drawing.Size(152, 24);
             this.itmRecorridos.Text = "Recorridos";
             this.itmRecorridos.Click += new System.EventHandler(this.itmRecorridos_Click);
             // 
             // itmCruceros
             // 
             this.itmCruceros.Name = "itmCruceros";
-            this.itmCruceros.Size = new System.Drawing.Size(149, 24);
+            this.itmCruceros.Size = new System.Drawing.Size(152, 24);
             this.itmCruceros.Text = "Cruceros";
+            this.itmCruceros.Click += new System.EventHandler(this.itmCruceros_Click);
             // 
             // mnuViaje
             // 

@@ -79,6 +79,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 MessageBox.Show("No puede faltar ningun campo de Filtrado.", "Filtrado de Pasajes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+            else if (dtpFechaPartida.Value.Date < Coneccion.getFechaSistema().Date)
+            {
+                MessageBox.Show("No puede comprar viajes de fechas pasadas, es decir, la fecha de inicio debe ser mayor que la fecha actual.\nLa fecha actual es: " + Coneccion.getFechaSistema().ToString()
+                    , "Fecha inválida", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
             else
             {
                 this.dataGridViajesDisponibles.DataSource = 

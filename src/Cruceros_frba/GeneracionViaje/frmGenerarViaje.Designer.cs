@@ -37,6 +37,7 @@
             this.cmbRecorrido = new System.Windows.Forms.ComboBox();
             this.dataGridCruceros = new System.Windows.Forms.DataGridView();
             this.btnGenerarViaje = new System.Windows.Forms.Button();
+            this.lblNoExistenCruceros = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCruceros)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             this.dtpFechaFin.Name = "dtpFechaFin";
             this.dtpFechaFin.Size = new System.Drawing.Size(247, 22);
             this.dtpFechaFin.TabIndex = 3;
+            this.dtpFechaFin.ValueChanged += new System.EventHandler(this.dtpFechaFin_ValueChanged);
             // 
             // lblCruceros
             // 
@@ -96,7 +98,7 @@
             this.cmbRecorrido.FormattingEnabled = true;
             this.cmbRecorrido.Location = new System.Drawing.Point(720, 44);
             this.cmbRecorrido.Name = "cmbRecorrido";
-            this.cmbRecorrido.Size = new System.Drawing.Size(298, 24);
+            this.cmbRecorrido.Size = new System.Drawing.Size(562, 24);
             this.cmbRecorrido.TabIndex = 6;
             // 
             // dataGridCruceros
@@ -108,12 +110,12 @@
             this.dataGridCruceros.Name = "dataGridCruceros";
             this.dataGridCruceros.ReadOnly = true;
             this.dataGridCruceros.RowTemplate.Height = 24;
-            this.dataGridCruceros.Size = new System.Drawing.Size(1021, 278);
+            this.dataGridCruceros.Size = new System.Drawing.Size(1898, 278);
             this.dataGridCruceros.TabIndex = 7;
             // 
             // btnGenerarViaje
             // 
-            this.btnGenerarViaje.Location = new System.Drawing.Point(879, 528);
+            this.btnGenerarViaje.Location = new System.Drawing.Point(1628, 532);
             this.btnGenerarViaje.Name = "btnGenerarViaje";
             this.btnGenerarViaje.Size = new System.Drawing.Size(139, 46);
             this.btnGenerarViaje.TabIndex = 8;
@@ -121,11 +123,23 @@
             this.btnGenerarViaje.UseVisualStyleBackColor = true;
             this.btnGenerarViaje.Click += new System.EventHandler(this.btnGenerarViaje_Click);
             // 
+            // lblNoExistenCruceros
+            // 
+            this.lblNoExistenCruceros.AutoSize = true;
+            this.lblNoExistenCruceros.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNoExistenCruceros.ForeColor = System.Drawing.Color.Red;
+            this.lblNoExistenCruceros.Location = new System.Drawing.Point(1194, 147);
+            this.lblNoExistenCruceros.Name = "lblNoExistenCruceros";
+            this.lblNoExistenCruceros.Size = new System.Drawing.Size(524, 20);
+            this.lblNoExistenCruceros.TabIndex = 9;
+            this.lblNoExistenCruceros.Text = "No existen cruceros disponibles para ese intervalo de fechas";
+            // 
             // frmGenerarViaje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 602);
+            this.ClientSize = new System.Drawing.Size(1924, 602);
+            this.Controls.Add(this.lblNoExistenCruceros);
             this.Controls.Add(this.btnGenerarViaje);
             this.Controls.Add(this.dataGridCruceros);
             this.Controls.Add(this.cmbRecorrido);
@@ -155,5 +169,6 @@
         private System.Windows.Forms.ComboBox cmbRecorrido;
         private System.Windows.Forms.DataGridView dataGridCruceros;
         private System.Windows.Forms.Button btnGenerarViaje;
+        private System.Windows.Forms.Label lblNoExistenCruceros;
     }
 }

@@ -26,7 +26,7 @@ namespace FrbaCrucero
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AbmCrucero.frmABMCruceroMain());
+            Application.Run(new frmInicio());
         }
     }
 }

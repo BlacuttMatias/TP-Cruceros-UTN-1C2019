@@ -18,5 +18,12 @@ namespace FrbaCrucero.GeneracionViaje
             return Coneccion.ejecutarSP("mostrarCrucerosParaUnViaje", "@fechaInicio", fechaInicio
                 , "@fechaFin", fechaFin);
         }
+
+        public int persistirViaje(int idRecorrido, string codigoCrucero, DateTime fechaInicio, DateTime fechaFin)
+        {
+            return Coneccion.ejecutarSPR("generarViaje", "@resultado", "@idRecorrido", idRecorrido
+                , "@codigoCrucero", codigoCrucero, "@fechaInicio", fechaInicio
+                , "@fechaFinalizacion", fechaFin, "@fechaSistema", Coneccion.getFechaSistema());
+        }
     }
 }

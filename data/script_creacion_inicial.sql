@@ -953,7 +953,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Viaje] (
 	[viaj_crucero] [varchar](255) NOT NULL,			/*CAMBIO EN EL DER*/
 	[viaj_recorrido] int NOT NULL,
 	[viaj_fecha_inicio] [datetime] NOT NULL,
-	[viaj_fecha_finalizacion] [datetime] NOT NULL,
+	[viaj_fecha_finalizacion] [datetime],
 	[viaj_fecha_finalizacion_estimada] [datetime] NOT NULL)
 GO
 
@@ -2125,9 +2125,9 @@ BEGIN
 			WHERE regi_crucero = @codigoCrucero AND tipo_baja_descripcion = 'Permanente'
 			AND (regi_fecha_de_baja < @fechaInicio OR regi_fecha_de_baja < @fechaFin))
 		BEGIN
-		RETURN 1
+		RETURN 0
 		END
-	RETURN 0
+	RETURN 1
 END
 GO
 
@@ -2327,7 +2327,7 @@ END
 GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
-
+/*
 CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroDisponible @codigo_crucero varchar(255)
 AS
 DECLARE @viaje_codigo int
@@ -2363,7 +2363,7 @@ BEGIN
 		END
 END
 GO
-
+*/
 /*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA ***************************/
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroNuevoIgualAnterior @codigo_cruc_nuevo varchar(255), @codigo_cruc_ant varchar(255), @fechaSistema datetime
@@ -2483,7 +2483,7 @@ GO
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertosDeUnRecorrido
 AS
 BEGIN
-	SELECT FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
+	SELECT reco_id AS ID, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Puertos_recorridos FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
 END
 GO
 
@@ -2573,6 +2573,7 @@ BEGIN
 	JOIN FIDEOS_CON_TUCO.Marca ON (cruc_marca = marc_codigo)
 	JOIN FIDEOS_CON_TUCO.Modelo ON (cruc_modelo = mode_codigo)
 	WHERE FIDEOS_CON_TUCO.unCruceroTieneViajesDurante(cruc_codigo, @fechaInicio, @fechaFin) = 0
+		AND FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(cruc_codigo, @fechaInicio, @fechaFin) = 1
 END
 GO
 
@@ -2595,11 +2596,10 @@ BEGIN
 		SET @resultado = 0
 		END
 	ELSE IF EXISTS(SELECT viaj_codigo FROM FIDEOS_CON_TUCO.Viaje 
-			JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = @codigoCrucero)
-			WHERE (viaj_fecha_inicio  BETWEEN @fechaInicio AND @fechaFinalizacion) 
-				OR (viaj_fecha_finalizacion_estimada  BETWEEN @fechaInicio AND @fechaFinalizacion)
-				OR (@fechaInicio BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)
-				OR (@fechaFinalizacion BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada))
+			WHERE viaj_crucero = @codigoCrucero AND ((viaj_fecha_inicio BETWEEN @fechaInicio AND @fechaFinalizacion)
+			OR (viaj_fecha_finalizacion_estimada BETWEEN @fechaInicio AND @fechaFinalizacion)
+			OR (@fechaInicio BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)
+			OR (@fechaFinalizacion BETWEEN viaj_fecha_inicio AND viaj_fecha_finalizacion_estimada)))
 		BEGIN
 		SET @resultado = -1
 		END
