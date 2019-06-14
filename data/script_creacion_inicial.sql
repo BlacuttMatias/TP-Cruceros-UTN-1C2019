@@ -531,6 +531,11 @@ object_id(N'[FIDEOS_CON_TUCO].[reasignarPasajes]') and OBJECTPROPERTY(id, N'IsPr
 drop procedure [FIDEOS_CON_TUCO].[reasignarPasajes]
 GO
 
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.comparacionCruceros') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.comparacionCruceros
+GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -2327,7 +2332,32 @@ END
 GO
 /*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
-/*
+
+CREATE FUNCTION FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero_anterior int, @codigo_crucero_nuevo int)
+RETURNS bit
+AS
+BEGIN
+	DECLARE @cantidad_nueva int
+	DECLARE @tipo_cabina int
+	DECLARE @cantidad int
+	DECLARE cCabinas CURSOR FOR	SELECT cabi_tipo, count(cabi_codigo) FROM FIDEOS_CON_TUCO.Cabina 
+								WHERE cabi_crucero = @codigo_crucero_anterior
+								GROUP BY cabi_tipo ORDER BY cabi_tipo
+	OPEN cCabinas
+	FETCH NEXT FROM cCabinas INTO @tipo_cabina, @cantidad
+	WHILE(@@FETCH_STATUS = 0)
+	BEGIN
+		SELECT @cantidad_nueva = count(cabi_codigo) FROM FIDEOS_CON_TUCO.Cabina 
+		WHERE cabi_crucero = @codigo_crucero_nuevo AND cabi_tipo = @tipo_cabina
+		GROUP BY cabi_tipo ORDER BY	cabi_tipo
+		if (@cantidad_nueva < @cantidad)
+			RETURN 0
+		FETCH NEXT FROM cCabinas INTO @tipo_cabina, @cantidad
+	END
+	RETURN 1
+END
+GO
+
 CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroDisponible @codigo_crucero varchar(255)
 AS
 DECLARE @viaje_codigo int
@@ -2343,16 +2373,7 @@ BEGIN
 							OR viaj_fecha_finalizacion BETWEEN @viaje_fecha_inicio AND @viaje_fecha_finalizacion)
 							OR (viaj_fecha_inicio < @viaje_fecha_inicio AND viaj_fecha_finalizacion > @viaje_fecha_finalizacion))
 							AND viaj_crucero = cruc_codigo)
-			AND			(	SELECT		cabi_tipo, count(cabi_codigo)		
-							FROM 		FIDEOS_CON_TUCO.Cabina
-							WHERE		cabi_crucero = cruc_codigo
-							GROUP BY	cabi_tipo
-							ORDER BY	cabi_tipo) = 
-						(	SELECT		cabi_tipo, count(cabi_codigo)		
-							FROM 		FIDEOS_CON_TUCO.Cabina
-							WHERE		cabi_crucero = @codigo_crucero
-							GROUP BY	cabi_tipo
-							ORDER BY	cabi_tipo)
+			AND				FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero, cruc_codigo) = 1
 	if (@crucero IS NOT NULL)
 		BEGIN
 			UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero WHERE viaj_codigo = @viaje_codigo
@@ -2363,7 +2384,7 @@ BEGIN
 		END
 END
 GO
-*/
+
 /*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA ***************************/
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroNuevoIgualAnterior @codigo_cruc_nuevo varchar(255), @codigo_cruc_ant varchar(255), @fechaSistema datetime
