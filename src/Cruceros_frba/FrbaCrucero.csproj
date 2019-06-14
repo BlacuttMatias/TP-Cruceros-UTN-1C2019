@@ -171,12 +171,6 @@
     <Compile Include="CompraReservaPasaje\Compra.cs" />
     <Compile Include="CompraReservaPasaje\DatosCliente.cs" />
     <Compile Include="CompraReservaPasaje\DatosMediosDePago.cs" />
-    <Compile Include="CompraReservaPasaje\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="CompraReservaPasaje\frmBusquedaPasaje.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,23 +236,11 @@
       <DependentUpon>frmInicio.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneracionViaje\DatosViaje.cs" />
-    <Compile Include="GeneracionViaje\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneracionViaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="GeneracionViaje\frmGenerarViaje.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GeneracionViaje\frmGenerarViaje.designer.cs">
       <DependentUpon>frmGenerarViaje.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\frmListadosEstadisticos.cs">
       <SubType>Form</SubType>
@@ -268,12 +250,6 @@
     </Compile>
     <Compile Include="ListadoEstadistico\Listado.cs" />
     <Compile Include="PagoReserva\DatosPagoReserva.cs" />
-    <Compile Include="PagoReserva\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PagoReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="PagoReserva\frmPagoReserva.cs">
       <SubType>Form</SubType>
     </Compile>
