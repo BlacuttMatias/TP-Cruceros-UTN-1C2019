@@ -516,25 +516,47 @@ OBJECT_ID('FIDEOS_CON_TUCO.unCruceroTieneViajesDurante') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.unCruceroTieneViajesDurante
 GO
 
-if exists (select * from dbo.sysobjects where id =
-object_id(N'[FIDEOS_CON_TUCO].[cruceroDisponible]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [FIDEOS_CON_TUCO].[cruceroDisponible]
-GO
-
-if exists (select * from dbo.sysobjects where id =
-object_id(N'[FIDEOS_CON_TUCO].[cruceroNuevoIgualAnterior]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [FIDEOS_CON_TUCO].[cruceroNuevoIgualAnterior]
-GO
-
-if exists (select * from dbo.sysobjects where id =
-object_id(N'[FIDEOS_CON_TUCO].[reasignarPasajes]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-drop procedure [FIDEOS_CON_TUCO].[reasignarPasajes]
-GO
-
 IF 
 OBJECT_ID('FIDEOS_CON_TUCO.comparacionCruceros') IS NOT NULL
 DROP FUNCTION FIDEOS_CON_TUCO.comparacionCruceros
 GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.unCruceroEsIgualAOtro') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.unCruceroEsIgualAOtro
+GO
+
+IF 
+OBJECT_ID('FIDEOS_CON_TUCO.unCruceroPuedeHacerLosViajesDeOtro') IS NOT NULL
+DROP FUNCTION FIDEOS_CON_TUCO.unCruceroPuedeHacerLosViajesDeOtro
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[cruceroParaReemplazarAOtro]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[cruceroParaReemplazarAOtro]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[crearCruceroIgualAlAnterior]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[crearCruceroIgualAlAnterior]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[actualizarViajesdeCruceroDadoDeBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarViajesdeCruceroDadoDeBajaPermanente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[actualizarPasajesDeCruceroDadoDeBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarPasajesDeCruceroDadoDeBajaPermanente]
+GO
+
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente]
+GO
+
+
 
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
@@ -2330,9 +2352,13 @@ BEGIN
 	WHERE viaj_crucero = @crucero_codigo
 END
 GO
-/*************************** CRUCEROS DISPONIBLES PARA REEMPLAZO ***************************/
+
+
+/*************************** CRUCERO DISPONIBLE PARA REEMPLAZAR A OTRO DADO DE BAJA PERMANENTE ***************************/
+
 /*Se debe ejecutar tantas veces como viajes tenga el crucero que se da de baja*/
 
+/*
 CREATE FUNCTION FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero_anterior varchar(255), @codigo_crucero_nuevo varchar(255))
 RETURNS bit
 AS
@@ -2357,83 +2383,152 @@ BEGIN
 	RETURN 1
 END
 GO
+*/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroDisponible @codigo_crucero varchar(255)
+
+CREATE FUNCTION FIDEOS_CON_TUCO.unCruceroEsIgualAOtro (@codigoCrucero varchar(255), @codigoOtroCrucero varchar(255)) RETURNS bit
 AS
-DECLARE @viaje_codigo int
-DECLARE @viaje_fecha_inicio datetime
-DECLARE @viaje_fecha_finalizacion datetime
-DECLARE @crucero int
 BEGIN
-	SELECT TOP 1 @viaje_codigo = viaj_codigo, @viaje_fecha_inicio = viaj_fecha_inicio, @viaje_fecha_finalizacion = viaj_fecha_finalizacion 
-	FROM FIDEOS_CON_TUCO.Viaje WHERE viaj_crucero = @codigo_crucero
-	SELECT TOP 1 @crucero = cruc_codigo FROM FIDEOS_CON_TUCO.Crucero 
-	WHERE	NOT EXISTS (	SELECT viaj_codigo FROM FIDEOS_CON_TUCO.Viaje 
-							WHERE ((viaj_fecha_inicio BETWEEN @viaje_fecha_inicio AND @viaje_fecha_finalizacion 
-							OR viaj_fecha_finalizacion BETWEEN @viaje_fecha_inicio AND @viaje_fecha_finalizacion)
-							OR (viaj_fecha_inicio < @viaje_fecha_inicio AND viaj_fecha_finalizacion > @viaje_fecha_finalizacion))
-							AND viaj_crucero = cruc_codigo)
-			AND				FIDEOS_CON_TUCO.comparacionCruceros (@codigo_crucero, cruc_codigo) = 1
-	if (@crucero IS NOT NULL)
+	DECLARE @modelo int, @marca int, @cantidadCabinas int
+	SELECT @modelo = cruc_modelo, @marca = cruc_marca, @cantidadCabinas = cruc_cantidad_cabinas FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @codigoCrucero
+	IF NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @codigoOtroCrucero 
+			AND cruc_marca = @marca AND cruc_marca = @marca AND cruc_cantidad_cabinas = @cantidadCabinas)
 		BEGIN
-			UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero WHERE viaj_codigo = @viaje_codigo
+		RETURN 0
 		END
-	else
-		BEGIN
-			RAISERROR ('El crucero %d no pudo ser reemplazado', 1, 1, @codigo_crucero) 
-		END
-END
-GO
-
-/*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA ***************************/
-
-CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroNuevoIgualAnterior @codigo_cruc_nuevo varchar(255), @codigo_cruc_ant varchar(255), @fechaSistema datetime
-AS
-BEGIN
-	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo, cruc_marca, cruc_cantidad_cabinas, cruc_fecha_de_alta, cruc_modelo, cruc_esta_habilitado)
-	SELECT	@codigo_cruc_nuevo, C1.cruc_marca, C1.cruc_cantidad_cabinas, @fechaSistema, C1.cruc_modelo, 1 
-	FROM	FIDEOS_CON_TUCO.Crucero C1 WHERE cruc_codigo = @codigo_cruc_ant
-END
-GO
-
-/*************************** REASIGNACIÓN DE PASAJES ***************************/
-/*Realizar este SP luego de asignar el nuevo crucero al viaje*/
-
-CREATE PROCEDURE FIDEOS_CON_TUCO.reasignarPasajes @codigo_crucero varchar(255), @codigo_viaje int
-AS
-DECLARE @codigo_pasaje int
-DECLARE @tipo_cabina int
-DECLARE @codigo_cabina_nueva int
-BEGIN
-	DECLARE cCabinas CURSOR FOR SELECT pasa_codigo, cabi_tipo	FROM	FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_cabina = cabi_codigo)
-																WHERE	pasa_viaje = @codigo_viaje
-	OPEN cCabinas
-	FETCH NEXT FROM cCabinas INTO @codigo_pasaje, @tipo_cabina
-	WHILE (@@FETCH_STATUS = 0)
+	DECLARE @numeroCabina int, @pisoCabina int, @tipoCabina int
+	DECLARE c1 CURSOR FOR SELECT cabi_numero, cabi_piso, cabi_tipo FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @codigoCrucero
+	OPEN c1
+	FETCH NEXT FROM c1 INTO @numeroCabina, @pisoCabina, @tipoCabina
+	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		SELECT TOP 1 @codigo_cabina_nueva = cabi_codigo FROM FIDEOS_CON_TUCO.Cabina 
-		WHERE cabi_crucero = @codigo_crucero AND cabi_tipo = @tipo_cabina 
-		AND cabi_codigo NOT IN (SELECT pasa_cabina FROM FIDEOS_CON_TUCO.Pasaje WHERE pasa_viaje = @codigo_viaje)
-		UPDATE FIDEOS_CON_TUCO.Pasaje SET pasa_cabina = @codigo_cabina_nueva WHERE  pasa_codigo = @codigo_pasaje
-		FETCH NEXT FROM cCabinas INTO @codigo_pasaje, @tipo_cabina
+		IF NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cabina WHERE cabi_crucero = @codigoOtroCrucero
+				AND cabi_piso = @pisoCabina AND cabi_tipo = @tipoCabina AND cabi_numero = @numeroCabina)
+			BEGIN
+			RETURN 0
+			END
+		FETCH NEXT FROM c1 INTO @numeroCabina, @pisoCabina, @tipoCabina
 	END
-	CLOSE cCabinas
-	DEALLOCATE cCabinas
+	CLOSE c1
+	DEALLOCATE c1
+	RETURN 1
 END
 GO
 
 
-/*************************** REEMPLAZO DE CRUCERO EN VIAJE ***************************/
-/*Se debe ejecutar después de elegir un crucero en crucerosDisponibles*/
-
-/*CREATE PROCEDURE FIDEOS_CON_TUCO.reemplazoCrucero @viaje_codigo int, @crucero_codigo varchar(255)
+CREATE FUNCTION FIDEOS_CON_TUCO.unCruceroPuedeHacerLosViajesDeOtro(@codigoCruceroAReemplazar varchar(255), @codigoCruceroQueLoReemplaza varchar(255)
+, @fechaBajaCruceroAReemplazar datetime) RETURNS bit
 AS
 BEGIN
-	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @crucero_codigo WHERE viaj_codigo = @viaje_codigo
+	DECLARE @fechaInicioViaje datetime, @fechaFinalizacionViaje datetime
+	DECLARE c1 CURSOR FOR SELECT viaj_fecha_inicio, viaj_fecha_finalizacion_estimada FROM FIDEOS_CON_TUCO.Viaje 
+		WHERE viaj_crucero = @codigoCruceroAReemplazar AND viaj_fecha_inicio >= @fechaBajaCruceroAReemplazar
+	OPEN c1
+	FETCH NEXT FROM c1 INTO @fechaInicioViaje, @fechaFinalizacionViaje
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		--Si el crucero que los intenta reemplazar no puede cubrir un viaje porque ya tiene un viaje programado 
+		--para esas fechas o porque no va a estar habilitado en esas fechas
+		IF(FIDEOS_CON_TUCO.unCruceroTieneViajesDurante(@codigoCruceroQueLoReemplaza, @fechaInicioViaje, @fechaFinalizacionViaje) = 1
+				OR FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(@codigoCruceroQueLoReemplaza, @fechaInicioViaje, @fechaFinalizacionViaje) = 0)
+			BEGIN
+			RETURN 0
+			END
+		FETCH NEXT FROM c1 INTO @fechaInicioViaje, @fechaFinalizacionViaje
+	END
+	CLOSE c1
+	DEALLOCATE c1
+	RETURN 1
 END
-GO*/
+GO
+
+--Este SP se debe ejecutar para obtener un crucero que pueda reemplazar a otro dado de baja permanente
+--Si devuelve el SELECT vacío es porque no existe uno que lo pueda reemplazar
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroParaReemplazarAOtro @codigoCruceroAReemplazar varchar(255), @fechaBajaPermanente datetime
+AS
+BEGIN
+	SELECT TOP 1 cruc_codigo AS Codigo FROM FIDEOS_CON_TUCO.Crucero
+	WHERE cruc_codigo <> @codigoCruceroAReemplazar
+	AND FIDEOS_CON_TUCO.unCruceroEsIgualAOtro(@codigoCruceroAReemplazar, cruc_codigo) = 1
+	AND FIDEOS_CON_TUCO.unCruceroPuedeHacerLosViajesDeOtro(@codigoCruceroAReemplazar, cruc_codigo, @fechaBajaPermanente) = 1
+END
+GO
+
+
+/*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA PERMANENTE ***************************/
+
+
+--Se debería ejecutar este SP en el caso de que se desee reemplazar un crucero dado de baja permanente y no exista uno que lo pueda hacer
+--devuelve 1 si se pudo crear el nuevo crucero o 0 si no se puedo crear porque ya existe un crucero con ese codigo nuevo
+CREATE PROCEDURE FIDEOS_CON_TUCO.crearCruceroIgualAlAnterior @codigoCruceroAnterior varchar(255), @codigoNuevoCrucero varchar(255)
+, @fechaAltaCruceroNuevo datetime, @resultado int output
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @codigoNuevoCrucero)
+		BEGIN
+		SET @resultado = 0
+		RETURN
+		END
+
+	SET @resultado = 1
+	DECLARE @marca int, @modelo int, @cantidadCabinas int
+
+	SELECT @marca = cruc_marca, @modelo = cruc_modelo, @cantidadCabinas = cruc_cantidad_cabinas FROM FIDEOS_CON_TUCO.Crucero 
+		WHERE cruc_codigo = @codigoCruceroAnterior
+
+	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo, cruc_modelo, cruc_marca, cruc_cantidad_cabinas, cruc_esta_habilitado, cruc_fecha_de_alta)
+		VALUES (@codigoNuevoCrucero, @modelo, @marca, @cantidadCabinas, 1, @fechaAltaCruceroNuevo)
+
+	INSERT INTO FIDEOS_CON_TUCO.Cabina(cabi_crucero, cabi_numero, cabi_piso, cabi_tipo)
+		SELECT @codigoNuevoCrucero, cabi_numero, cabi_piso, cabi_tipo 
+		FROM FIDEOS_CON_TUCO.Cabina 
+		WHERE cabi_crucero = @codigoCruceroAnterior
+END
+GO
+
+/*************************** REASIGNACIÓN DE PASAJES Y VIAJES DEL CRUCERO DADO DE BAJA PERMANENTE ***************************/
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarViajesdeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado varchar(255)
+, @codigoCruceroQueLoReemplazo varchar(255), @fechaBajaPermanenteDeCruceroReemplazado datetime
+AS 
+BEGIN
+	UPDATE FIDEOS_CON_TUCO.Viaje SET viaj_crucero = @codigoCruceroQueLoReemplazo FROM FIDEOS_CON_TUCO.Viaje
+	WHERE viaj_crucero = @codigoCruceroReemplazado AND viaj_fecha_inicio >= @fechaBajaPermanenteDeCruceroReemplazado
+END
+GO
+
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarPasajesDeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado varchar(255)
+, @codigoCruceroQueLoReemplazo varchar(255), @fechaBajaPermanenteDeCruceroReemplazado datetime
+AS
+BEGIN
+
+	UPDATE FIDEOS_CON_TUCO.Pasaje SET pasa_cabina = c2.cabi_codigo FROM FIDEOS_CON_TUCO.Pasaje
+	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_codigo = pasa_viaje)
+	JOIN FIDEOS_CON_TUCO.Cabina c1 ON (c1.cabi_codigo = pasa_cabina) 
+	JOIN FIDEOS_CON_TUCO.Cabina c2 ON (c2.cabi_numero = c1.cabi_numero AND c2.cabi_piso = c1.cabi_piso AND c2.cabi_crucero = @codigoCruceroQueLoReemplazo)
+	WHERE viaj_crucero = @codigoCruceroReemplazado AND viaj_fecha_inicio >= @fechaBajaPermanenteDeCruceroReemplazado
+END
+GO
+
+
+--Se debe ejecutar solo este SP para actualizar los viajes y pasajes al crucero que reemplazara al dado de baja permanente
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado varchar(255)
+, @codigoCruceroQueLoReemplazo varchar(255), @fechaBajaPermanenteDeCruceroReemplazado datetime
+AS
+BEGIN
+	EXEC FIDEOS_CON_TUCO.actualizarPasajesDeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado , @codigoCruceroQueLoReemplazo
+		, @fechaBajaPermanenteDeCruceroReemplazado 
+	EXEC FIDEOS_CON_TUCO.actualizarViajesdeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado, @codigoCruceroQueLoReemplazo
+		, @fechaBajaPermanenteDeCruceroReemplazado
+END
+GO
+
 
 /*************************** CANCELAR VIAJES ANTE BAJA DE CRUCERO ***************************/
+
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajesParaBajaPermanente @codigoCrucero varchar(255), @fechaSistema datetime, @fechaBaja datetime
 AS
@@ -2467,10 +2562,7 @@ END
 GO
 
 /*************************** BAJA CRUCEROS ***************************/
-/*Si la baja es permanente y se deciden no cancelar el viaje, ejecutar el SP "crucerosDisponibles" para que el usuario pueda elegir 
-que cruceros poner para el viaje*/
-/*Si la baja es temporal y se deciden no cancelar el viaje, ejecutar el SP "corrimientoDiasViajes" para que se reprogramen automaticamente
-los viajes*/
+
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.bajaCrucero @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
 AS
