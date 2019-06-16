@@ -68,8 +68,9 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
         #endregion
 
-        public DataTable mostrarTodosLosViajesDisponibles() {
-            return Coneccion.ejecutarSP("mostrarTodosLosViajesParaComprar", "@fechaSistema", Coneccion.getFechaSistema());
+        public DataTable mostrarTodosLosViajesDisponibles(int codigoCliente) {
+            return Coneccion.ejecutarSP("mostrarTodosLosViajesParaComprar", "@fechaSistema", Coneccion.getFechaSistema()
+                , "@codigoCliente", codigoCliente);
         }
 
         public DataTable mostrarViajesDisponiblesParaUnCliente(DateTime fechaInicio
@@ -77,8 +78,10 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             return Coneccion.ejecutarSP("mostrarViajesParaComprarParaUnCliente", "@fechaInicio", fechaInicio
                 , "@ciudadPuertoOrigen", puertoOrigen, "@ciudadPuertoDestino", puertoDestino
-                , "@codigoCliente", codigoCliente);
+                , "@codigoCliente", codigoCliente, "@fechaSistema", Coneccion.getFechaSistema());
         }
+
+
 
     }
 }

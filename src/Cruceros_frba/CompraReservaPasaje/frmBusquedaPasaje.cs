@@ -20,6 +20,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         public frmBusquedaPasaje(int unCodigoCliente, bool esUnaCompra)
         {
             InitializeComponent();
+            this.Width = 1540;
+            this.CenterToScreen();
             dtpFechaPartida.Format = DateTimePickerFormat.Custom;
             dtpFechaPartida.CustomFormat = "MM/dd/yyyy";
             dtpFechaPartida.Value = Coneccion.getFechaSistema();
@@ -55,7 +57,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             #region LLENAR GRID
 
             
-            //this.dataGridViajesDisponibles.DataSource = gestion.mostrarTodosLosViajesDisponibles();
+            this.dataGridViajesDisponibles.DataSource = gestion.mostrarTodosLosViajesDisponibles(this.codigoCliente);
 
             #endregion
 

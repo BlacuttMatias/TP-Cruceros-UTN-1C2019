@@ -142,15 +142,15 @@
             this.dataGridViajesDisponibles.Name = "dataGridViajesDisponibles";
             this.dataGridViajesDisponibles.RowHeadersVisible = false;
             this.dataGridViajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViajesDisponibles.Size = new System.Drawing.Size(934, 466);
+            this.dataGridViajesDisponibles.Size = new System.Drawing.Size(1536, 466);
             this.dataGridViajesDisponibles.TabIndex = 1;
             // 
             // btnComprar
             // 
-            this.btnComprar.Location = new System.Drawing.Point(1207, 533);
+            this.btnComprar.Location = new System.Drawing.Point(1757, 542);
             this.btnComprar.Margin = new System.Windows.Forms.Padding(4);
             this.btnComprar.Name = "btnComprar";
-            this.btnComprar.Size = new System.Drawing.Size(111, 33);
+            this.btnComprar.Size = new System.Drawing.Size(167, 59);
             this.btnComprar.TabIndex = 4;
             this.btnComprar.Text = "Comprar";
             this.btnComprar.UseVisualStyleBackColor = true;
@@ -158,10 +158,10 @@
             // 
             // btnReservar
             // 
-            this.btnReservar.Location = new System.Drawing.Point(1088, 533);
+            this.btnReservar.Location = new System.Drawing.Point(1651, 542);
             this.btnReservar.Margin = new System.Windows.Forms.Padding(4);
             this.btnReservar.Name = "btnReservar";
-            this.btnReservar.Size = new System.Drawing.Size(111, 33);
+            this.btnReservar.Size = new System.Drawing.Size(162, 59);
             this.btnReservar.TabIndex = 5;
             this.btnReservar.Text = "Reservar";
             this.btnReservar.UseVisualStyleBackColor = true;
@@ -171,7 +171,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1371, 654);
+            this.ClientSize = new System.Drawing.Size(1924, 654);
             this.Controls.Add(this.btnReservar);
             this.Controls.Add(this.btnComprar);
             this.Controls.Add(this.dataGridViajesDisponibles);

@@ -2212,7 +2212,7 @@ BEGIN
 	DECLARE @codigoModelo int
 	SELECT @codigoMarca = marc_codigo FROM FIDEOS_CON_TUCO.Marca WHERE marc_descripcion = @cruceroMarca
 	SELECT @codigoModelo = mode_codigo FROM FIDEOS_CON_TUCO.Modelo WHERE mode_descripcion = @cruceroModelo
-	IF NOT EXISTS(SELECT usua_username FROM FIDEOS_CON_TUCO.Usuario WHERE usua_username = @cruceroCodigo)
+	IF NOT EXISTS(SELECT cruc_codigo FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @cruceroCodigo)
 		BEGIN
 		INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo,cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado, cruc_fecha_de_alta) 
 			VALUES (@cruceroCodigo,@codigoMarca, @codigoModelo, @cantidadCabinas, 1, @fecha) 
@@ -2344,12 +2344,13 @@ GO
 /*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
 /*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int
+CREATE PROCEDURE FIDEOS_CON_TUCO.corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int, @fechaInicioBajaTemporal datetime
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje 
 	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) , viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
-	WHERE viaj_crucero = @crucero_codigo
+	WHERE viaj_crucero = @crucero_codigo 
+	AND viaj_fecha_inicio >= @fechaInicioBajaTemporal 
 END
 GO
 
@@ -2889,7 +2890,8 @@ GO
 
 
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarViajesParaComprarParaUnCliente @fechaInicio date, @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @codigoCliente int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarViajesParaComprarParaUnCliente @fechaInicio datetime, @ciudadPuertoOrigen varchar(255)
+, @ciudadPuertoDestino varchar(255), @codigoCliente int, @fechaSistema datetime
 AS 
 BEGIN
 	SELECT v1.viaj_codigo AS Codigo_de_viaje, v1.viaj_fecha_inicio AS Fecha_de_inicio, v1.viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
@@ -2907,7 +2909,8 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = v1.viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_codigo AND reco_puerto_destino = p2.puer_codigo)
-		WHERE CONVERT(DATE, v1.viaj_fecha_inicio) = @fechaInicio 
+		WHERE CONVERT(DATE, v1.viaj_fecha_inicio) = CONVERT(DATE, @fechaInicio)
+		AND v1.viaj_fecha_inicio >= @fechaSistema
 		AND v1.viaj_recorrido = reco_id 
 		AND reco_esta_habilitado = 1 
 		AND cruc_esta_habilitado = 1
@@ -2933,23 +2936,37 @@ GO
 
 
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTodosLosViajesParaComprar @fechaSistema date
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTodosLosViajesParaComprar @fechaSistema datetime, @codigoCliente int
 AS 
 BEGIN
-	SELECT viaj_codigo AS Codigo_de_viaje, viaj_fecha_inicio AS Fecha_de_inicio, viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
+	SELECT v1.viaj_codigo AS Codigo_de_viaje, v1.viaj_fecha_inicio AS Fecha_de_inicio, v1.viaj_fecha_finalizacion_estimada AS Fecha_finalizacion,
 		cruc_cantidad_cabinas - (SELECT COUNT(*) FROM (
 			SELECT pasa_codigo FROM FIDEOS_CON_TUCO.Pasaje 
-			WHERE pasa_viaje = viaj_codigo AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
+			WHERE pasa_viaje = v1.viaj_codigo AND NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje 
 				WHERE canc_pasa_pasaje = pasa_codigo)
 				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva
 					JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
 					WHERE rese_pasaje = pasa_codigo)
 			) AS t1) AS Cantidad_cabinas_disponibles,
 		FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
-		FROM FIDEOS_CON_TUCO.Viaje 
-		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
-		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = viaj_recorrido)
-		WHERE CONVERT(DATE, viaj_fecha_inicio) >= @fechaSistema AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		FROM FIDEOS_CON_TUCO.Viaje v1
+		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = v1.viaj_crucero)
+		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = v1.viaj_recorrido)
+		WHERE v1.viaj_fecha_inicio >= @fechaSistema AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		AND NOT EXISTS(
+				SELECT * FROM FIDEOS_CON_TUCO.Viaje v2 JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_viaje = v2.viaj_codigo)
+				WHERE NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)
+				AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Reserva JOIN FIDEOS_CON_TUCO.Cancelacion_reserva ON (canc_reserva = rese_codigo)
+					WHERE rese_pasaje = pasa_codigo)
+					AND pasa_cliente = @codigoCliente 
+					AND v1.viaj_recorrido <> v2.viaj_recorrido
+					AND (
+						v2.viaj_fecha_inicio BETWEEN v1.viaj_fecha_inicio AND v1.viaj_fecha_finalizacion_estimada
+						OR v2.viaj_fecha_finalizacion_estimada BETWEEN v1.viaj_fecha_inicio AND v1.viaj_fecha_finalizacion_estimada
+						OR v1.viaj_fecha_inicio BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
+						OR v1.viaj_fecha_finalizacion_estimada BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
+					)
+				)
 END
 GO
 
