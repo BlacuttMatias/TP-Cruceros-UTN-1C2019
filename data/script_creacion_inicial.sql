@@ -1873,9 +1873,15 @@ GO
 
 /************************** MODIFICACION Puerto*******************************************/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.modificarPuerto @codigoPuerto int, @ciudad varchar(255), @descripcion varchar(255) = NULL
+CREATE PROCEDURE FIDEOS_CON_TUCO.modificarPuerto @codigoPuerto int, @ciudad varchar(255), @resultado int output,@descripcion varchar(255) = NULL
 AS
 BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudad AND puer_codigo <> @codigoPuerto)
+		BEGIN
+		SET @resultado = 0
+		RETURN
+		END
+	SET @resultado = 1
 	UPDATE [FIDEOS_CON_TUCO].[Puerto] SET puer_ciudad = @ciudad, puer_descripcion = @descripcion WHERE puer_codigo = @codigoPuerto
 END
 GO

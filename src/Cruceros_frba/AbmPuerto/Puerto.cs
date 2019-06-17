@@ -22,7 +22,13 @@ namespace FrbaCrucero.AbmPuerto
         #region crearPuerto
         public int crearPuerto(string ciudad,string _descripcion)
         {
-            return Coneccion.ejecutarSPR("agregarPuerto", "@resultado", "@ciudad", ciudad, "@descripcion",_descripcion);
+            if (String.IsNullOrWhiteSpace(_descripcion))
+            {
+                return Coneccion.ejecutarSPR("agregarPuerto", "@resultado", "@ciudad", ciudad);
+            }
+            else {
+                return Coneccion.ejecutarSPR("agregarPuerto", "@resultado", "@ciudad", ciudad, "@descripcion", _descripcion);
+            } 
         }
         #endregion
 
@@ -41,9 +47,15 @@ namespace FrbaCrucero.AbmPuerto
         #endregion
 
         #region modificarPuerto
-        public void modificarPuerto(int codigo, string ciudad,string descripcion)
+        public int modificarPuerto(int codigo, string ciudad,string descripcion)
         {
-            Coneccion.ejecutarSPV("modificarPuerto", "@codigoPuerto", codigo, "@ciudad", ciudad, "@descripcion", descripcion);
+            if (String.IsNullOrWhiteSpace(descripcion))
+            {
+                return Coneccion.ejecutarSPR("modificarPuerto", "@resultado", "@codigoPuerto", codigo, "@ciudad", ciudad);
+            }
+            else {
+                return Coneccion.ejecutarSPR("modificarPuerto", "@resultado", "@codigoPuerto", codigo, "@ciudad", ciudad, "@descripcion", descripcion);
+            }
         }
         #endregion
 

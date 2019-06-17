@@ -27,7 +27,10 @@ namespace FrbaCrucero.AbmPuerto
             lblTitulo.Text = "Codigo:" + puer_codigo;
             puer_ciudad = puer_Ciudad;
             txtBoxCiudad.Text = puer_ciudad;
-            puer_descripcion = puer_Description;
+            if (puer_Description != "-")
+            {
+               this.puer_descripcion = puer_Description;
+            }
             txtBoxDescripcion.Text = puer_descripcion;
             puer_esta_habilitado = puer_Esta_Habilitado;
             if (puer_esta_habilitado == "SI")
@@ -36,7 +39,7 @@ namespace FrbaCrucero.AbmPuerto
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if(txtBoxCiudad.Text=="" || txtBoxDescripcion.Text=="")
+            if(String.IsNullOrWhiteSpace(txtBoxCiudad.Text))
             {
                 lblErrorCiudad.Show();
                 label1.Show();
@@ -44,20 +47,29 @@ namespace FrbaCrucero.AbmPuerto
             else
             {
                 Puerto abm = new Puerto();
+                int resultado = 1;
                 if(modCiudad || modDescripcion)
-                    abm.modificarPuerto(puer_codigo, txtBoxCiudad.Text, txtBoxDescripcion.Text);
+                    resultado = abm.modificarPuerto(puer_codigo, txtBoxCiudad.Text, txtBoxDescripcion.Text);
 
-                if (!this.ckBoxHabilitado.Checked)
+                if (resultado == 0)
                 {
-                    abm.deshabilitarPuerto(puer_codigo);
+                    MessageBox.Show("Ya existe un puerto con esa ciudad. Ingrese otro nombre de ciudad."
+                        , "Error: Ciudad ya existente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtBoxCiudad.Text = this.puer_ciudad;
                 }
-                else
-                {
-                    abm.habilitarPuerto(puer_codigo);
+                else {
+                    if (!this.ckBoxHabilitado.Checked)
+                    {
+                        abm.deshabilitarPuerto(puer_codigo);
+                    }
+                    else
+                    {
+                        abm.habilitarPuerto(puer_codigo);
+                    }
+                    //if(modCiudad || modDescripcion)
+                    MessageBox.Show("Se modifico el puerto correctamente.", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
                 }
-                if(modCiudad || modDescripcion)
-                MessageBox.Show("Se modifico el puerto correctamente.", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                this.Close();
             }
         }
 

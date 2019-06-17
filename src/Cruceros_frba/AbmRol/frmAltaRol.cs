@@ -57,7 +57,7 @@ namespace FrbaCrucero.AbmRol
         }
         private void agregarRol()
         {
-            if (nombreRol.Text != "")
+            if (String.IsNullOrWhiteSpace(nombreRol.Text))
             {
                 
                 if (abm.crearRol(nombreRol.Text) == 0)
@@ -83,7 +83,7 @@ namespace FrbaCrucero.AbmRol
         }
         private void btnAgregarFuncionalidades_Click(object sender, EventArgs e)
         {
-            if (nombreRol.Text == "")
+            if (String.IsNullOrWhiteSpace(nombreRol.Text))
             {
                 MessageBox.Show("Nombre de rol vacío. Inserte el nombre del rol"
                     , "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
