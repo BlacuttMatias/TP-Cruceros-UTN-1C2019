@@ -23,6 +23,7 @@ namespace FrbaCrucero.ListadoEstadistico
 
         private void frmListadosEstadisticos_Load(object sender, EventArgs e)
         {
+            this.Width = 1540;
             this.CenterToScreen();
 
             //para autoajustar las celdas al texto

@@ -83,6 +83,33 @@ namespace FrbaCrucero.AbmRol
         }
         private void btnAgregarFuncionalidades_Click(object sender, EventArgs e)
         {
+            if (nombreRol.Text == "")
+            {
+                MessageBox.Show("Nombre de rol vacío. Inserte el nombre del rol"
+                    , "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Rol abm = new Rol();
+                int resultado = abm.crearRol(nombreRol.Text);
+                if (resultado == 0)
+                {
+                    MessageBox.Show("Ya existe un rol con ese nombre. Ingrese otro rol"
+                        , "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    foreach (string a in listFuncionalidadesAAgregar.Items)
+                    {
+                        abm.agregarFuncionalidadARol(nombreRol.Text, a);
+                    }
+                    MessageBox.Show("Rol creado exitosamente", "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.listFuncionalidadesAAgregar.Items.Clear();
+                    this.nombreRol.Text = "";
+                }
+            }
+
+            /*
             agregarRol();
             int cantidad = listFuncionalidadesAAgregar.Items.Count;
             Rol abm = new Rol();
@@ -125,7 +152,7 @@ namespace FrbaCrucero.AbmRol
                     btnAgregarFuncionalidades.Enabled = false;
                 }
             }
-
+            */
         }
 
     }

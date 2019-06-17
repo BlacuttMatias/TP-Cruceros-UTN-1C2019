@@ -1578,10 +1578,12 @@ CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRol @rolAgregar varchar(255), @flag int 
 AS
 BEGIN
 	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
+		BEGIN
 		SET @flag = 0
-	else
-		SET @flag = 1;
-		INSERT INTO FIDEOS_CON_TUCO.Rol (rol_descripcion, rol_esta_habilitado) VALUES (@rolAgregar, 1);
+		RETURN
+		END
+	SET @flag = 1;
+	INSERT INTO FIDEOS_CON_TUCO.Rol (rol_descripcion, rol_esta_habilitado) VALUES (@rolAgregar, 1);
 END
 GO
 
@@ -1601,9 +1603,15 @@ GO
 
 /************* MODIFICAR NOMBRE *************/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarNombreRol @codigo int, @nombreRol varchar(255)
+CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarNombreRol @codigo int, @nombreRol varchar(255), @resultado int output
 AS
 BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @nombreRol AND rol_codigo <> @codigo)
+		BEGIN
+		SET @resultado = 0
+		RETURN
+		END
+	SET @resultado = 1 
 	UPDATE FIDEOS_CON_TUCO.Rol SET rol_descripcion = @nombreRol WHERE rol_codigo = @codigo;
 END
 GO
@@ -3209,7 +3217,8 @@ BEGIN
 		SET @mesFinal = 12
 		END
 
-	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, 
+	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino 
+		, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido,
 		reco_precio AS Precio, COUNT(pasa_codigo) AS Pasajes_vendidos
 		
 		FROM FIDEOS_CON_TUCO.Recorrido
@@ -3240,8 +3249,10 @@ BEGIN
 		SET @mesInicial = 7
 		SET @mesFinal = 12
 		END
-	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio, 
-		SUM(cruc_cantidad_cabinas) - (SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
+	SELECT TOP 5 reco_id AS ID_Recorrido, puertoOrigen.puer_ciudad AS Puerto_origen, puertoDestino.puer_ciudad AS Puerto_destino
+		, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
+		, reco_precio AS Precio
+		, SUM(cruc_cantidad_cabinas) - (SELECT COUNT(*) FROM FIDEOS_CON_TUCO.Pasaje 
 			JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_recorrido = reco_id)
 			WHERE pasa_viaje = viaj_codigo AND pasa_compra IS NOT NULL AND YEAR(viaj_fecha_inicio) = @anio 
 				AND MONTH(viaj_fecha_inicio) BETWEEN @mesInicial AND @mesFinal AND NOT EXISTS (SELECT canc_codigo FROM FIDEOS_CON_TUCO.Cancelacion_reserva 

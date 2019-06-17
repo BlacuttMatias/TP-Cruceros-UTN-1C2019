@@ -61,9 +61,9 @@ namespace FrbaCrucero.AbmRol
         #endregion
 
         #region Actualizar Nombre de Rol
-        public void cambiarNombreRol(int id, String nombre)
+        public int cambiarNombreRol(int id, String nombre)
         {
-            Coneccion.ejecutarSPV("actualizarNombreRol", "@codigo", id, "@nombreRol", nombre);
+            return Coneccion.ejecutarSPR("actualizarNombreRol", "@resultado","@codigo", id, "@nombreRol", nombre);
         }
         #endregion
 

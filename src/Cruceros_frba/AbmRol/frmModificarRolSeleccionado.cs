@@ -18,10 +18,14 @@ namespace FrbaCrucero.AbmRol
         private bool modFuncionalidad = false;
         string[] backupFuncionalidadesExistentes= { };
         string[] backupFuncionalidadesFaltantes= { };
+
+        string descripcionOriginal;
+
         public frmModificarRolSeleccionado(string rol_codigo,string rol_descripcion,string rol_esta_habilitado)
         {
             InitializeComponent();
             this.textBox1.Text=rol_descripcion;
+            descripcionOriginal = rol_descripcion;
             if(rol_esta_habilitado == "SI")
             {
                 this.checkBoxHabilitado.Checked=true;
@@ -100,34 +104,50 @@ namespace FrbaCrucero.AbmRol
             Rol abm = new Rol();
             if (modNombre)
                 descripcion = this.textBox1.Text;
-            abm.cambiarNombreRol(codigo, descripcion);
-            if(!this.checkBoxHabilitado.Checked)
+
+            int resultado = abm.cambiarNombreRol(codigo, descripcion);
+
+            if (resultado == 0)
             {
-                abm.deshabilitarRol(codigo);
+                MessageBox.Show("Ya existe un rol con ese nombre", "Nombre de rol existente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.textBox1.Text = descripcionOriginal;
             }
-            else
-            {
-                abm.habilitarRol(codigo);
-            }
-            if(modFuncionalidad)
-            {
-                string imprimirAgregar = "";
-                string imprimirQuitar = "";
-                IEnumerable<string> quitar = backupFuncionalidadesExistentes.Where(x => !listBox2.Items.Contains(x));
-                foreach (string a in quitar)
+            else {
+                if (!this.checkBoxHabilitado.Checked)
                 {
-                    imprimirQuitar += Environment.NewLine + a;
-                    abm.eliminarFuncionalidadARol(codigo, a);
+                    abm.deshabilitarRol(codigo);
                 }
-                IEnumerable<string> agregar = backupFuncionalidadesFaltantes.Where(x => !listBox1.Items.Contains(x));
-                
-                foreach (string a in agregar)
+                else
                 {
-                    imprimirAgregar += Environment.NewLine + a;
-                    abm.agregarFuncionalidadARol(descripcion, a);
+                    abm.habilitarRol(codigo);
                 }
-                DialogResult result2 = MessageBox.Show("Rol:"+codigo+" "+this.textBox1.Text+ Environment.NewLine + "Funcionabilidades Obtenidas:" +imprimirAgregar+  Environment.NewLine+"Funcionabilidades Perdidas:"+ imprimirQuitar, "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (modFuncionalidad)
+                {
+                    string imprimirAgregar = "";
+                    string imprimirQuitar = "";
+                    IEnumerable<string> quitar = backupFuncionalidadesExistentes.Where(x => !listBox2.Items.Contains(x));
+                    foreach (string a in quitar)
+                    {
+                        imprimirQuitar += Environment.NewLine + a;
+                        abm.eliminarFuncionalidadARol(codigo, a);
+                    }
+                    IEnumerable<string> agregar = backupFuncionalidadesFaltantes.Where(x => !listBox1.Items.Contains(x));
+
+                    foreach (string a in agregar)
+                    {
+                        imprimirAgregar += Environment.NewLine + a;
+                        abm.agregarFuncionalidadARol(descripcion, a);
+                    }
+                    MessageBox.Show("El rol se ha modificado exitosamente", "Modificación de rol exitosa", MessageBoxButtons.OK);
+                    DialogResult result2 = MessageBox.Show("Rol: " + this.textBox1.Text + Environment.NewLine + "Funcionabilidades Obtenidas:" + imprimirAgregar + Environment.NewLine + "Funcionabilidades Perdidas:" + imprimirQuitar, "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.Close();
+                }
+                else {
+                    MessageBox.Show("El rol se ha modificado exitosamente", "Modificación de rol exitosa", MessageBoxButtons.OK);
+                    this.Close();
+                }
             }
+            
         }
     }
 }
