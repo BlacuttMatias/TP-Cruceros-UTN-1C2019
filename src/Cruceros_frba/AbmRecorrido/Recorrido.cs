@@ -147,5 +147,11 @@ namespace FrbaCrucero.AbmRecorrido
             return dt;
         }
         #endregion
+
+        public void agregarTramo(string puertoOrigen, string puertoDestino, decimal precio) {
+            Coneccion.ejecutarSPV("agregarTramo", "@ciudadPuertoOrigen", puertoOrigen
+                , "@ciudadPuertoDestino", puertoDestino, "@precio", precio);
+        }
+
     }
 }

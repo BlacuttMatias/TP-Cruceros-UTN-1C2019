@@ -113,7 +113,7 @@ namespace FrbaCrucero.AbmRecorrido
             idRecorrido = abm.crearRecorrido(listaTramos.ElementAt(0).origen, listaTramos.ElementAt(listaTramos.Count-1).destino, precio);
             Debugger debugger = new Debugger();
             debugger.log("idRecorrido:" + idRecorrido+" Origen:" + listaTramos.ElementAt(0).origen + " Destino:"+ listaTramos.ElementAt(listaTramos.Count - 1).destino+" Precio:"+precio);
-            debugger.Show();
+            //debugger.Show();
             if (idRecorrido != 0)
             {
                 MessageBox.Show("Su recorrido se ha generado con éxito", "FrbaCruceros", MessageBoxButtons.OK);
@@ -128,9 +128,9 @@ namespace FrbaCrucero.AbmRecorrido
                 MessageBox.Show("No se inserto el Recorrido, porque ya existe uno con ese origen, destino y precio", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else {
-                debugger.QSP1("FIDEOS_CON_TUCO.mostrarRecorridos");
-                debugger.QSP2("FIDEOS_CON_TUCO.mostrarTramosDeUnRecorrido", "@idRecorrido", idRecorrido);
-                debugger.QQ1("SELECT P1.puer_ciudad, P2.puer_ciudad FROM [FIDEOS_CON_TUCO].[Tramo] join [FIDEOS_CON_TUCO].[Puerto] as P1 on([tram_puerto_origen] = P1.[puer_codigo]) join [FIDEOS_CON_TUCO].[Puerto] as P2 on([tram_puerto_origen] = P2.[puer_codigo])");
+                //debugger.QSP1("FIDEOS_CON_TUCO.mostrarRecorridos");
+                //debugger.QSP2("FIDEOS_CON_TUCO.mostrarTramosDeUnRecorrido", "@idRecorrido", idRecorrido);
+                //debugger.QQ1("SELECT P1.puer_ciudad, P2.puer_ciudad FROM [FIDEOS_CON_TUCO].[Tramo] join [FIDEOS_CON_TUCO].[Puerto] as P1 on([tram_puerto_origen] = P1.[puer_codigo]) join [FIDEOS_CON_TUCO].[Puerto] as P2 on([tram_puerto_origen] = P2.[puer_codigo])");
             }
 
         }
@@ -149,6 +149,9 @@ namespace FrbaCrucero.AbmRecorrido
             this.Enabled = true;
             if(tramo.origen !="" && tramo.destino != "" && tramo.precio != 0)
             {
+                Recorrido abm = new Recorrido();
+                dt = abm.mostrarTramosExistentes();
+                dataGridView1.DataSource = dt;
                 listBox1.Items.Add(tramo.origen + "-" + tramo.destino); //DIZ NUTTZ
                 listaTramos.Add(tramo);//Tendria que chequar que no esten vacios los valores.
                 filtroElProceso = true;

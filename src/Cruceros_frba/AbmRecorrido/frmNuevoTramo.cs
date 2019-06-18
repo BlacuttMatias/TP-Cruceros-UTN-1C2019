@@ -23,15 +23,7 @@ namespace FrbaCrucero.AbmRecorrido
             cBoxOrigen.SelectedIndexChanged += new EventHandler(cBoxOrigen_SelectedIndexChanged);
             cBoxDestino.SelectedIndexChanged += new EventHandler(cBoxDestino_SelectedIndexChanged);
             btnAceptar.Click += new EventHandler(btnAceptar_Click);
-            if (unTramo.origen=="")
-            {
-
-            }
-            else
-            {
-                cBoxOrigen.Enabled = false;
-                cBoxOrigen.Text = unTramo.origen;
-            }
+            
             #region Eventos
             Load += new EventHandler(frmNuevoTramo_Load);
 
@@ -47,6 +39,20 @@ namespace FrbaCrucero.AbmRecorrido
                 cBoxOrigen.Items.Add(row["Ciudad"]);
                 cBoxDestino.Items.Add(row["Ciudad"]);
             }
+            cBoxOrigen.DropDownStyle = ComboBoxStyle.DropDownList;
+            cBoxDestino.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            if (unTramo.origen == "")
+            {
+                cBoxOrigen.SelectedIndex = 0;
+            }
+            else
+            {
+                cBoxOrigen.Enabled = false;
+                cBoxOrigen.SelectedIndex = cBoxOrigen.Items.IndexOf(unTramo.origen);
+            }
+            
+            cBoxDestino.SelectedIndex = 0;
         }
 
         private void cBoxOrigen_SelectedIndexChanged(object sender, EventArgs e)
@@ -61,16 +67,22 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (cBoxOrigen.Text != "" && cBoxDestino.Text != "" && txtBoxPrecio.Text != "")
+            if (String.IsNullOrWhiteSpace(txtBoxPrecio.Text))
+            {
+                MessageBox.Show("Error: Faltaban completar Campos", "CamposIncompletos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (cBoxOrigen.Text == cBoxDestino.Text)
+            {
+                MessageBox.Show("El destino de un tramo debe ser distinto del origen", "Error: Origen y destino iguales", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
             {
                 unTramo.origen = cBoxOrigen.Text;
                 unTramo.destino = cBoxDestino.Text;
                 unTramo.precio = Convert.ToDecimal(txtBoxPrecio.Text);
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("Faltaban completar Campos", "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Recorrido datosRecorrido = new Recorrido();
+                datosRecorrido.agregarTramo(unTramo.origen, unTramo.destino, unTramo.precio);
+                this.Close();
             }
         }
 

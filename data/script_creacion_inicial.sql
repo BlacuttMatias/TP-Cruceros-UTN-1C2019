@@ -556,6 +556,10 @@ object_id(N'[FIDEOS_CON_TUCO].[actualizarViajesYPasajesDeCruceroDadoDeBajaPerman
 drop procedure [FIDEOS_CON_TUCO].[actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente]
 GO
 
+if exists (select * from dbo.sysobjects where id =
+object_id(N'[FIDEOS_CON_TUCO].[agregarTramo]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [FIDEOS_CON_TUCO].[agregarTramo]
+GO
 
 
 /************************************************************************************************************/
@@ -2016,6 +2020,30 @@ END
 GO
 
 
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarTramo @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10, 2)
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Tramo JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = tram_puerto_origen)
+			JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = tram_puerto_destino) 
+			WHERE p1.puer_ciudad = @ciudadPuertoOrigen AND p2.puer_ciudad = @ciudadPuertoDestino)
+		BEGIN
+		UPDATE FIDEOS_CON_TUCO.Tramo SET tram_precio = @precio FROM FIDEOS_CON_TUCO.Tramo
+			JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = tram_puerto_origen)
+			JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = tram_puerto_destino) 
+			WHERE p1.puer_ciudad = @ciudadPuertoOrigen AND p2.puer_ciudad = @ciudadPuertoDestino
+		UPDATE FIDEOS_CON_TUCO.Tramo SET tram_precio = @precio FROM FIDEOS_CON_TUCO.Tramo
+			JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = tram_puerto_origen)
+			JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = tram_puerto_destino) 
+			WHERE p1.puer_ciudad = @ciudadPuertoDestino AND p2.puer_ciudad = @ciudadPuertoOrigen
+		END
+	INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino, tram_precio)
+		SELECT p1.puer_codigo, p2.puer_codigo, @precio FROM FIDEOS_CON_TUCO.Puerto p1
+		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino) 
+		WHERE p1.puer_ciudad = @ciudadPuertoOrigen
+END
+GO
+
+
 CREATE PROCEDURE FIDEOS_CON_TUCO.agregarTramoAUnRecorrido @ciudadPuertoOrigen varchar(255), @ciudadPuertoDestino varchar(255), @precio numeric(10,2), @idRecorrido int
 AS
 BEGIN
@@ -2023,8 +2051,8 @@ BEGIN
 	DECLARE @codigoPuertoDestino int
 	SELECT @codigoPuertoOrigen = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoOrigen
 	SELECT @codigoPuertoDestino = puer_codigo FROM FIDEOS_CON_TUCO.Puerto WHERE puer_ciudad = @ciudadPuertoDestino
-	IF NOT EXISTS (SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino)
-		INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino, tram_precio) VALUES (@codigoPuertoOrigen, @codigoPuertoDestino, @precio)
+	--IF NOT EXISTS (SELECT tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino)
+	--	INSERT INTO FIDEOS_CON_TUCO.Tramo(tram_puerto_origen, tram_puerto_destino, tram_precio) VALUES (@codigoPuertoOrigen, @codigoPuertoDestino, @precio)
 	DECLARE @codigoTramo int
 	SELECT @codigoTramo = tram_codigo FROM FIDEOS_CON_TUCO.Tramo WHERE tram_puerto_origen = @codigoPuertoOrigen AND tram_puerto_destino = @codigoPuertoDestino
 	INSERT INTO FIDEOS_CON_TUCO.Tramos_por_recorrido(tram_por_reco_tramo, tram_por_reco_recorrido) VALUES (@codigoTramo, @idRecorrido)
@@ -2098,8 +2126,10 @@ CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarRecorridos
 AS
 BEGIN
 	SELECT reco_id AS ID, puertoOrigen.puer_ciudad AS Puerto_origen, 
-		puertoDestino.puer_ciudad AS Puerto_destino, reco_precio AS Precio, 
-		CASE WHEN reco_esta_habilitado = 1 THEN 'SI'
+		puertoDestino.puer_ciudad AS Puerto_destino
+		, reco_precio AS Precio
+		, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Recorrido
+		, CASE WHEN reco_esta_habilitado = 1 THEN 'SI'
 			ELSE 'NO'
 		END AS Habilitado
 		FROM FIDEOS_CON_TUCO.Recorrido
@@ -2611,7 +2641,10 @@ GO
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarPuertosDeUnRecorrido
 AS
 BEGIN
-	SELECT reco_id AS ID, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Puertos_recorridos FROM FIDEOS_CON_TUCO.Recorrido WHERE reco_esta_habilitado = 1
+	SELECT reco_id AS ID, FIDEOS_CON_TUCO.stringConPuertosDeUnRecorrido(reco_id) AS Puertos_recorridos 
+	FROM FIDEOS_CON_TUCO.Recorrido 
+	WHERE reco_esta_habilitado = 1
+	ORDER BY 2
 END
 GO
 
@@ -2869,7 +2902,7 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = @idRecorrido)
 		WHERE tram_puerto_origen = reco_puerto_origen AND tram_codigo = tram_por_reco_tramo
-	RETURN @ciudadPuertoOrigen + '-' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoDestinoPrierTramo)
+	RETURN @ciudadPuertoOrigen + ' - ' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoDestinoPrierTramo)
 END
 GO
 

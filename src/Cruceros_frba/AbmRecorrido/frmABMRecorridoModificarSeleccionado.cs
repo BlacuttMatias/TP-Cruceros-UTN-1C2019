@@ -117,6 +117,8 @@ namespace FrbaCrucero.AbmRecorrido
                 abm.habilitarRecorrido(ID);
             else
                 abm.deshabilitarRecorrido(ID);
+            MessageBox.Show("El recorrido se ha modificado con éxito", "Recorrido modificado exitosamente"
+                , MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
