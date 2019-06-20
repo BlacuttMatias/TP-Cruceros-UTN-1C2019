@@ -2748,7 +2748,7 @@ BEGIN
 	SELECT cruc_codigo AS Codigo
 		, marc_descripcion AS Marca
 		, mode_descripcion AS Modelo
-		, FIDEOS_CON_TUCO.cantidadCabinasEstandar(cruc_codigo) AS Cantidad_Cabinas_Est�ndar
+		, FIDEOS_CON_TUCO.cantidadCabinasEstandar(cruc_codigo) AS Cantidad_Cabinas_Estandar
 		, FIDEOS_CON_TUCO.cantidadCabinasExteriores(cruc_codigo) AS Cantidad_Cabinas_Exteriores
 		, FIDEOS_CON_TUCO.cantidadCabinasSuites(cruc_codigo) AS Cantidad_Cabinas_Suites
 		, FIDEOS_CON_TUCO.cantidadCabinasBalcones(cruc_codigo) AS Cantidad_Cabinas_Balcones
