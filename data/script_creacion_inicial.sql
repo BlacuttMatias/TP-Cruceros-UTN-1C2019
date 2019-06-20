@@ -1529,7 +1529,7 @@ WHERE pasa_compra IS NULL
 GO
 
 
-/********************************** Modificación de viajes que se realizan al mismo tiempo con el mismo crucero*********************************/  
+/********************************** Modificaciï¿½n de viajes que se realizan al mismo tiempo con el mismo crucero*********************************/  
 
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.correrViajesSuperpuestosUnDia @codigoViaje int, @codigoCrucero varchar(255), @fechaInicio datetime, @fechaFin datetime
@@ -1582,7 +1582,7 @@ GO
 
 /************* AGREGAR ROL *************/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRol @rolAgregar varchar(255), @flag int output /* El flag está para devolver un mensaje según la situación que se presente*/
+CREATE PROCEDURE FIDEOS_CON_TUCO.agregarRol @rolAgregar varchar(255), @flag int output /* El flag estï¿½ para devolver un mensaje segï¿½n la situaciï¿½n que se presente*/
 AS
 BEGIN
 	if EXISTS(SELECT rol_descripcion FROM FIDEOS_CON_TUCO.Rol WHERE rol_descripcion = @rolAgregar)
@@ -1752,12 +1752,12 @@ AS
 DECLARE @usua_contrasenia varchar(255)
 DECLARE @usua_intentos_fallidos int
 SELECT  @usua_contrasenia = usua_contrasenia, @usua_intentos_fallidos = usua_intentos_fallidos FROM	FIDEOS_CON_TUCO.Usuario WHERE usua_username = @username
-/*IF POR SI NO ES LA CONTRASEÑA*/
+/*IF POR SI NO ES LA CONTRASEï¿½A*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) <> @usua_contrasenia)
 		EXEC FIDEOS_CON_TUCO.sumaDeIntentosFallidos @username, @usua_intentos_fallidos
 END
-/*IF PARA VER SI ES LA CONTRASEÑA CORRECTA*/
+/*IF PARA VER SI ES LA CONTRASEï¿½A CORRECTA*/
 BEGIN
 	if(HASHBYTES('SHA2_256', @password) = @usua_contrasenia and @usua_intentos_fallidos < 3)
 		BEGIN
@@ -2408,13 +2408,15 @@ GO
 --GO
 
 /*************************** CORRIMIENTO DE DIAS POR ESTAR FUERA DE SERVICIO ***************************/
-/*Se ejecuta cuando se decide no cancelar los pasajes y el crucero está fuera de servicio*/
+/*Se ejecuta cuando se decide no cancelar los pasajes y el crucero estï¿½ fuera de servicio*/
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.corrimientoDiasViaje @crucero_codigo varchar(255), @corrimiento int, @fechaInicioBajaTemporal datetime
 AS
 BEGIN
 	UPDATE FIDEOS_CON_TUCO.Viaje 
-	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) , viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
+	SET viaj_fecha_inicio = DATEADD (DAY, @corrimiento, viaj_fecha_inicio) 
+		, viaj_fecha_finalizacion = DATEADD (DAY, @corrimiento, viaj_fecha_finalizacion)
+		, viaj_fecha_finalizacion_estimada = DATEADD(DAY, @corrimiento, viaj_fecha_finalizacion_estimada)
 	WHERE viaj_crucero = @crucero_codigo 
 	AND viaj_fecha_inicio >= @fechaInicioBajaTemporal 
 END
@@ -2510,7 +2512,7 @@ END
 GO
 
 --Este SP se debe ejecutar para obtener un crucero que pueda reemplazar a otro dado de baja permanente
---Si devuelve el SELECT vacío es porque no existe uno que lo pueda reemplazar
+--Si devuelve el SELECT vacï¿½o es porque no existe uno que lo pueda reemplazar
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.cruceroParaReemplazarAOtro @codigoCruceroAReemplazar varchar(255), @fechaBajaPermanente datetime
 AS
@@ -2526,7 +2528,7 @@ GO
 /*************************** GENERO UN CRUCERO NUEVO IGUAL AL DADO DE BAJA PERMANENTE ***************************/
 
 
---Se debería ejecutar este SP en el caso de que se desee reemplazar un crucero dado de baja permanente y no exista uno que lo pueda hacer
+--Se deberï¿½a ejecutar este SP en el caso de que se desee reemplazar un crucero dado de baja permanente y no exista uno que lo pueda hacer
 --devuelve 1 si se pudo crear el nuevo crucero o 0 si no se puedo crear porque ya existe un crucero con ese codigo nuevo
 CREATE PROCEDURE FIDEOS_CON_TUCO.crearCruceroIgualAlAnterior @codigoCruceroAnterior varchar(255), @codigoNuevoCrucero varchar(255)
 , @fechaAltaCruceroNuevo datetime, @resultado int output
@@ -2554,7 +2556,7 @@ BEGIN
 END
 GO
 
-/*************************** REASIGNACIÓN DE PASAJES Y VIAJES DEL CRUCERO DADO DE BAJA PERMANENTE ***************************/
+/*************************** REASIGNACIï¿½N DE PASAJES Y VIAJES DEL CRUCERO DADO DE BAJA PERMANENTE ***************************/
 
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarViajesdeCruceroDadoDeBajaPermanente @codigoCruceroReemplazado varchar(255)
@@ -2601,7 +2603,7 @@ CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajesParaBajaPermanente @codigoCruc
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
-	SELECT pasa_codigo, 'Cancelación por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
+	SELECT pasa_codigo, 'Cancelaciï¿½n por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
 	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_crucero = @codigoCrucero)
 	WHERE pasa_viaje = viaj_codigo AND viaj_fecha_inicio >= @fechaBaja
 	AND NOT EXISTS(SELECT * FROM FIDEOS_CON_TUCO.Cancelacion_reserva 
@@ -2614,7 +2616,7 @@ CREATE PROCEDURE FIDEOS_CON_TUCO.cancelacionViajesParaBajaTemporal @codigoCrucer
 AS
 BEGIN
 	INSERT INTO FIDEOS_CON_TUCO.Cancelacion_pasaje(canc_pasa_pasaje, canc_pasa_descripcion, canc_pasa_fecha)
-	SELECT pasa_codigo, 'Cancelación por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
+	SELECT pasa_codigo, 'Cancelaciï¿½n por baja de crucero', @fechaSistema FROM FIDEOS_CON_TUCO.Pasaje
 	JOIN FIDEOS_CON_TUCO.Viaje ON (viaj_crucero = @codigoCrucero)
 	WHERE pasa_viaje = viaj_codigo 
 	AND (
@@ -2705,7 +2707,7 @@ AS
 BEGIN
 	DECLARE @cantidadCabinas int
 	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
-		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Balcón'
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Balcï¿½n'
 	RETURN @cantidadCabinas
 END
 GO
@@ -2746,7 +2748,7 @@ BEGIN
 	SELECT cruc_codigo AS Codigo
 		, marc_descripcion AS Marca
 		, mode_descripcion AS Modelo
-		, FIDEOS_CON_TUCO.cantidadCabinasEstandar(cruc_codigo) AS Cantidad_Cabinas_Estándar
+		, FIDEOS_CON_TUCO.cantidadCabinasEstandar(cruc_codigo) AS Cantidad_Cabinas_Estï¿½ndar
 		, FIDEOS_CON_TUCO.cantidadCabinasExteriores(cruc_codigo) AS Cantidad_Cabinas_Exteriores
 		, FIDEOS_CON_TUCO.cantidadCabinasSuites(cruc_codigo) AS Cantidad_Cabinas_Suites
 		, FIDEOS_CON_TUCO.cantidadCabinasBalcones(cruc_codigo) AS Cantidad_Cabinas_Balcones
@@ -3228,7 +3230,7 @@ END
 GO
 
 
-/************************** LISTADO con la información de la compra hecha *******************************************/
+/************************** LISTADO con la informaciï¿½n de la compra hecha *******************************************/
 
 
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarDatosFinalizadaLaCompra @codigoCompra int
@@ -3331,7 +3333,7 @@ END
 GO
 
 
---TOP 5 DE LOS CRUCEROS CON MAS DÍAS FUERA DE SERVICIO
+--TOP 5 DE LOS CRUCEROS CON MAS Dï¿½AS FUERA DE SERVICIO
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int
 AS
 BEGIN
