@@ -2312,12 +2312,15 @@ BEGIN
 END
 GO
 /*************************** MODIFICAR CRUCEROS ***************************/
-CREATE PROCEDURE FIDEOS_CON_TUCO.modificarCrucero @cruceroCodigo Varchar(255), @cruceroMarca Varchar(255), @cruceroModelo Varchar(255)
+CREATE PROCEDURE [FIDEOS_CON_TUCO].[modificarCrucero] @cruceroCodigo Varchar(255), @cruceroMarca Varchar(255), @cruceroModelo Varchar(255)
 AS
 BEGIN
-	UPDATE [FIDEOS_CON_TUCO].[Crucero] SET cruc_marca = @cruceroMarca, cruc_modelo = @cruceroModelo WHERE cruc_codigo = @cruceroCodigo
+	DECLARE @codigoMarca int
+	DECLARE @codigoModelo int
+	SELECT @codigoMarca = marc_codigo FROM [FIDEOS_CON_TUCO].[Marca] WHERE marc_descripcion=@cruceroMarca
+	SELECT @codigoModelo = mode_codigo FROM [FIDEOS_CON_TUCO].[Modelo] WHERE mode_descripcion=@cruceroModelo
+	UPDATE [FIDEOS_CON_TUCO].[Crucero] SET cruc_marca = @codigoMarca, cruc_modelo = @codigoModelo WHERE cruc_codigo = @cruceroCodigo
 END
-GO
 
 /*************************** LISTADO DE CABINAS  ***************************/
 
