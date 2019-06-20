@@ -37,6 +37,13 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblDescripcion = new System.Windows.Forms.Label();
+            this.btnCancelarTodos = new System.Windows.Forms.Button();
+            this.btnReemplazarCrucero = new System.Windows.Forms.Button();
+            this.btnPostergarTodos = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblCodigo
@@ -59,17 +66,19 @@
             // 
             // dtpBaja
             // 
-            this.dtpBaja.Location = new System.Drawing.Point(85, 76);
+            this.dtpBaja.Location = new System.Drawing.Point(317, 9);
             this.dtpBaja.Name = "dtpBaja";
             this.dtpBaja.Size = new System.Drawing.Size(200, 20);
             this.dtpBaja.TabIndex = 2;
+            this.dtpBaja.ValueChanged += new System.EventHandler(this.dtpBaja_ValueChanged);
             // 
             // dtpAlta
             // 
-            this.dtpAlta.Location = new System.Drawing.Point(85, 115);
+            this.dtpAlta.Location = new System.Drawing.Point(317, 39);
             this.dtpAlta.Name = "dtpAlta";
             this.dtpAlta.Size = new System.Drawing.Size(200, 20);
             this.dtpAlta.TabIndex = 3;
+            this.dtpAlta.ValueChanged += new System.EventHandler(this.dtpAlta_ValueChanged);
             // 
             // comboBox1
             // 
@@ -82,7 +91,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(210, 141);
+            this.btnAceptar.Location = new System.Drawing.Point(542, 308);
             this.btnAceptar.MaximumSize = new System.Drawing.Size(75, 23);
             this.btnAceptar.MinimumSize = new System.Drawing.Size(75, 23);
             this.btnAceptar.Name = "btnAceptar";
@@ -94,7 +103,7 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(15, 141);
+            this.btnLimpiar.Location = new System.Drawing.Point(12, 308);
             this.btnLimpiar.MaximumSize = new System.Drawing.Size(75, 23);
             this.btnLimpiar.MinimumSize = new System.Drawing.Size(75, 23);
             this.btnLimpiar.Name = "btnLimpiar";
@@ -107,7 +116,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 82);
+            this.label1.Location = new System.Drawing.Point(253, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 7;
@@ -116,17 +125,80 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 121);
+            this.label2.Location = new System.Drawing.Point(253, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "Fecha Alta";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(15, 117);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(517, 185);
+            this.dataGridView1.TabIndex = 9;
+            // 
+            // lblDescripcion
+            // 
+            this.lblDescripcion.AutoSize = true;
+            this.lblDescripcion.Location = new System.Drawing.Point(12, 101);
+            this.lblDescripcion.Name = "lblDescripcion";
+            this.lblDescripcion.Size = new System.Drawing.Size(53, 13);
+            this.lblDescripcion.TabIndex = 10;
+            this.lblDescripcion.Text = "Viajes de:";
+            // 
+            // btnCancelarTodos
+            // 
+            this.btnCancelarTodos.Location = new System.Drawing.Point(542, 117);
+            this.btnCancelarTodos.Name = "btnCancelarTodos";
+            this.btnCancelarTodos.Size = new System.Drawing.Size(75, 41);
+            this.btnCancelarTodos.TabIndex = 11;
+            this.btnCancelarTodos.Text = "Cancelar Todos";
+            this.btnCancelarTodos.UseVisualStyleBackColor = true;
+            this.btnCancelarTodos.Click += new System.EventHandler(this.btnCancelarTodos_Click);
+            // 
+            // btnReemplazarCrucero
+            // 
+            this.btnReemplazarCrucero.Location = new System.Drawing.Point(542, 164);
+            this.btnReemplazarCrucero.Name = "btnReemplazarCrucero";
+            this.btnReemplazarCrucero.Size = new System.Drawing.Size(75, 43);
+            this.btnReemplazarCrucero.TabIndex = 12;
+            this.btnReemplazarCrucero.Text = "Cambiar Crucero";
+            this.btnReemplazarCrucero.UseVisualStyleBackColor = true;
+            this.btnReemplazarCrucero.Click += new System.EventHandler(this.btnReemplazarCrucero_Click);
+            // 
+            // btnPostergarTodos
+            // 
+            this.btnPostergarTodos.Location = new System.Drawing.Point(542, 213);
+            this.btnPostergarTodos.Name = "btnPostergarTodos";
+            this.btnPostergarTodos.Size = new System.Drawing.Size(75, 45);
+            this.btnPostergarTodos.TabIndex = 13;
+            this.btnPostergarTodos.Text = "Postergar Todos";
+            this.btnPostergarTodos.UseVisualStyleBackColor = true;
+            this.btnPostergarTodos.Click += new System.EventHandler(this.btnPostergarTodos_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(523, 9);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(94, 50);
+            this.button3.TabIndex = 14;
+            this.button3.Text = "Revisar Viajes";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // frmBajarSeleccionado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 174);
+            this.ClientSize = new System.Drawing.Size(629, 343);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btnPostergarTodos);
+            this.Controls.Add(this.btnReemplazarCrucero);
+            this.Controls.Add(this.btnCancelarTodos);
+            this.Controls.Add(this.lblDescripcion);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnLimpiar);
@@ -136,10 +208,10 @@
             this.Controls.Add(this.dtpBaja);
             this.Controls.Add(this.lblTipoBaja);
             this.Controls.Add(this.lblCodigo);
-            this.MaximumSize = new System.Drawing.Size(309, 212);
             this.MinimumSize = new System.Drawing.Size(309, 212);
             this.Name = "frmBajarSeleccionado";
             this.Text = "frmBajarSeleccionado";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,5 +228,11 @@
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblDescripcion;
+        private System.Windows.Forms.Button btnCancelarTodos;
+        private System.Windows.Forms.Button btnReemplazarCrucero;
+        private System.Windows.Forms.Button btnPostergarTodos;
+        private System.Windows.Forms.Button button3;
     }
 }

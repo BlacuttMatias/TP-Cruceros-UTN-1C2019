@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CapaDatos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,6 @@ namespace FrbaCrucero.AbmCrucero
         public frmBajaCrucero()
         {
             InitializeComponent();
-            MessageBox.Show("ESTO NO LO LLEGAMOS A TERMINAR, NO SE MOLESTEN EN PROBARLO PORQUE NO ANDA BIEN. ES DECIR, NO ROMPE PERO NO HACE LO QUE TIENE QUE HACER", "NO FUNCIONA BIEN", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Load += new EventHandler(frmModificacionCrucero_Load);
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.MultiSelect = false;
@@ -31,7 +31,6 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificacionCrucero_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            
             Crucero abm = new Crucero();
             dt = abm.mostrarBajas();
             dataGridView1.DataSource = dt;
@@ -42,9 +41,9 @@ namespace FrbaCrucero.AbmCrucero
             {
                 DataGridViewRow Fila = this.dataGridView1.Rows[e.RowIndex];
                 DataRow row = dt.Rows[e.RowIndex];
-                var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(DateTime.Now);
-                var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(DateTime.Now);
-                var fechaAlta = row.Field<DateTime?>("Fecha de Alta").GetValueOrDefault(DateTime.Now);
+                var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(Coneccion.getFechaSistema());
+                var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(Coneccion.getFechaSistema());
+                var fechaAlta = row.Field<DateTime?>("Fecha de Alta").GetValueOrDefault(Coneccion.getFechaSistema());
                 frmBajarSeleccionado frmBajarSeleccionado = new frmBajarSeleccionado(Fila.Cells["Codigo"].Value as string, fechaCreacion, Fila.Cells["Tipo Baja"].Value as string, fechaBaja, fechaAlta);
                 frmBajarSeleccionado.Show();
                 this.Enabled = false;

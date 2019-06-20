@@ -72,23 +72,21 @@ namespace FrbaCrucero.AbmRecorrido
                     txtBoxFiltroOrigen.ReadOnly = true;
                     filtroOrigen = b.destino;
                     filtroDestino = txtBoxFiltroDestino.Text;
-                    filtro = string.Format("{0} Like '%{1}%'", "Origen", filtroOrigen);
-                    filtro += string.Format("And {0} Like '%{1}%'", "Destino", filtroDestino);
-                    nuevosTramos.DefaultView.RowFilter = filtro;
+                    actualizarFiltro();
                     Precio += b.precio;
                     lblPrecio.Text = "Precio:" + Precio;
                 }
             }
-            
+
             //listBox1.Items.
         }
 
         private void FrmABMRecorridoModificarSeleccionado_Load(object sender, EventArgs e)
         {
-            string SLCT = "SELECT tram_codigo as Codigo, P1."+Puerto.ciudad+" as Origen, P2."+Puerto.ciudad+" as Destino,"+Tramo.precio+" as Precio" ;
-            SLCT += " FROM " +Tramo.tabla+" join [GD1C2019].[FIDEOS_CON_TUCO].[Tramos_por_recorrido] on (tram_por_reco_tramo="+Tramo.codigo+")";
-            SLCT += " join "+Puerto.tabla+" as P1 on (P1."+Puerto.codigo+"="+Tramo.origen+")";
-            SLCT += " join " + Puerto.tabla + " as P2 on (P2." + Puerto.codigo + "=" + Tramo.destino +")";
+            string SLCT = "SELECT tram_codigo as Codigo, P1." + Puerto.ciudad + " as Origen, P2." + Puerto.ciudad + " as Destino," + Tramo.precio + " as Precio";
+            SLCT += " FROM " + Tramo.tabla + " join [GD1C2019].[FIDEOS_CON_TUCO].[Tramos_por_recorrido] on (tram_por_reco_tramo=" + Tramo.codigo + ")";
+            SLCT += " join " + Puerto.tabla + " as P1 on (P1." + Puerto.codigo + "=" + Tramo.origen + ")";
+            SLCT += " join " + Puerto.tabla + " as P2 on (P2." + Puerto.codigo + "=" + Tramo.destino + ")";
             SLCT += " WHERE tram_por_reco_recorrido= @ID";
             misTramos = Coneccion.ejecutarSelect(SLCT, "@ID", ID);
             dataGridView1.DataSource = misTramos;
@@ -101,12 +99,12 @@ namespace FrbaCrucero.AbmRecorrido
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Recorrido abm = new Recorrido();
-            if(listaViejos.Count>0)
+            if (listaViejos.Count > 0)
             {
                 foreach (TramoElegido t in listaViejos)
                     abm.eliminarTramoDeUnRecorrido(t.origen, t.destino, ID);
             }
-            if (listaTramos.Count>0)
+            if (listaTramos.Count > 0)
             {
                 abm.modificarRecorrido(ID, listaTramos.ElementAt(0).origen, listaTramos.ElementAt(listaTramos.Count - 1).destino, Precio);
                 foreach (TramoElegido t in listaTramos)
@@ -117,8 +115,6 @@ namespace FrbaCrucero.AbmRecorrido
                 abm.habilitarRecorrido(ID);
             else
                 abm.deshabilitarRecorrido(ID);
-            MessageBox.Show("El recorrido se ha modificado con éxito", "Recorrido modificado exitosamente"
-                , MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
@@ -138,7 +134,7 @@ namespace FrbaCrucero.AbmRecorrido
                 {
                     listBox1.Items.Add(t.origen + " - " + t.destino);
                 }
-                
+
             }
             Precio = 0;
             listBox1.Enabled = false;
@@ -159,6 +155,13 @@ namespace FrbaCrucero.AbmRecorrido
                 {
                     Limpiar();
                 }
+                else
+                {
+                    TramoElegido Ultimotramo = listaTramos.Last();
+                    txtBoxFiltroOrigen.Text = Ultimotramo.destino;
+                    filtroOrigen = Ultimotramo.destino;
+                    actualizarFiltro();
+                }
             }
         }
         private void Limpiar()
@@ -174,11 +177,12 @@ namespace FrbaCrucero.AbmRecorrido
             txtBoxFiltroOrigen.Clear();
             txtBoxFiltroOrigen.ReadOnly = false;
         }
-        private string actualizarFiltro(string a, string b)
+        private void actualizarFiltro()
         {
-            filtro = string.Format("Puerto_origen Like '%{0}%'", a);
-            filtro += string.Format("And Puerto_destino Like '%{0}%'", b);
-            return filtro;
+            filtro = string.Format("{0} Like '%{1}%'", "Origen", filtroOrigen);
+            filtro += string.Format("And {0} Like '%{1}%'", "Destino", filtroDestino);
+            misTramos.DefaultView.RowFilter = filtro;
+            nuevosTramos.DefaultView.RowFilter = filtro;
         }
 
         private void txtBoxFiltroOrigen_TextChanged(object sender, EventArgs e)
@@ -186,10 +190,7 @@ namespace FrbaCrucero.AbmRecorrido
             if (listaTramos.Count == 0 || filtroElProceso)
             {
                 filtroOrigen = txtBoxFiltroOrigen.Text;
-                filtro = string.Format("{0} Like '%{1}%'", "Origen", filtroOrigen);
-                filtro += string.Format("And {0} Like '%{1}%'", "Destino", filtroDestino);
-                misTramos.DefaultView.RowFilter = filtro;
-                nuevosTramos.DefaultView.RowFilter = filtro;
+                actualizarFiltro();
             }
             //else
             //{
@@ -201,10 +202,7 @@ namespace FrbaCrucero.AbmRecorrido
         private void txtBoxFiltroDestino_TextChanged(object sender, EventArgs e)
         {
             filtroDestino = txtBoxFiltroDestino.Text;
-            filtro = string.Format("{0} Like '%{1}%'", "Origen", filtroOrigen);
-            filtro += string.Format("And {0} Like '%{1}%'", "Destino", filtroDestino);
-            misTramos.DefaultView.RowFilter = filtro;
-            nuevosTramos.DefaultView.RowFilter = filtro;
+            actualizarFiltro();
         }
 
         private void btnCrearTramo_Click(object sender, EventArgs e)
@@ -218,7 +216,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void NuevoTramo_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Enabled=true;
+            this.Enabled = true;
             if (tramo.origen != "" && tramo.destino != "" && tramo.precio != 0)
             {
                 listBox2.Items.Add(tramo.origen + "-" + tramo.destino); //DIZ NUTTZ

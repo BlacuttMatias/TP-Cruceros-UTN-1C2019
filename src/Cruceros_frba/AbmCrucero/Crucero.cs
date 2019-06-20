@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    class Crucero
+    public class Crucero
     {
         public int crearCrucero(string codigoCrucero, string marcaCrucero, string modeloCrucero, int cantidadCabinas, DateTime fecha)
         {//[dbo].[agregarCrucero] @cruceroCodigo varchar(255),@cruceroMarca varchar(255), @cruceroModelo varchar(255),@cantidadCabinas int,@fecha DateTime, @resultado int 
@@ -22,7 +22,12 @@ namespace FrbaCrucero.AbmCrucero
 
         public void agregarCabinaAUnCrucero(string cabiCrucero, int cabiNumero, int cabiPiso, string cabiTipo)
         {//agregarCabinaAUnCrucero @cabiCrucero varchar(255),@cabiNumero int,@cabiPiso int, @cabiTipo varchar(255)
-            Coneccion.ejecutarSP("agregarCabinaAUnCrucero", "@cabiCrucero", cabiCrucero, "@cabiNumero", cabiNumero, "@cabiPiso", cabiPiso, "cabiTipo", cabiTipo);
+            Coneccion.ejecutarSPV("agregarCabinaAUnCrucero", "@cabiCrucero", cabiCrucero, "@cabiNumero", cabiNumero, "@cabiPiso", cabiPiso, "cabiTipo", cabiTipo);
+        }
+
+        internal DataTable mostrarViajesDeCrucero(string codigo)
+        {
+            return Coneccion.ejecutarSP("mostrarViajesDeUnCrucero", "@crucero_a_dar_de_baja", codigo);
         }
 
         internal DataTable mostrarBajas()
@@ -54,16 +59,70 @@ namespace FrbaCrucero.AbmCrucero
 
         public void modificarCrucero(string codigo, string text1, string text2)
         {
-            Coneccion.ejecutarSPR("modificarCrucero", "@cruceroCodigo", codigo, "@cruceroMarca", text1, "@cruceroModelo", text2);
+            Coneccion.ejecutarSPV("modificarCrucero", "@cruceroCodigo", codigo, "@cruceroMarca", text1, "@cruceroModelo", text2);
         }
         public void bajaCrucero(string codigo, DateTime baja, DateTime alta, string tipoBaja)
         {//[bajaCrucero] @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
-            Coneccion.ejecutarSP("bajaCrucero", "@codigo", codigo, "@tipoBaja", tipoBaja, "@fechaSistema", baja, "@fechaAlta", alta);
+            Coneccion.ejecutarSPV("bajaCrucero", "@codigo", codigo, "@tipoBaja", tipoBaja, "@fechaSistema", baja, "@fechaAlta", alta);
         }
         public int tieneViajes(string codigo, DateTime fecha)
         {
             return Coneccion.ejecutarSPR("cruceroTieneViajes", "@respuesta", "@codigoCrucero", codigo, "@fecha", fecha);
         }
+
+        internal DataTable mostrarViajesDeCrucero(string codigo, DateTime baja, DateTime alta)
+        {
+            return Coneccion.ejecutarSP("mostrarViajesDeUnCrucero", "@crucero_a_dar_de_baja", codigo, "@inicio", baja, "@fin", alta);
+        }
+        internal void cancelarViajesBajaPermanente(string codigoCrucero, DateTime fechaBaja)
+        {
+            Coneccion.ejecutarSPV("cancelacionViajesParaBajaPermanente",
+                "@codigoCrucero", codigoCrucero,
+                "@fechaSistema", Coneccion.getFechaSistema(),
+                "@fechaBaja", fechaBaja);
+        }
+        internal void cancelarViajesBajaTemporal(string codigoCrucero, DateTime fechaBaja, DateTime fechaAlta)
+        {
+            Coneccion.ejecutarSPV("cancelacionViajesParaBajaTemporal",
+                "@codigoCrucero", codigoCrucero,
+                "@fechaSistema", Coneccion.getFechaSistema(),
+                "@fechaBaja", fechaBaja,
+                "@fechaAlta", fechaAlta);
+        }
+
+        internal void corrimientoDiasViaje(string crucero_codigo, int corrimiento, DateTime fechaInicioBajaTemporal)
+        {
+            Coneccion.ejecutarSPV("corrimientoDiasViaje",
+                   "@crucero_codigo", crucero_codigo,
+                   "@corrimiento", corrimiento,
+                   "@fechaInicioBajaTemporal", fechaInicioBajaTemporal);
+        }
+
+        internal int crearCruceroIgualAlAnterior(string codigoCruceroAnterior, string codigoNuevoCrucero, DateTime fechaAltaCruceroNuevo)
+        {
+            return Coneccion.ejecutarSPR("crearCruceroIgualAlAnterior",
+                "@codigoCruceroAnterior", codigoCruceroAnterior,
+                "@codigoNuevoCrucero", codigoNuevoCrucero,
+                "@fechaAltaCruceroNuevo", fechaAltaCruceroNuevo);
+        }
+
+        internal DataTable cruceroParaReemplazarAOtro(string codigoCruceroAReemplazar, DateTime fechaBajaPermanente)
+        {
+            return Coneccion.ejecutarSP("cruceroParaReemplazarAOtro", "@codigoCruceroAReemplazar", codigoCruceroAReemplazar,
+                "@fechaBajaPermanente", fechaBajaPermanente);
+        }
+
+        internal void actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(
+            string cruceroReemplazado,
+            string cruceroNuevo,
+            DateTime fechaBaja)
+        {
+            Coneccion.ejecutarSPV("actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente",
+                "@codigoCruceroReemplazado", cruceroReemplazado,
+                "@codigoCruceroQueLoReemplazo", cruceroNuevo,
+                "@fechaBajaPermanenteDeCruceroReemplazado", fechaBaja);
+        }
+
     }
     public class nodoCabina
     {
