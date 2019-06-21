@@ -566,6 +566,11 @@ GO
  drop procedure [FIDEOS_CON_TUCO].[mostrarViajesDeUnCrucero]
  GO
 
+ if exists (select * from dbo.sysobjects where id=
+ object_id(N'[FIDEOS_CON_TUCO].[mostrarViajesDeUnCruceroEntre]') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+ drop procedure [FIDEOS_CON_TUCO].[mostrarViajesDeUnCruceroEntre]
+ GO
+
   if exists (select * from dbo.sysobjects where id=
  object_id(N'[FIDEOS_CON_TUCO].[mostrarCrucerosSinBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure')=1)
  drop procedure [FIDEOS_CON_TUCO].[mostrarCrucerosSinBajaPermanente]
@@ -2361,7 +2366,22 @@ BEGIN
 END
 GO
 /*************************** LISTADO DE VIAJES DE UN CRUCERO **********************/
-CREATE PROCEDURE [FIDEOS_CON_TUCO].[mostrarViajesDeUnCrucero] @crucero_a_dar_de_baja varchar(255), @inicio DateTime, @fin DateTime
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarViajesDeUnCrucero @codigoCrucero varchar(255), @fechaBajaPermanente datetime
+AS 
+BEGIN
+	SELECT viaj_codigo as Codigo, viaj_fecha_inicio as 'Fecha Inicio',  viaj_fecha_finalizacion_estimada as 'Fecha Finalizacion' 
+	FROM FIDEOS_CON_TUCO.Viaje join FIDEOS_CON_TUCO.Pasaje on (viaj_codigo=pasa_viaje)
+	WHERE viaj_crucero = @codigoCrucero 
+			AND viaj_fecha_inicio >= @fechaBajaPermanente 
+			AND pasa_codigo not in (SELECT canc_pasa_pasaje FROM [FIDEOS_CON_TUCO].Cancelacion_pasaje)
+			AND pasa_compra is not NULL
+	GROUP By viaj_codigo,viaj_fecha_inicio,viaj_fecha_finalizacion_estimada
+END
+GO
+
+
+CREATE PROCEDURE [FIDEOS_CON_TUCO].[mostrarViajesDeUnCruceroEntre] @crucero_a_dar_de_baja varchar(255), @inicio DateTime, @fin DateTime
 AS
 BEGIN
 	SELECT viaj_codigo as Codigo, viaj_fecha_inicio as 'Fecha Inicio',  viaj_fecha_finalizacion_estimada as 'Fecha Finalizacion' 

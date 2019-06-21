@@ -42,8 +42,13 @@ namespace FrbaCrucero.AbmCrucero
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             int diasBaja = ((TimeSpan)(fechaAlta - fechaBaja)).Days;
-            abm.corrimientoDiasViaje(crucero_codigo, Convert.ToInt32(textBox1.Text) + diasBaja, fechaBaja);
+            int cantidadDeDiasMovidos = Convert.ToInt32(textBox1.Text) + diasBaja;
+            abm.corrimientoDiasViaje(crucero_codigo, cantidadDeDiasMovidos, fechaBaja);
+            MessageBox.Show("Los viajes se postergaron " + cantidadDeDiasMovidos.ToString() + " dias"
+                , "Corrimiento de viajes exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
+            abm.bajaCrucero(crucero_codigo, fechaBaja, fechaAlta, "Temporal");
+            MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma Temporal", crucero_codigo), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

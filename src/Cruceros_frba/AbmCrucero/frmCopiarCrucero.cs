@@ -32,7 +32,10 @@ namespace FrbaCrucero.AbmCrucero
         {
             abm.crearCruceroIgualAlAnterior(codigoViejo, codigoNuevo, Coneccion.getFechaSistema());
             abm.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(codigoViejo, codigoNuevo, fechaBaja);
+            MessageBox.Show("Se reemplazo el crucero:" + codigoViejo + " por el crucero:" + codigoNuevo, "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
+            abm.bajaCrucero(codigoViejo, fechaBaja, Coneccion.getFechaSistema(), "Permanente");
+            MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma Permanente", codigoViejo), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

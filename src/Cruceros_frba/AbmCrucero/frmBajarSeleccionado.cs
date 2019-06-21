@@ -50,7 +50,22 @@ namespace FrbaCrucero.AbmCrucero
             dtTipoBaja = abm.mostrarTipoBaja();
             llenarCB(comboBox1, dtTipoBaja, "Descripcion");
 
+            comboBox1.SelectedIndex = 0;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.label2.Visible = false;
+            this.dtpAlta.Visible = false;
+            tipoBaja = 1;
+
+            btnAceptar.Enabled = false;
+            btnPostergarTodos.Enabled = false;
+            btnReemplazarCrucero.Enabled = false;
+            btnCancelarTodos.Enabled = false;
+
+            dtpAlta.Format = DateTimePickerFormat.Custom;
+            dtpAlta.CustomFormat = "dd-MM-yyyy hh:mm:ss";
             dtpAlta.Value = alta;
+            dtpBaja.Format = DateTimePickerFormat.Custom;
+            dtpBaja.CustomFormat = "dd-MM-yyyy hh:mm:ss";
             dtpBaja.Value = baja;
             lblDescripcion.Text = string.Format("Viajes de :{0} entre {1} y {2}", codigo, dtpBaja.Value.ToString(), dtpAlta.Value.ToString());
         }
@@ -66,27 +81,33 @@ namespace FrbaCrucero.AbmCrucero
             btnAceptar.Enabled = false;
             btnPostergarTodos.Enabled = false;
             btnReemplazarCrucero.Enabled = false;
+            btnCancelarTodos.Enabled = false;
+            dataGridView1.DataSource = null;
             if (new Regex(@"[(Permanente)(Temporal)]").IsMatch(comboBox1.Text))
             {
                 comboBox1.ForeColor = Color.Black;
-                btnCancelarTodos.Enabled = true;
+                //btnCancelarTodos.Enabled = true;
                 if (new Regex(@"(Permanente)").IsMatch(comboBox1.Text))
                 {
-                    btnPostergarTodos.Enabled = false;
-                    btnReemplazarCrucero.Enabled = true;
+                    //btnPostergarTodos.Enabled = false;
+                    //btnReemplazarCrucero.Enabled = true;
+                    this.label2.Visible = false;
+                    this.dtpAlta.Visible = false;
                     tipoBaja = 1;
                 }
                 else
                 {
-                    btnReemplazarCrucero.Enabled=false;
-                    btnPostergarTodos.Enabled = true;
+                    //btnReemplazarCrucero.Enabled=false;
+                    //btnPostergarTodos.Enabled = true;
+                    this.label2.Visible = true;
+                    this.dtpAlta.Visible = true;
                     tipoBaja = 2;
                 }
             }
             else
             {
                 comboBox1.ForeColor = Color.Red;
-                btnAceptar.Enabled = false;
+                //btnAceptar.Enabled = false;
             }
         }
 
@@ -131,7 +152,13 @@ namespace FrbaCrucero.AbmCrucero
         }
         private void actualizar()
         {
-            dtViajes = abm.mostrarViajesDeCrucero(codigo, baja, alta);
+            if (tipoBaja == 1)
+            {
+                dtViajes = abm.mostrarViajesDeUnCrucero(codigo, baja);
+            }
+            else {
+                dtViajes = abm.mostrarViajesDeCruceroEntre(codigo, baja, alta);
+            }
             dataGridView1.DataSource = dtViajes;
             if(dtViajes.Rows.Count==0)
             {
@@ -139,6 +166,23 @@ namespace FrbaCrucero.AbmCrucero
                 btnCancelarTodos.Enabled = false;
                 btnPostergarTodos.Enabled = false;
                 btnReemplazarCrucero.Enabled = false;
+            }
+            else
+            {
+                if (comboBox1.Text == "Permanente")
+                {
+                    btnCancelarTodos.Enabled = true;
+                    btnReemplazarCrucero.Enabled = true;
+                    btnPostergarTodos.Enabled = false;
+                    btnAceptar.Enabled = false;
+                }
+                else
+                {
+                    btnCancelarTodos.Enabled = true;
+                    btnReemplazarCrucero.Enabled = false;
+                    btnPostergarTodos.Enabled = true;
+                    btnAceptar.Enabled = false;
+                }
             }
         }
         private void btnReemplazarCrucero_Click(object sender, EventArgs e)
@@ -150,10 +194,14 @@ namespace FrbaCrucero.AbmCrucero
             DataTable unCurcero = abm.cruceroParaReemplazarAOtro(codigo, baja);
             if (unCurcero.Rows.Count == 1)
             {
-                string codigoNuevo = unCurcero.Rows[0]["cruc_codigo"] as string;
+                string codigoNuevo = unCurcero.Rows[0]["Codigo"] as string;
                 abm.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(codigo, codigoNuevo, baja);
                 MessageBox.Show("Se reemplazo el crucero:" + codigo + " por el crucero:" + codigoNuevo, "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                actualizar();
+                //actualizar();
+                abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
+                MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma {1}", codigo, comboBox1.Text), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+
             }
             else
             {
@@ -168,7 +216,8 @@ namespace FrbaCrucero.AbmCrucero
         private void FrmCopiarCrucero_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
-            actualizar();
+            //actualizar();
+            this.Close();
         }
 
         private void btnPostergarTodos_Click(object sender, EventArgs e)
@@ -186,7 +235,8 @@ namespace FrbaCrucero.AbmCrucero
         private void FrmPostergarViajes_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
-            actualizar();
+            //actualizar();
+            this.Close();
         }
 
         private void btnCancelarTodos_Click(object sender, EventArgs e)
@@ -195,7 +245,12 @@ namespace FrbaCrucero.AbmCrucero
                 abm.cancelarViajesBajaPermanente(codigo, baja);
             else if (tipoBaja == 2)
                 abm.cancelarViajesBajaTemporal(codigo, baja, alta);
-            actualizar();
+            MessageBox.Show("Los viajes y pasajes vendidos fueron cancelados con éxito", "Cancelacion exitosa"
+                , MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //actualizar();
+            abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
+            MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma {1}", codigo, comboBox1.Text), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Close();
         }
     }
 }

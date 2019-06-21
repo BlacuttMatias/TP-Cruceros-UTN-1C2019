@@ -66,10 +66,15 @@ namespace FrbaCrucero.AbmCrucero
             Coneccion.ejecutarSPV("bajaCrucero", "@codigo", codigo, "@tipoBaja", tipoBaja, "@fechaSistema", baja, "@fechaAlta", alta);
         }
 
-        internal DataTable mostrarViajesDeCrucero(string codigo, DateTime baja, DateTime alta)
+        internal DataTable mostrarViajesDeCruceroEntre(string codigo, DateTime baja, DateTime alta)
         {
-            return Coneccion.ejecutarSP("mostrarViajesDeUnCrucero", "@crucero_a_dar_de_baja", codigo, "@inicio", baja, "@fin", alta);
+            return Coneccion.ejecutarSP("mostrarViajesDeUnCruceroEntre", "@crucero_a_dar_de_baja", codigo, "@inicio", baja, "@fin", alta);
         }
+
+        public DataTable mostrarViajesDeUnCrucero(string codigoCrucero, DateTime fechaBajaPermanente) {
+            return Coneccion.ejecutarSP("mostrarViajesDeUnCrucero", "@codigoCrucero", codigoCrucero, "@fechaBajaPermanente", fechaBajaPermanente);
+        }
+
         internal void cancelarViajesBajaPermanente(string codigoCrucero, DateTime fechaBaja)
         {
             Coneccion.ejecutarSPV("cancelacionViajesParaBajaPermanente",
@@ -96,7 +101,8 @@ namespace FrbaCrucero.AbmCrucero
 
         internal int crearCruceroIgualAlAnterior(string codigoCruceroAnterior, string codigoNuevoCrucero, DateTime fechaAltaCruceroNuevo)
         {
-            return Coneccion.ejecutarSPR("crearCruceroIgualAlAnterior",
+            return Coneccion.ejecutarSPR("crearCruceroIgualAlAnterior", 
+                "@resultado",
                 "@codigoCruceroAnterior", codigoCruceroAnterior,
                 "@codigoNuevoCrucero", codigoNuevoCrucero,
                 "@fechaAltaCruceroNuevo", fechaAltaCruceroNuevo);
