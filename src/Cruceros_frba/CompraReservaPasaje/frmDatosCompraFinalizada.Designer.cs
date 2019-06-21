@@ -37,19 +37,22 @@
             this.dataGridDatosCompra.AllowUserToAddRows = false;
             this.dataGridDatosCompra.AllowUserToDeleteRows = false;
             this.dataGridDatosCompra.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridDatosCompra.Location = new System.Drawing.Point(2, 25);
+            this.dataGridDatosCompra.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridDatosCompra.Location = new System.Drawing.Point(0, 0);
+            this.dataGridDatosCompra.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridDatosCompra.Name = "dataGridDatosCompra";
             this.dataGridDatosCompra.ReadOnly = true;
             this.dataGridDatosCompra.RowTemplate.Height = 24;
-            this.dataGridDatosCompra.Size = new System.Drawing.Size(1900, 122);
+            this.dataGridDatosCompra.Size = new System.Drawing.Size(411, 192);
             this.dataGridDatosCompra.TabIndex = 0;
             // 
             // frmDatosCompraFinalizada
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 236);
+            this.ClientSize = new System.Drawing.Size(411, 192);
             this.Controls.Add(this.dataGridDatosCompra);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frmDatosCompraFinalizada";
             this.Text = "Datos de la compra realizada";
             this.Load += new System.EventHandler(this.frmDatosCompraFinalizada_Load);

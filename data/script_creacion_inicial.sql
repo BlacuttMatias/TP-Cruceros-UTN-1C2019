@@ -2307,13 +2307,11 @@ BEGIN
 		[marc_descripcion] as Marca,
 		[mode_descripcion] as Modelo,
 		[cruc_cantidad_cabinas] as 'Cantidad de Cabinas',
-		[cruc_fecha_de_alta] as 'Fecha de Alta',
-		CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
-		     WHEN cruc_esta_habilitado = 0 THEN 'NO'
-		END as Habilitado
+		[cruc_fecha_de_alta] as 'Fecha de Alta'
 	FROM [FIDEOS_CON_TUCO].[Crucero]
 	JOIN [FIDEOS_CON_TUCO].[Marca] on ([cruc_marca]=marc_codigo)
 	JOIN [FIDEOS_CON_TUCO].[Modelo] on ([cruc_modelo]=mode_codigo)
+	WHERE cruc_esta_habilitado=1
 END
 GO
 /*************************** MODIFICAR CRUCEROS ***************************/

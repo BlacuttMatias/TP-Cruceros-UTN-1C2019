@@ -14,16 +14,20 @@ namespace FrbaCrucero.AbmCrucero
 {
     public partial class frmBajaCrucero : Form
     {
-        DataTable dt;
+        DataTable dtCruceros;
+        DataTable dtBajas;
         string filtro = "";
         string filtroCodigoCrucero = "";
+        Crucero abm = new Crucero();
         public frmBajaCrucero()
         {
             InitializeComponent();
             Load += new EventHandler(frmModificacionCrucero_Load);
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.MultiSelect = false;
-            dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
+            dgvCruceros.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCruceros.MultiSelect = false;
+            dgvCruceros.CellClick += new DataGridViewCellEventHandler(dtvCruceros_CellClick);
+            dgvBajas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvBajas.MultiSelect = false;
             //txtBoxFiltroModelo.TextChanged += new EventHandler(txtBoxFiltroModelo_TextChanged);
             //txtBoxFiltroMarca.TextChanged += new EventHandler(txtBoxFiltroMarca_TextChanged);
         }
@@ -31,20 +35,21 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificacionCrucero_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            Crucero abm = new Crucero();
-            dt = abm.mostrarBajas();
-            dataGridView1.DataSource = dt;
+            dtCruceros = abm.mostrarCruceros();
+            dgvCruceros.DataSource = dtCruceros;
+            dtBajas = abm.mostrarBajas();
+            dgvBajas.DataSource = dtBajas;
         }
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dtvCruceros_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow Fila = this.dataGridView1.Rows[e.RowIndex];
-                DataRow row = dt.Rows[e.RowIndex];
-                var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(Coneccion.getFechaSistema());
-                var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(Coneccion.getFechaSistema());
+                DataGridViewRow Fila = this.dgvCruceros.Rows[e.RowIndex];
+                DataRow row = dtCruceros.Rows[e.RowIndex];
+                //var fechaCreacion = row.Field<DateTime?>("Fecha Creacion").GetValueOrDefault(Coneccion.getFechaSistema());
+                //var fechaBaja = row.Field<DateTime?>("Fecha de Baja").GetValueOrDefault(Coneccion.getFechaSistema());
                 var fechaAlta = row.Field<DateTime?>("Fecha de Alta").GetValueOrDefault(Coneccion.getFechaSistema());
-                frmBajarSeleccionado frmBajarSeleccionado = new frmBajarSeleccionado(Fila.Cells["Codigo"].Value as string, fechaCreacion, Fila.Cells["Tipo Baja"].Value as string, fechaBaja, fechaAlta);
+                frmBajarSeleccionado frmBajarSeleccionado = new frmBajarSeleccionado(Fila.Cells["Codigo"].Value as string, /*fechaCreacion, Fila.Cells["Tipo Baja"].Value as string, fechaBaja, */fechaAlta);
                 frmBajarSeleccionado.Show();
                 this.Enabled = false;
                 frmBajarSeleccionado.FormClosing += frmBajarSeleccionado_FormClosing;
@@ -58,12 +63,14 @@ namespace FrbaCrucero.AbmCrucero
         private void frmBajarSeleccionado_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
+            dtBajas = abm.mostrarBajas();
+            dgvBajas.DataSource = dtCruceros;
         }
 
         private void txtBoxFiltroCodigo_TextChanged(object sender, EventArgs e)
         {
             filtroCodigoCrucero = txtBoxFiltroCodigo.Text;
-            dt.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero);
+            dtCruceros.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero);
         }
         private string actualizarFiltro(string codigo)
         {

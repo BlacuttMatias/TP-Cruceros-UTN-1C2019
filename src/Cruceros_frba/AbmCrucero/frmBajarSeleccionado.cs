@@ -34,8 +34,8 @@ namespace FrbaCrucero.AbmCrucero
             dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
             codigo = args[0] as string;
             lblCodigo.Text += string.Format(":{0}", codigo);
-            baja = Convert.ToDateTime(args[3]);
-            alta = Convert.ToDateTime(args[4]);
+            baja = Coneccion.getFechaSistema();
+            alta = Coneccion.getFechaSistema();
             btnAceptar.Enabled = false;
             btnPostergarTodos.Enabled = false;
             btnReemplazarCrucero.Enabled = false;

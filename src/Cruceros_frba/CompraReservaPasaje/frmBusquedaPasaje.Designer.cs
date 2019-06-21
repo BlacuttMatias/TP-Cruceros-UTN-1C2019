@@ -52,11 +52,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(33, 36);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(25, 29);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(356, 319);
+            this.groupBox1.Size = new System.Drawing.Size(267, 259);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filtrado de Viajes:";
@@ -64,37 +62,33 @@
             // dtpFechaPartida
             // 
             this.dtpFechaPartida.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFechaPartida.Location = new System.Drawing.Point(145, 57);
-            this.dtpFechaPartida.Margin = new System.Windows.Forms.Padding(4);
+            this.dtpFechaPartida.Location = new System.Drawing.Point(109, 46);
             this.dtpFechaPartida.Name = "dtpFechaPartida";
-            this.dtpFechaPartida.Size = new System.Drawing.Size(136, 22);
+            this.dtpFechaPartida.Size = new System.Drawing.Size(103, 20);
             this.dtpFechaPartida.TabIndex = 6;
             // 
             // cmbPuertoDestino
             // 
             this.cmbPuertoDestino.FormattingEnabled = true;
-            this.cmbPuertoDestino.Location = new System.Drawing.Point(145, 194);
-            this.cmbPuertoDestino.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbPuertoDestino.Location = new System.Drawing.Point(109, 158);
             this.cmbPuertoDestino.Name = "cmbPuertoDestino";
-            this.cmbPuertoDestino.Size = new System.Drawing.Size(181, 24);
+            this.cmbPuertoDestino.Size = new System.Drawing.Size(137, 21);
             this.cmbPuertoDestino.TabIndex = 5;
             // 
             // cmbPuertoOrigen
             // 
             this.cmbPuertoOrigen.FormattingEnabled = true;
-            this.cmbPuertoOrigen.Location = new System.Drawing.Point(145, 121);
-            this.cmbPuertoOrigen.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbPuertoOrigen.Location = new System.Drawing.Point(109, 98);
             this.cmbPuertoOrigen.Name = "cmbPuertoOrigen";
-            this.cmbPuertoOrigen.Size = new System.Drawing.Size(181, 24);
+            this.cmbPuertoOrigen.Size = new System.Drawing.Size(137, 21);
             this.cmbPuertoOrigen.TabIndex = 4;
             // 
             // btnFiltrar
             // 
             this.btnFiltrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFiltrar.Location = new System.Drawing.Point(111, 246);
-            this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnFiltrar.Location = new System.Drawing.Point(83, 200);
             this.btnFiltrar.Name = "btnFiltrar";
-            this.btnFiltrar.Size = new System.Drawing.Size(115, 48);
+            this.btnFiltrar.Size = new System.Drawing.Size(86, 39);
             this.btnFiltrar.TabIndex = 3;
             this.btnFiltrar.Text = "Filtrar";
             this.btnFiltrar.UseVisualStyleBackColor = true;
@@ -103,20 +97,18 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 198);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(17, 161);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(106, 17);
+            this.label3.Size = new System.Drawing.Size(80, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Puerto Destino:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 124);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(13, 101);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 17);
+            this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Puerto de Origen:";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -124,10 +116,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 60);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(17, 49);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 17);
+            this.label1.Size = new System.Drawing.Size(76, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Fecha Partida:";
             // 
@@ -135,22 +126,24 @@
             // 
             this.dataGridViajesDisponibles.AllowUserToAddRows = false;
             this.dataGridViajesDisponibles.AllowUserToDeleteRows = false;
+            this.dataGridViajesDisponibles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViajesDisponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViajesDisponibles.Location = new System.Drawing.Point(424, 47);
-            this.dataGridViajesDisponibles.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViajesDisponibles.Location = new System.Drawing.Point(298, 29);
             this.dataGridViajesDisponibles.MultiSelect = false;
             this.dataGridViajesDisponibles.Name = "dataGridViajesDisponibles";
             this.dataGridViajesDisponibles.RowHeadersVisible = false;
             this.dataGridViajesDisponibles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViajesDisponibles.Size = new System.Drawing.Size(1536, 466);
+            this.dataGridViajesDisponibles.Size = new System.Drawing.Size(574, 379);
             this.dataGridViajesDisponibles.TabIndex = 1;
             // 
             // btnComprar
             // 
-            this.btnComprar.Location = new System.Drawing.Point(1757, 542);
-            this.btnComprar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnComprar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnComprar.Location = new System.Drawing.Point(747, 424);
             this.btnComprar.Name = "btnComprar";
-            this.btnComprar.Size = new System.Drawing.Size(167, 59);
+            this.btnComprar.Size = new System.Drawing.Size(125, 48);
             this.btnComprar.TabIndex = 4;
             this.btnComprar.Text = "Comprar";
             this.btnComprar.UseVisualStyleBackColor = true;
@@ -158,10 +151,10 @@
             // 
             // btnReservar
             // 
-            this.btnReservar.Location = new System.Drawing.Point(1651, 542);
-            this.btnReservar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReservar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReservar.Location = new System.Drawing.Point(619, 424);
             this.btnReservar.Name = "btnReservar";
-            this.btnReservar.Size = new System.Drawing.Size(162, 59);
+            this.btnReservar.Size = new System.Drawing.Size(122, 48);
             this.btnReservar.TabIndex = 5;
             this.btnReservar.Text = "Reservar";
             this.btnReservar.UseVisualStyleBackColor = true;
@@ -169,14 +162,14 @@
             // 
             // frmBusquedaPasaje
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 654);
+            this.ClientSize = new System.Drawing.Size(884, 487);
             this.Controls.Add(this.btnReservar);
             this.Controls.Add(this.btnComprar);
             this.Controls.Add(this.dataGridViajesDisponibles);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(900, 525);
             this.Name = "frmBusquedaPasaje";
             this.Text = "Viajes Disponibles";
             this.Load += new System.EventHandler(this.frmBusquedaPasaje_Load);

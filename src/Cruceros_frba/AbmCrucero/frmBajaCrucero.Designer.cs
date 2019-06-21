@@ -30,14 +30,16 @@
         {
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvCruceros = new System.Windows.Forms.DataGridView();
             this.gBoxFiltros = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtBoxFiltroCodigo = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dgvBajas = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCruceros)).BeginInit();
             this.gBoxFiltros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBajas)).BeginInit();
             this.SuspendLayout();
             // 
             // btnAceptar
@@ -61,44 +63,29 @@
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel1
+            // dgvCruceros
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvCruceros.AllowUserToAddRows = false;
+            this.dgvCruceros.AllowUserToDeleteRows = false;
+            this.dgvCruceros.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 89);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(776, 345);
-            this.tableLayoutPanel1.TabIndex = 4;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(770, 339);
-            this.dataGridView1.TabIndex = 0;
+            this.dgvCruceros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCruceros.Location = new System.Drawing.Point(15, 71);
+            this.dgvCruceros.Name = "dgvCruceros";
+            this.dgvCruceros.ReadOnly = true;
+            this.dgvCruceros.Size = new System.Drawing.Size(773, 157);
+            this.dgvCruceros.TabIndex = 0;
             // 
             // gBoxFiltros
             // 
-            this.gBoxFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.gBoxFiltros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gBoxFiltros.Controls.Add(this.label2);
             this.gBoxFiltros.Controls.Add(this.txtBoxFiltroCodigo);
             this.gBoxFiltros.Location = new System.Drawing.Point(15, -2);
             this.gBoxFiltros.Name = "gBoxFiltros";
-            this.gBoxFiltros.Size = new System.Drawing.Size(773, 88);
+            this.gBoxFiltros.Size = new System.Drawing.Size(773, 49);
             this.gBoxFiltros.TabIndex = 9;
             this.gBoxFiltros.TabStop = false;
             this.gBoxFiltros.Text = "Filtros";
@@ -114,7 +101,7 @@
             // 
             // txtBoxFiltroCodigo
             // 
-            this.txtBoxFiltroCodigo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtBoxFiltroCodigo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBoxFiltroCodigo.Location = new System.Drawing.Point(87, 17);
             this.txtBoxFiltroCodigo.MaximumSize = new System.Drawing.Size(186, 20);
@@ -124,34 +111,66 @@
             this.txtBoxFiltroCodigo.TabIndex = 12;
             this.txtBoxFiltroCodigo.TextChanged += new System.EventHandler(this.txtBoxFiltroCodigo_TextChanged);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(104, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Cruceros Habilitados";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 238);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Bajas Registradas";
+            // 
+            // dgvBajas
+            // 
+            this.dgvBajas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBajas.Location = new System.Drawing.Point(15, 254);
+            this.dgvBajas.Name = "dgvBajas";
+            this.dgvBajas.Size = new System.Drawing.Size(773, 157);
+            this.dgvBajas.TabIndex = 13;
+            // 
             // frmBajaCrucero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 475);
+            this.Controls.Add(this.dgvBajas);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dgvCruceros);
             this.Controls.Add(this.gBoxFiltros);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnAceptar);
             this.MinimumSize = new System.Drawing.Size(816, 513);
             this.Name = "frmBajaCrucero";
             this.Text = "ABM Crucero";
             this.Activated += new System.EventHandler(this.frmModificacionCrucero_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCruceros)).EndInit();
             this.gBoxFiltros.ResumeLayout(false);
             this.gBoxFiltros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBajas)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnLimpiar;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvCruceros;
         private System.Windows.Forms.GroupBox gBoxFiltros;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxFiltroCodigo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridView dgvBajas;
     }
 }
