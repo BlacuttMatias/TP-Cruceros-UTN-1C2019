@@ -19,6 +19,9 @@ namespace FrbaCrucero.AbmCrucero
         string filtro = "";
         string filtroCodigoCrucero = "";
         Crucero abm = new Crucero();
+        string filtroMarca = "";
+        string filtroModelo = "";
+        string filtroTipoBaja = "";
         public frmBajaCrucero()
         {
             InitializeComponent();
@@ -70,17 +73,37 @@ namespace FrbaCrucero.AbmCrucero
         private void txtBoxFiltroCodigo_TextChanged(object sender, EventArgs e)
         {
             filtroCodigoCrucero = txtBoxFiltroCodigo.Text;
-            dtCruceros.DefaultView.RowFilter = actualizarFiltro(filtroCodigoCrucero);
+            dtCruceros.DefaultView.RowFilter = actualizarFiltro();
+            dtBajas.DefaultView.RowFilter = actualizarFiltroBajas();
         }
-        private string actualizarFiltro(string codigo)
+        private string actualizarFiltroBajas()
         {
-            filtro = string.Format("Codigo Like '%{0}%'", codigo);
+            filtro = string.Format("Codigo Like '%{0}%'", filtroCodigoCrucero);
+            return filtro;
+        }
+        private string actualizarFiltro()
+        {
+            filtro = string.Format("Codigo Like '%{0}%'", filtroCodigoCrucero);
+            filtro += string.Format("AND Marca Like '%{0}%'", filtroMarca);
+            filtro += string.Format("AND Modelo Like '%{0}%'", filtroModelo);
             return filtro;
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void tbMarca_TextChanged(object sender, EventArgs e)
+        {
+            filtroMarca = tbMarca.Text;
+            dtCruceros.DefaultView.RowFilter = actualizarFiltro();
+        }
+
+        private void tbModelo_TextChanged(object sender, EventArgs e)
+        {
+            filtroModelo = tbModelo.Text;
+            dtCruceros.DefaultView.RowFilter = actualizarFiltro();
         }
     }
 }
