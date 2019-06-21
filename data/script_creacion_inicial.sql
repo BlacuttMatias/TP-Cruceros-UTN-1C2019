@@ -566,6 +566,11 @@ GO
  drop procedure [FIDEOS_CON_TUCO].[mostrarViajesDeUnCrucero]
  GO
 
+  if exists (select * from dbo.sysobjects where id=
+ object_id(N'[FIDEOS_CON_TUCO].[mostrarCrucerosSinBajaPermanente]') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+ drop procedure [FIDEOS_CON_TUCO].[mostrarCrucerosSinBajaPermanente]
+ GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -2371,18 +2376,40 @@ BEGIN
 	GROUP By viaj_codigo,viaj_fecha_inicio,viaj_fecha_finalizacion_estimada
 END
 GO
+
+/*****************************LISTADO CRUCEROS SIN BAJA PERMANENTE *****************************/
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCrucerosSinBajaPermanente @fechaSistema DateTime
+AS
+BEGIN
+	SELECT cruc_codigo AS Codigo_crucero
+		, marc_descripcion AS Marca
+		, mode_descripcion AS Modelo
+		, cruc_cantidad_cabinas AS Cantidad_cabinas
+		, cruc_fecha_de_alta AS Fecha_de_alta
+	FROM FIDEOS_CON_TUCO.Crucero 
+	JOIN FIDEOS_CON_TUCO.Marca ON (marc_codigo = cruc_marca)
+	JOIN FIDEOS_CON_TUCO.Modelo ON (mode_codigo = cruc_modelo)
+	WHERE NOT EXISTS (SELECT * FROM FIDEOS_CON_TUCO.Registro_baja
+		JOIN FIDEOS_CON_TUCO.Tipo_baja ON (tipo_baja_codigo = regi_tipo)
+		WHERE regi_crucero = cruc_codigo 
+			AND tipo_baja_descripcion = 'Permanente'
+			AND regi_fecha_de_baja <= @fechaSistema
+		)
+END
+GO
+
 /*************************** LISTADO DE TIPOS DE BAJAS  ***************************/
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarBajas
 AS
 BEGIN
 SELECT [cruc_codigo] as Codigo
-      ,[cruc_fecha_de_alta] as 'Fecha Creacion'
       ,[tipo_baja_descripcion] as 'Tipo Baja'
       ,[regi_fecha_de_baja] as 'Fecha de Baja'
       ,[regi_fecha_de_alta] as 'Fecha de Alta'
   FROM [GD1C2019].[FIDEOS_CON_TUCO].[Crucero]
-  Left JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Registro_baja] on (regi_crucero=cruc_codigo)
-  Left JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja] on (regi_tipo=tipo_baja_codigo)
+  JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Registro_baja] on (regi_crucero=cruc_codigo)
+  JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja] on (regi_tipo=tipo_baja_codigo)
 END
 GO
 /*************************** Consulta de Viajes Existentes de un Crucero  ***************************/
