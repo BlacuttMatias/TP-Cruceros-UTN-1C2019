@@ -49,65 +49,72 @@
             // lblCodigo
             // 
             this.lblCodigo.AutoSize = true;
-            this.lblCodigo.Location = new System.Drawing.Point(12, 9);
+            this.lblCodigo.Location = new System.Drawing.Point(16, 11);
+            this.lblCodigo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCodigo.Name = "lblCodigo";
-            this.lblCodigo.Size = new System.Drawing.Size(40, 13);
+            this.lblCodigo.Size = new System.Drawing.Size(52, 17);
             this.lblCodigo.TabIndex = 0;
             this.lblCodigo.Text = "Codigo";
             // 
             // lblTipoBaja
             // 
             this.lblTipoBaja.AutoSize = true;
-            this.lblTipoBaja.Location = new System.Drawing.Point(12, 41);
+            this.lblTipoBaja.Location = new System.Drawing.Point(16, 50);
+            this.lblTipoBaja.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTipoBaja.Name = "lblTipoBaja";
-            this.lblTipoBaja.Size = new System.Drawing.Size(67, 13);
+            this.lblTipoBaja.Size = new System.Drawing.Size(88, 17);
             this.lblTipoBaja.TabIndex = 1;
             this.lblTipoBaja.Text = "Tipo de Baja";
             // 
             // dtpBaja
             // 
-            this.dtpBaja.Location = new System.Drawing.Point(317, 9);
+            this.dtpBaja.Location = new System.Drawing.Point(423, 11);
+            this.dtpBaja.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtpBaja.Name = "dtpBaja";
-            this.dtpBaja.Size = new System.Drawing.Size(200, 20);
+            this.dtpBaja.Size = new System.Drawing.Size(265, 22);
             this.dtpBaja.TabIndex = 2;
             this.dtpBaja.ValueChanged += new System.EventHandler(this.dtpBaja_ValueChanged);
             // 
             // dtpAlta
             // 
-            this.dtpAlta.Location = new System.Drawing.Point(317, 39);
+            this.dtpAlta.Location = new System.Drawing.Point(423, 48);
+            this.dtpAlta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtpAlta.Name = "dtpAlta";
-            this.dtpAlta.Size = new System.Drawing.Size(200, 20);
+            this.dtpAlta.Size = new System.Drawing.Size(265, 22);
             this.dtpAlta.TabIndex = 3;
             this.dtpAlta.ValueChanged += new System.EventHandler(this.dtpAlta_ValueChanged);
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(85, 38);
+            this.comboBox1.Location = new System.Drawing.Point(113, 47);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(130, 21);
+            this.comboBox1.Size = new System.Drawing.Size(172, 24);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(542, 308);
-            this.btnAceptar.MaximumSize = new System.Drawing.Size(75, 23);
-            this.btnAceptar.MinimumSize = new System.Drawing.Size(75, 23);
+            this.btnAceptar.Location = new System.Drawing.Point(736, 379);
+            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAceptar.MaximumSize = new System.Drawing.Size(100, 28);
+            this.btnAceptar.MinimumSize = new System.Drawing.Size(100, 28);
             this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(75, 23);
+            this.btnAceptar.Size = new System.Drawing.Size(100, 28);
             this.btnAceptar.TabIndex = 5;
-            this.btnAceptar.Text = "Aceptar";
+            this.btnAceptar.Text = "Dar de Baja";
             this.btnAceptar.UseVisualStyleBackColor = true;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(12, 308);
-            this.btnLimpiar.MaximumSize = new System.Drawing.Size(75, 23);
-            this.btnLimpiar.MinimumSize = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.Location = new System.Drawing.Point(16, 379);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLimpiar.MaximumSize = new System.Drawing.Size(100, 28);
+            this.btnLimpiar.MinimumSize = new System.Drawing.Size(100, 28);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.Size = new System.Drawing.Size(100, 28);
             this.btnLimpiar.TabIndex = 6;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
@@ -116,73 +123,81 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(253, 15);
+            this.label1.Location = new System.Drawing.Point(337, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.Size = new System.Drawing.Size(79, 17);
             this.label1.TabIndex = 7;
             this.label1.Text = "Fecha Baja";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(253, 41);
+            this.label2.Location = new System.Drawing.Point(337, 50);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.Size = new System.Drawing.Size(75, 17);
             this.label2.TabIndex = 8;
             this.label2.Text = "Fecha Alta";
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 117);
+            this.dataGridView1.Location = new System.Drawing.Point(20, 144);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(517, 185);
+            this.dataGridView1.Size = new System.Drawing.Size(689, 228);
             this.dataGridView1.TabIndex = 9;
             // 
             // lblDescripcion
             // 
             this.lblDescripcion.AutoSize = true;
-            this.lblDescripcion.Location = new System.Drawing.Point(12, 101);
+            this.lblDescripcion.Location = new System.Drawing.Point(16, 124);
+            this.lblDescripcion.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(53, 13);
+            this.lblDescripcion.Size = new System.Drawing.Size(70, 17);
             this.lblDescripcion.TabIndex = 10;
             this.lblDescripcion.Text = "Viajes de:";
             // 
             // btnCancelarTodos
             // 
-            this.btnCancelarTodos.Location = new System.Drawing.Point(542, 117);
+            this.btnCancelarTodos.Location = new System.Drawing.Point(723, 144);
+            this.btnCancelarTodos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancelarTodos.Name = "btnCancelarTodos";
-            this.btnCancelarTodos.Size = new System.Drawing.Size(75, 41);
+            this.btnCancelarTodos.Size = new System.Drawing.Size(135, 50);
             this.btnCancelarTodos.TabIndex = 11;
-            this.btnCancelarTodos.Text = "Cancelar Todos";
+            this.btnCancelarTodos.Text = "Cancelar Todos y Dar de Baja";
             this.btnCancelarTodos.UseVisualStyleBackColor = true;
             this.btnCancelarTodos.Click += new System.EventHandler(this.btnCancelarTodos_Click);
             // 
             // btnReemplazarCrucero
             // 
-            this.btnReemplazarCrucero.Location = new System.Drawing.Point(542, 164);
+            this.btnReemplazarCrucero.Location = new System.Drawing.Point(723, 202);
+            this.btnReemplazarCrucero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnReemplazarCrucero.Name = "btnReemplazarCrucero";
-            this.btnReemplazarCrucero.Size = new System.Drawing.Size(75, 43);
+            this.btnReemplazarCrucero.Size = new System.Drawing.Size(135, 53);
             this.btnReemplazarCrucero.TabIndex = 12;
-            this.btnReemplazarCrucero.Text = "Cambiar Crucero";
+            this.btnReemplazarCrucero.Text = "Cambiar Crucero y Dar de Baja";
             this.btnReemplazarCrucero.UseVisualStyleBackColor = true;
             this.btnReemplazarCrucero.Click += new System.EventHandler(this.btnReemplazarCrucero_Click);
             // 
             // btnPostergarTodos
             // 
-            this.btnPostergarTodos.Location = new System.Drawing.Point(542, 213);
+            this.btnPostergarTodos.Location = new System.Drawing.Point(723, 262);
+            this.btnPostergarTodos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnPostergarTodos.Name = "btnPostergarTodos";
-            this.btnPostergarTodos.Size = new System.Drawing.Size(75, 45);
+            this.btnPostergarTodos.Size = new System.Drawing.Size(135, 55);
             this.btnPostergarTodos.TabIndex = 13;
-            this.btnPostergarTodos.Text = "Postergar Todos";
+            this.btnPostergarTodos.Text = "Postergar Todos y Dar de Baja";
             this.btnPostergarTodos.UseVisualStyleBackColor = true;
             this.btnPostergarTodos.Click += new System.EventHandler(this.btnPostergarTodos_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(523, 9);
+            this.button3.Location = new System.Drawing.Point(697, 11);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 50);
+            this.button3.Size = new System.Drawing.Size(125, 62);
             this.button3.TabIndex = 14;
             this.button3.Text = "Revisar Viajes";
             this.button3.UseVisualStyleBackColor = true;
@@ -190,9 +205,9 @@
             // 
             // frmBajarSeleccionado
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 343);
+            this.ClientSize = new System.Drawing.Size(871, 422);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnPostergarTodos);
             this.Controls.Add(this.btnReemplazarCrucero);
@@ -208,7 +223,8 @@
             this.Controls.Add(this.dtpBaja);
             this.Controls.Add(this.lblTipoBaja);
             this.Controls.Add(this.lblCodigo);
-            this.MinimumSize = new System.Drawing.Size(309, 212);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(406, 250);
             this.Name = "frmBajarSeleccionado";
             this.Text = "frmBajarSeleccionado";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

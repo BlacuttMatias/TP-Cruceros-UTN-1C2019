@@ -42,6 +42,9 @@ namespace FrbaCrucero.AbmCrucero
             llenarCB(cBoxModelo, dtModelos, "Modelo");
             cBoxModelo.Enabled = false;
 
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "dd-MM-yyyy hh:mm:ss";
+
             dtCabinas = abm.mostrarTipoCabina();
 
             foreach (DataRow row in dtCabinas.Rows)

@@ -30,12 +30,20 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            abm.crearCruceroIgualAlAnterior(codigoViejo, codigoNuevo, Coneccion.getFechaSistema());
-            abm.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(codigoViejo, codigoNuevo, fechaBaja);
-            MessageBox.Show("Se reemplazo el crucero:" + codigoViejo + " por el crucero:" + codigoNuevo, "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.Close();
-            abm.bajaCrucero(codigoViejo, fechaBaja, Coneccion.getFechaSistema(), "Permanente");
-            MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma Permanente", codigoViejo), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int resultado = abm.crearCruceroIgualAlAnterior(codigoViejo, codigoNuevo, Coneccion.getFechaSistema());
+            if (resultado == 0)
+            {
+                MessageBox.Show("Ya existe un crucero con ese codigo. Por favor, ingrese otro codigo", "Error: codigo de crucero existente"
+                    , MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else {
+                abm.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(codigoViejo, codigoNuevo, fechaBaja);
+                MessageBox.Show("Se reemplazo el crucero:" + codigoViejo + " por el crucero:" + codigoNuevo, "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+                abm.bajaCrucero(codigoViejo, fechaBaja, Coneccion.getFechaSistema(), "Permanente");
+                MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma Permanente", codigoViejo), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+       
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

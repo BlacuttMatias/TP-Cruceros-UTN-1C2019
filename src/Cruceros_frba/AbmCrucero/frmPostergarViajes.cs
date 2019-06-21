@@ -26,6 +26,9 @@ namespace FrbaCrucero.AbmCrucero
             fechaAlta = alta;
             this.Text = "Postergar Viajes de:" + codigo;
             lblFecha.Text = "A partir de:" + alta.ToString();
+            int diasBaja = ((TimeSpan)(fechaAlta - fechaBaja)).Days;
+            int ejemploCantidadDeDiasMovidos = 1 + diasBaja;
+            lblInfoDiasCorridos.Text = "Por defecto se correrán " + diasBaja.ToString() + " dias los viajes. El número que ingrese se sumara a estos dias.\nEjemplo: si ingresa 1 se correran " + ejemploCantidadDeDiasMovidos.ToString() + " dias los viajes";
             btnAceptar.Enabled = false;
         }
 
@@ -56,6 +59,9 @@ namespace FrbaCrucero.AbmCrucero
             if (new Regex(@"^[0-9]+").IsMatch(textBox1.Text))
             {
                 btnAceptar.Enabled = true;
+            }
+            else {
+                btnAceptar.Enabled = false;
             }
         }
     }

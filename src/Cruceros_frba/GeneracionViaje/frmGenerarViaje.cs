@@ -108,6 +108,9 @@ namespace FrbaCrucero.GeneracionViaje
         private void dtpFechaInicio_ValueChanged(object sender, EventArgs e)
         {
             DatosViaje datosViaje = new DatosViaje();
+            if (dtpFechaFin.Value <= dtpFechaInicio.Value) {
+                dtpFechaFin.Value = dtpFechaInicio.Value.AddDays(1);
+            }
             DataTable dataTableCruceros = datosViaje.mostrarCrucerosDisponiblesEnEsasFechas(
                 dtpFechaInicio.Value, dtpFechaFin.Value);
 
@@ -125,6 +128,10 @@ namespace FrbaCrucero.GeneracionViaje
         private void dtpFechaFin_ValueChanged(object sender, EventArgs e)
         {
             DatosViaje datosViaje = new DatosViaje();
+            if (dtpFechaInicio.Value >= dtpFechaFin.Value)
+            {
+                dtpFechaInicio.Value = dtpFechaFin.Value.AddDays(-1);
+            }
             DataTable dataTableCruceros = datosViaje.mostrarCrucerosDisponiblesEnEsasFechas(
                 dtpFechaInicio.Value, dtpFechaFin.Value);
 

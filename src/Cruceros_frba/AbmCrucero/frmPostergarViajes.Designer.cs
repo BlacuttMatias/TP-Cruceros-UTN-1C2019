@@ -33,13 +33,15 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lblDias = new System.Windows.Forms.Label();
             this.lblFecha = new System.Windows.Forms.Label();
+            this.lblInfoDiasCorridos = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(119, 68);
+            this.btnAceptar.Location = new System.Drawing.Point(310, 145);
+            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(75, 23);
+            this.btnAceptar.Size = new System.Drawing.Size(100, 28);
             this.btnAceptar.TabIndex = 0;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = true;
@@ -47,9 +49,10 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(12, 68);
+            this.btnCancelar.Location = new System.Drawing.Point(124, 145);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(100, 28);
             this.btnCancelar.TabIndex = 1;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -57,40 +60,54 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(46, 6);
+            this.textBox1.Location = new System.Drawing.Point(333, 13);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(41, 20);
+            this.textBox1.Size = new System.Drawing.Size(53, 22);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // lblDias
             // 
             this.lblDias.AutoSize = true;
-            this.lblDias.Location = new System.Drawing.Point(12, 9);
+            this.lblDias.Location = new System.Drawing.Point(13, 16);
+            this.lblDias.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDias.Name = "lblDias";
-            this.lblDias.Size = new System.Drawing.Size(28, 13);
+            this.lblDias.Size = new System.Drawing.Size(289, 17);
             this.lblDias.TabIndex = 3;
-            this.lblDias.Text = "Dias";
+            this.lblDias.Text = "Cantidad de dias que desea correr los viajes";
             // 
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
-            this.lblFecha.Location = new System.Drawing.Point(9, 40);
+            this.lblFecha.Location = new System.Drawing.Point(12, 49);
+            this.lblFecha.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(60, 13);
+            this.lblFecha.Size = new System.Drawing.Size(81, 17);
             this.lblFecha.TabIndex = 4;
             this.lblFecha.Text = "A partir del:";
             // 
+            // lblInfoDiasCorridos
+            // 
+            this.lblInfoDiasCorridos.AutoSize = true;
+            this.lblInfoDiasCorridos.Location = new System.Drawing.Point(16, 78);
+            this.lblInfoDiasCorridos.Name = "lblInfoDiasCorridos";
+            this.lblInfoDiasCorridos.Size = new System.Drawing.Size(178, 17);
+            this.lblInfoDiasCorridos.TabIndex = 5;
+            this.lblInfoDiasCorridos.Text = "Por de defecto se correran";
+            // 
             // frmPostergarViajes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(204, 103);
+            this.ClientSize = new System.Drawing.Size(596, 182);
+            this.Controls.Add(this.lblInfoDiasCorridos);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblDias);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmPostergarViajes";
             this.Text = "Postergar Viajes de:";
             this.Load += new System.EventHandler(this.frmPostergarViajes_Load);
@@ -106,5 +123,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lblDias;
         private System.Windows.Forms.Label lblFecha;
+        private System.Windows.Forms.Label lblInfoDiasCorridos;
     }
 }

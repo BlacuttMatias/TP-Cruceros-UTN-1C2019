@@ -35,7 +35,7 @@ namespace FrbaCrucero.AbmCrucero
             codigo = args[0] as string;
             lblCodigo.Text += string.Format(":{0}", codigo);
             baja = Coneccion.getFechaSistema();
-            alta = Coneccion.getFechaSistema();
+            alta = Coneccion.getFechaSistema().AddDays(1);
             btnAceptar.Enabled = false;
             btnPostergarTodos.Enabled = false;
             btnReemplazarCrucero.Enabled = false;
@@ -67,7 +67,7 @@ namespace FrbaCrucero.AbmCrucero
             dtpBaja.Format = DateTimePickerFormat.Custom;
             dtpBaja.CustomFormat = "dd-MM-yyyy hh:mm:ss";
             dtpBaja.Value = baja;
-            lblDescripcion.Text = string.Format("Viajes de :{0} entre {1} y {2}", codigo, dtpBaja.Value.ToString(), dtpAlta.Value.ToString());
+            
         }
 
         private void llenarCB(ComboBox cb, DataTable source, string columna)
@@ -83,6 +83,7 @@ namespace FrbaCrucero.AbmCrucero
             btnReemplazarCrucero.Enabled = false;
             btnCancelarTodos.Enabled = false;
             dataGridView1.DataSource = null;
+            lblDescripcion.Text = "";
             if (new Regex(@"[(Permanente)(Temporal)]").IsMatch(comboBox1.Text))
             {
                 comboBox1.ForeColor = Color.Black;
@@ -120,8 +121,19 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            comboBox1.Text = "";
-            actualizar();
+            comboBox1.SelectedIndex = 0;
+            baja = Coneccion.getFechaSistema();
+            alta = Coneccion.getFechaSistema().AddDays(1);
+            dtpBaja.Value = baja;
+            dtpAlta.Value = alta;
+            dtpAlta.Visible = false;
+            label2.Visible = false;
+            btnAceptar.Enabled = false;
+            btnPostergarTodos.Enabled = false;
+            btnReemplazarCrucero.Enabled = false;
+            btnCancelarTodos.Enabled = false;
+            dataGridView1.DataSource = null;
+            //actualizar();
         }
 
         private void dtpBaja_ValueChanged(object sender, EventArgs e)
@@ -166,6 +178,7 @@ namespace FrbaCrucero.AbmCrucero
                 btnCancelarTodos.Enabled = false;
                 btnPostergarTodos.Enabled = false;
                 btnReemplazarCrucero.Enabled = false;
+                lblDescripcion.Text = "No tiene viajes programados en esas fechas";
             }
             else
             {
@@ -175,6 +188,7 @@ namespace FrbaCrucero.AbmCrucero
                     btnReemplazarCrucero.Enabled = true;
                     btnPostergarTodos.Enabled = false;
                     btnAceptar.Enabled = false;
+                    lblDescripcion.Text = string.Format("Viajes de :{0} que tiene programados a partir del {1}", codigo, dtpBaja.Value.ToString());
                 }
                 else
                 {
@@ -182,6 +196,7 @@ namespace FrbaCrucero.AbmCrucero
                     btnReemplazarCrucero.Enabled = false;
                     btnPostergarTodos.Enabled = true;
                     btnAceptar.Enabled = false;
+                    lblDescripcion.Text = string.Format("Viajes de :{0} que tiene programados entre el {1} y el {2}", codigo, dtpBaja.Value.ToString(), dtpAlta.Value.ToString());
                 }
             }
         }
