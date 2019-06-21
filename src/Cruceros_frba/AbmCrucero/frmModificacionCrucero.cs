@@ -19,6 +19,8 @@ namespace FrbaCrucero.AbmCrucero
         string filtroCantidadCabinas = "";
         string filtro = "";
         string filtroCodigoCrucero = "";
+
+        Crucero abm = new Crucero();
         public frmModificacionCrucero()
         {
             InitializeComponent();
@@ -33,7 +35,6 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificacionCrucero_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            Crucero abm = new Crucero();
             dt = abm.mostrarCruceros();
             dataGridView1.DataSource = dt;
         }
@@ -57,6 +58,8 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificarCruceroSeleccionado_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
+            dt = abm.mostrarCruceros();
+            dataGridView1.DataSource = dt;
         }
 
         private void txtBoxFiltroMarca_TextChanged(object sender, EventArgs e)
@@ -88,18 +91,6 @@ namespace FrbaCrucero.AbmCrucero
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void txtBoxFiltroPisos_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            AbmRecorrido.Debugger debugger = new AbmRecorrido.Debugger();
-            debugger.Show();
-            debugger.log(string.Format("Fecha de Alta = #{0}#", dateTimePicker1.Value));
         }
     }
 }

@@ -147,7 +147,13 @@ namespace FrbaCrucero.AbmRecorrido
             return dt;
         }
         #endregion
-
+        
+        #region mostrarTramosDeUnRecorrido
+        public DataTable mostrarTramosDeUnRecorrido(int idRecorrido)
+        {
+            return Coneccion.ejecutarSP("mostrarTramosDeUnRecorrido", "@idRecorrido", idRecorrido);
+        }
+        #endregion
         public void agregarTramo(string puertoOrigen, string puertoDestino, decimal precio) {
             Coneccion.ejecutarSPV("agregarTramo", "@ciudadPuertoOrigen", puertoOrigen
                 , "@ciudadPuertoDestino", puertoDestino, "@precio", precio);

@@ -22,6 +22,8 @@ namespace FrbaCrucero.AbmRecorrido
         string filtroOrigen = "";
         string filtroDestino = "";
         string filtro = "";
+
+        Recorrido abm = new Recorrido();
         List<TramoElegido> listaTramos = new List<TramoElegido>();
         List<TramoElegido> listaViejos = new List<TramoElegido>();
         DataTable misTramos;
@@ -83,16 +85,16 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void FrmABMRecorridoModificarSeleccionado_Load(object sender, EventArgs e)
         {
-            string SLCT = "SELECT tram_codigo as Codigo, P1." + Puerto.ciudad + " as Origen, P2." + Puerto.ciudad + " as Destino," + Tramo.precio + " as Precio";
-            SLCT += " FROM " + Tramo.tabla + " join [GD1C2019].[FIDEOS_CON_TUCO].[Tramos_por_recorrido] on (tram_por_reco_tramo=" + Tramo.codigo + ")";
-            SLCT += " join " + Puerto.tabla + " as P1 on (P1." + Puerto.codigo + "=" + Tramo.origen + ")";
-            SLCT += " join " + Puerto.tabla + " as P2 on (P2." + Puerto.codigo + "=" + Tramo.destino + ")";
-            SLCT += " WHERE tram_por_reco_recorrido= @ID";
-            misTramos = Coneccion.ejecutarSelect(SLCT, "@ID", ID);
+            //string SLCT = "SELECT tram_codigo as Codigo, P1." + Puerto.ciudad + " as Origen, P2." + Puerto.ciudad + " as Destino," + Tramo.precio + " as Precio";
+            //SLCT += " FROM " + Tramo.tabla + " join [GD1C2019].[FIDEOS_CON_TUCO].[Tramos_por_recorrido] on (tram_por_reco_tramo=" + Tramo.codigo + ")";
+            //SLCT += " join " + Puerto.tabla + " as P1 on (P1." + Puerto.codigo + "=" + Tramo.origen + ")";
+            //SLCT += " join " + Puerto.tabla + " as P2 on (P2." + Puerto.codigo + "=" + Tramo.destino + ")";
+            //SLCT += " WHERE tram_por_reco_recorrido= @ID";
+            //misTramos = Coneccion.ejecutarSelect(SLCT, "@ID", ID);
+            misTramos = abm.mostrarTramosDeUnRecorrido(ID);
             dataGridView1.DataSource = misTramos;
 
             dataGridView1.Enabled = false;
-            Recorrido abm = new Recorrido();
             nuevosTramos = abm.mostrarTramosExistentes();
         }
 
@@ -179,8 +181,8 @@ namespace FrbaCrucero.AbmRecorrido
         }
         private void actualizarFiltro()
         {
-            filtro = string.Format("{0} Like '%{1}%'", "Origen", filtroOrigen);
-            filtro += string.Format("And {0} Like '%{1}%'", "Destino", filtroDestino);
+            filtro = string.Format("Origen Like '%{0}%'", filtroOrigen);
+            filtro += string.Format("And Destino Like '%{0}%'", filtroDestino);
             misTramos.DefaultView.RowFilter = filtro;
             nuevosTramos.DefaultView.RowFilter = filtro;
         }
@@ -225,6 +227,8 @@ namespace FrbaCrucero.AbmRecorrido
                 txtBoxFiltroOrigen.Text = tramo.destino;
                 Precio += tramo.precio;
                 lblPrecio.Text = "Precio:" + Precio;
+                filtroOrigen = tramo.destino;
+                nuevosTramos = abm.mostrarTramosExistentes();
             }
         }
     }

@@ -37,6 +37,8 @@ namespace FrbaCrucero.AbmCrucero
             baja = Convert.ToDateTime(args[3]);
             alta = Convert.ToDateTime(args[4]);
             btnAceptar.Enabled = false;
+            btnPostergarTodos.Enabled = false;
+            btnReemplazarCrucero.Enabled = false;
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -61,16 +63,25 @@ namespace FrbaCrucero.AbmCrucero
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            btnAceptar.Enabled = false;
+            btnPostergarTodos.Enabled = false;
+            btnReemplazarCrucero.Enabled = false;
             if (new Regex(@"[(Permanente)(Temporal)]").IsMatch(comboBox1.Text))
             {
                 comboBox1.ForeColor = Color.Black;
-                btnAceptar.Enabled = true;
                 btnCancelarTodos.Enabled = true;
-
                 if (new Regex(@"(Permanente)").IsMatch(comboBox1.Text))
+                {
+                    btnPostergarTodos.Enabled = false;
+                    btnReemplazarCrucero.Enabled = true;
                     tipoBaja = 1;
+                }
                 else
+                {
+                    btnReemplazarCrucero.Enabled=false;
+                    btnPostergarTodos.Enabled = true;
                     tipoBaja = 2;
+                }
             }
             else
             {
@@ -81,18 +92,6 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            Crucero abm = new Crucero();
-            if (abm.tieneViajes(codigo, Coneccion.getFechaSistema()) == 1)
-            {
-                DialogResult r;
-                r = MessageBox.Show(string.Format("Advertencia el Crucero {0} tiene viajes programados.\n¿Desea continuar?", codigo), "FrbaCruceros", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (r == DialogResult.Yes)
-                {
-                    abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
-                }
-                else
-                    this.Close();
-            }
             abm.bajaCrucero(codigo, dtpBaja.Value, dtpAlta.Value, comboBox1.Text);
             MessageBox.Show(string.Format("El Crucero {0} fue dado de baja de forma {1}", codigo, comboBox1.Text), "FrbaCruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
@@ -101,8 +100,7 @@ namespace FrbaCrucero.AbmCrucero
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             comboBox1.Text = "";
-
-            btnAceptar.Enabled = false;
+            actualizar();
         }
 
         private void dtpBaja_ValueChanged(object sender, EventArgs e)
@@ -129,10 +127,20 @@ namespace FrbaCrucero.AbmCrucero
 
         private void button3_Click(object sender, EventArgs e)
         {
+            actualizar();
+        }
+        private void actualizar()
+        {
             dtViajes = abm.mostrarViajesDeCrucero(codigo, baja, alta);
             dataGridView1.DataSource = dtViajes;
+            if(dtViajes.Rows.Count==0)
+            {
+                btnAceptar.Enabled = true;
+                btnCancelarTodos.Enabled = false;
+                btnPostergarTodos.Enabled = false;
+                btnReemplazarCrucero.Enabled = false;
+            }
         }
-
         private void btnReemplazarCrucero_Click(object sender, EventArgs e)
         {
             //Si la inactivad es por fin de la vida útil 
@@ -145,6 +153,7 @@ namespace FrbaCrucero.AbmCrucero
                 string codigoNuevo = unCurcero.Rows[0]["cruc_codigo"] as string;
                 abm.actualizarViajesYPasajesDeCruceroDadoDeBajaPermanente(codigo, codigoNuevo, baja);
                 MessageBox.Show("Se reemplazo el crucero:" + codigo + " por el crucero:" + codigoNuevo, "FrbaCrucero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                actualizar();
             }
             else
             {
@@ -153,13 +162,13 @@ namespace FrbaCrucero.AbmCrucero
                 frmCopiarCrucero.FormClosing += FrmCopiarCrucero_FormClosing;
                 this.Enabled = false;
             }
+            
         }
 
         private void FrmCopiarCrucero_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
-            dtViajes = abm.mostrarViajesDeCrucero(codigo, baja, alta);
-            dataGridView1.DataSource = dtViajes;
+            actualizar();
         }
 
         private void btnPostergarTodos_Click(object sender, EventArgs e)
@@ -177,8 +186,7 @@ namespace FrbaCrucero.AbmCrucero
         private void FrmPostergarViajes_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Enabled = true;
-            dtViajes = abm.mostrarViajesDeCrucero(codigo, baja, alta);
-            dataGridView1.DataSource = dtViajes;
+            actualizar();
         }
 
         private void btnCancelarTodos_Click(object sender, EventArgs e)
@@ -187,8 +195,7 @@ namespace FrbaCrucero.AbmCrucero
                 abm.cancelarViajesBajaPermanente(codigo, baja);
             else if (tipoBaja == 2)
                 abm.cancelarViajesBajaTemporal(codigo, baja, alta);
-            dtViajes = abm.mostrarViajesDeCrucero(codigo, baja, alta);
-            dataGridView1.DataSource = dtViajes;
+            actualizar();
         }
     }
 }

@@ -2171,10 +2171,10 @@ GO
 
 /************************** LISTADO Tramos de un Recorrido *******************************************/
 
-CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTramosDeUnRecorrido @idRecorrido int
+CREATE PROCEDURE [FIDEOS_CON_TUCO].[mostrarTramosDeUnRecorrido] @idRecorrido int
 AS
 BEGIN
-	SELECT tram_codigo AS Codigo, puertoOrigen.puer_codigo AS Puerto_origen, puertoDestino.puer_codigo AS Puerto_destino
+	SELECT tram_codigo AS Codigo, puertoOrigen.puer_ciudad AS Origen, puertoDestino.puer_ciudad AS Destino, tram_precio as Precio
 		FROM FIDEOS_CON_TUCO.Tramo
 		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido)
 		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = tram_puerto_origen)

@@ -65,10 +65,6 @@ namespace FrbaCrucero.AbmCrucero
         {//[bajaCrucero] @codigo varchar(255), @tipoBaja varchar(255), @fechaSistema datetime, @fechaAlta datetime
             Coneccion.ejecutarSPV("bajaCrucero", "@codigo", codigo, "@tipoBaja", tipoBaja, "@fechaSistema", baja, "@fechaAlta", alta);
         }
-        public int tieneViajes(string codigo, DateTime fecha)
-        {
-            return Coneccion.ejecutarSPR("cruceroTieneViajes", "@respuesta", "@codigoCrucero", codigo, "@fecha", fecha);
-        }
 
         internal DataTable mostrarViajesDeCrucero(string codigo, DateTime baja, DateTime alta)
         {
