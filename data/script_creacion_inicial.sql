@@ -1571,7 +1571,7 @@ BEGIN
 	FETCH NEXT FROM c1 INTO @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		EXEC correrViajesSuperpuestosUnDia @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
+		EXEC FIDEOS_CON_TUCO.correrViajesSuperpuestosUnDia @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
 		FETCH NEXT FROM c1 INTO @codigoViaje, @codigoCrucero, @fechaInicio, @fechaFin
 	END
 	CLOSE c1
