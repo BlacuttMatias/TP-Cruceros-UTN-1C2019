@@ -20,6 +20,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             InitializeComponent();
             dataGridCabinasDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridCabinasDisponibles.ReadOnly = true;
             codigoCliente = cliente;
             codigoViaje = viaje;
             #region Llenar Grid

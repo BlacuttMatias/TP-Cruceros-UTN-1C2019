@@ -31,6 +31,7 @@ namespace FrbaCrucero.AbmCrucero
             this.Load += FrmBajarSeleccionado_Load;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.MultiSelect = false;
+            dataGridView1.ReadOnly = true;
             dataGridView1.CellClick += new DataGridViewCellEventHandler(dataGridView1_CellClick);
             codigo = args[0] as string;
             lblCodigo.Text += string.Format(":{0}", codigo);

@@ -27,6 +27,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             dataGridDatosCompra.Width = this.Width-25;
 
             dataGridDatosCompra.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridDatosCompra.ReadOnly = true;
             DatosMediosDePago datosMediosDePago = new DatosMediosDePago();
 
             dataGridDatosCompra.DataSource = datosMediosDePago.mostrarDatosCompraFinalizada(this.codigoCompra);

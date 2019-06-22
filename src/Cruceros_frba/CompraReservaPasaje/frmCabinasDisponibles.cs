@@ -24,6 +24,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             dataGridCabinasDisponibles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridCabinasDisponibles.MultiSelect = true;
             dataGridCabinasDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridCabinasDisponibles.ReadOnly = true;
             #region Llenar Grid
             GestionCompra gestion = new GestionCompra();
             dataGridCabinasDisponibles.DataSource = gestion.llenarGridCabinas(codigoViaje);

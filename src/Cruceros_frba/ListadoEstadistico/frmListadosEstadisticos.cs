@@ -28,6 +28,7 @@ namespace FrbaCrucero.ListadoEstadistico
 
             //para autoajustar las celdas al texto
             dataGridListado.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridListado.ReadOnly = true;
 
             //Cargo los años que se mostraran
             List<int> listaDeAnios = new List<int>();

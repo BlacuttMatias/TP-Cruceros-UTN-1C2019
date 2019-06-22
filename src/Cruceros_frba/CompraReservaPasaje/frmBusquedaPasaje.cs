@@ -31,6 +31,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             cmbPuertoDestino.DropDownStyle = ComboBoxStyle.DropDownList;
 
             dataGridViajesDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViajesDisponibles.ReadOnly = true;
 
             if (esUnaCompra)
             {

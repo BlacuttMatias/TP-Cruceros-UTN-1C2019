@@ -28,9 +28,11 @@ namespace FrbaCrucero.AbmCrucero
             Load += new EventHandler(frmModificacionCrucero_Load);
             dgvCruceros.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvCruceros.MultiSelect = false;
+            dgvCruceros.ReadOnly = true;
             dgvCruceros.CellClick += new DataGridViewCellEventHandler(dtvCruceros_CellClick);
             dgvBajas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvBajas.MultiSelect = false;
+            dgvBajas.ReadOnly = true;
             //txtBoxFiltroModelo.TextChanged += new EventHandler(txtBoxFiltroModelo_TextChanged);
             //txtBoxFiltroMarca.TextChanged += new EventHandler(txtBoxFiltroMarca_TextChanged);
         }

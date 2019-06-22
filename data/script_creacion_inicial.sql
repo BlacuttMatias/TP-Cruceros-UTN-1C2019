@@ -2428,6 +2428,7 @@ SELECT [cruc_codigo] as Codigo
   FROM [GD1C2019].[FIDEOS_CON_TUCO].[Crucero]
   JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Registro_baja] on (regi_crucero=cruc_codigo)
   JOIN [GD1C2019].[FIDEOS_CON_TUCO].[Tipo_baja] on (regi_tipo=tipo_baja_codigo)
+  ORDER BY 3, 2
 END
 GO
 /*************************** Consulta de Viajes Existentes de un Crucero  ***************************/
@@ -2998,6 +2999,7 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_codigo AND reco_puerto_destino = p2.puer_codigo)
 		WHERE CONVERT(DATE, viaj_fecha_inicio) = @fechaInicio AND viaj_recorrido = reco_id AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		ORDER BY 2, 3, 5
 END
 GO
 
@@ -3044,6 +3046,7 @@ BEGIN
 						OR v1.viaj_fecha_finalizacion_estimada BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
 					)
 				)
+		ORDER BY 2, 3, 5
 END
 GO
 
@@ -3083,6 +3086,7 @@ BEGIN
 						OR v1.viaj_fecha_finalizacion_estimada BETWEEN v2.viaj_fecha_inicio AND v2.viaj_fecha_finalizacion_estimada
 					)
 				)
+		ORDER BY 2, 3, 5
 END
 GO
 
