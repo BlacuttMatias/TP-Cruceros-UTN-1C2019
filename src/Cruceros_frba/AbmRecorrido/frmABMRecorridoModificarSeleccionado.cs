@@ -17,7 +17,7 @@ namespace FrbaCrucero.AbmRecorrido
         string Origen = "";
         string Destino = "";
         Decimal Precio = 0;
-        bool habilitado = false;
+        bool cambioElIndiceElProceso = false;
         bool filtroElProceso = false;
         string filtroOrigen = "";
         string filtroDestino = "";
@@ -151,11 +151,26 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 Precio = Precio - listaTramos.ElementAt(listaTramos.Count - 1).precio;
                 //lblPrecio.Text = "Precio:" + Precio;
-                listaTramos.RemoveAt(listaTramos.Count - 1);
-                listBox2.Items.RemoveAt(listBox2.Items.Count - 1);
+                if(!cambioElIndiceElProceso)
+                {
+                    cambioElIndiceElProceso = true;
+                    listaTramos.RemoveAt(listaTramos.Count - 1);
+                    listBox2.Items.RemoveAt(listBox2.Items.Count - 1);
+                    cambioElIndiceElProceso = false;
+                }
                 if (listaTramos.Count == 0)
                 {
-                    Limpiar();
+                    //Limpiar();
+                    nuevosTramos.DefaultView.RowFilter = "";
+                    //listBox1.Items.Clear();
+                    listBox2.Items.Clear();
+                    listaTramos.Clear();
+                    lblOrigen.Text = "Origen:";
+                    lblDestino.Text = "Desinto:";
+                    Precio = 0;
+                    txtBoxFiltroDestino.Clear();
+                    txtBoxFiltroOrigen.Clear();
+                    txtBoxFiltroOrigen.ReadOnly = false;
                 }
                 else
                 {
@@ -230,6 +245,11 @@ namespace FrbaCrucero.AbmRecorrido
                 filtroOrigen = tramo.destino;
                 nuevosTramos = abm.mostrarTramosExistentes();
             }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
