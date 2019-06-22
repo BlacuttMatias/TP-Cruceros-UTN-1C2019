@@ -103,6 +103,14 @@ namespace FrbaCrucero.AbmRecorrido
                 {
                     Limpiar();
                 }
+                else
+                {
+                    filtroElProceso = true;
+                    TramoElegido Ultimotramo = listaTramos.Last();
+                    txtBoxFiltroOrigen.Text = Ultimotramo.destino;
+                    filtroOrigen = Ultimotramo.destino;
+                    actualizarFiltro();
+                }
             }
         }
 
@@ -134,7 +142,12 @@ namespace FrbaCrucero.AbmRecorrido
             }
 
         }
-
+        private void actualizarFiltro()
+        {
+            filtro = string.Format("Origen Like '%{0}%'", filtroOrigen);
+            filtro += string.Format("And Destino Like '%{0}%'", filtroDestino);
+            dt.DefaultView.RowFilter = filtro;
+        }
         private void btnCrearTramo_Click(object sender, EventArgs e)
         {
             tramo = new TramoElegido(0, txtBoxFiltroOrigen.Text, "", 0);
