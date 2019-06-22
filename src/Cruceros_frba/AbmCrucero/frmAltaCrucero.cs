@@ -233,11 +233,16 @@ namespace FrbaCrucero.AbmCrucero
                 foreach (nodoCabina a in cabinas)
                 {
                     string log = "piso:" + a.piso;
+                    int numero = 0;
                     string[] cabs = { "Cabina Estandar", "Cabina Exterior", "Suite", "Cabina Balcón", "Ejecutivo" };
                     for (int i = 0; i <= a.cabinas.Count - 1; i++)
                     {
                         log += string.Format(" {0}:{1}", cabs[i], a.cabinas[i]);
-                        abm.agregarCabinaAUnCrucero(textBox1.Text, i, a.piso, cabs[i]);
+                        for(int j=0;j<=a.cabinas[i]-1;j++)
+                        {
+                            abm.agregarCabinaAUnCrucero(textBox1.Text, numero, a.piso, cabs[i]);
+                            numero++;
+                        }
                     }
                     debugger.log(log);
                 }
