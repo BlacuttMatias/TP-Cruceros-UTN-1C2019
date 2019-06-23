@@ -291,6 +291,9 @@
     <EmbeddedResource Include="AbmCrucero\frmBajarSeleccionado.resx">
       <DependentUpon>frmBajarSeleccionado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\frmCopiarCrucero.resx">
+      <DependentUpon>frmCopiarCrucero.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\frmModificacionCrucero.resx">
       <DependentUpon>frmModificacionCrucero.cs</DependentUpon>
     </EmbeddedResource>

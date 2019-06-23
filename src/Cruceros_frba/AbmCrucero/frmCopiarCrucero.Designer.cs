@@ -39,34 +39,38 @@
             // lblViejo
             // 
             this.lblViejo.AutoSize = true;
-            this.lblViejo.Location = new System.Drawing.Point(12, 9);
+            this.lblViejo.Location = new System.Drawing.Point(16, 11);
+            this.lblViejo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblViejo.Name = "lblViejo";
-            this.lblViejo.Size = new System.Drawing.Size(113, 13);
+            this.lblViejo.Size = new System.Drawing.Size(151, 17);
             this.lblViejo.TabIndex = 0;
             this.lblViejo.Text = "Crucero A Reemplazar";
             // 
             // lblCruceroNuevo
             // 
             this.lblCruceroNuevo.AutoSize = true;
-            this.lblCruceroNuevo.Location = new System.Drawing.Point(12, 44);
+            this.lblCruceroNuevo.Location = new System.Drawing.Point(16, 54);
+            this.lblCruceroNuevo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCruceroNuevo.Name = "lblCruceroNuevo";
-            this.lblCruceroNuevo.Size = new System.Drawing.Size(75, 13);
+            this.lblCruceroNuevo.Size = new System.Drawing.Size(97, 17);
             this.lblCruceroNuevo.TabIndex = 1;
             this.lblCruceroNuevo.Text = "Nuevo Codigo";
             // 
             // txtBoxCrucero
             // 
-            this.txtBoxCrucero.Location = new System.Drawing.Point(93, 41);
+            this.txtBoxCrucero.Location = new System.Drawing.Point(124, 50);
+            this.txtBoxCrucero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtBoxCrucero.Name = "txtBoxCrucero";
-            this.txtBoxCrucero.Size = new System.Drawing.Size(128, 20);
+            this.txtBoxCrucero.Size = new System.Drawing.Size(169, 22);
             this.txtBoxCrucero.TabIndex = 2;
             this.txtBoxCrucero.TextChanged += new System.EventHandler(this.txtBoxCrucero_TextChanged);
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(146, 90);
+            this.btnAceptar.Location = new System.Drawing.Point(342, 111);
+            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(75, 23);
+            this.btnAceptar.Size = new System.Drawing.Size(100, 28);
             this.btnAceptar.TabIndex = 3;
             this.btnAceptar.Text = "Aceptar";
             this.btnAceptar.UseVisualStyleBackColor = true;
@@ -74,9 +78,10 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(12, 90);
+            this.btnCancelar.Location = new System.Drawing.Point(95, 111);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(100, 28);
             this.btnCancelar.TabIndex = 4;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -85,25 +90,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(90, 64);
+            this.label1.Location = new System.Drawing.Point(120, 79);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 13);
+            this.label1.Size = new System.Drawing.Size(127, 17);
             this.label1.TabIndex = 5;
             this.label1.Text = "Ej: ABCDEF-12345";
             // 
             // frmCopiarCrucero
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 125);
+            this.ClientSize = new System.Drawing.Size(518, 154);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.txtBoxCrucero);
             this.Controls.Add(this.lblCruceroNuevo);
             this.Controls.Add(this.lblViejo);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmCopiarCrucero";
-            this.Text = "frmCopiarCrucero";
+            this.Text = "Alta nuevo Crucero igual al anterior";
             this.ResumeLayout(false);
             this.PerformLayout();
 

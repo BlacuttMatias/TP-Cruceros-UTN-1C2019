@@ -33,7 +33,7 @@ namespace FrbaCrucero.AbmCrucero
         private void frmAltaCrucero_Load(object sender, EventArgs e)
         {
             debugger = new AbmRecorrido.Debugger();
-            debugger.Show();
+            //debugger.Show();
             abm = new Crucero();
             DataTable dtMarcas = abm.mostrarMarcas();
             llenarCB(cBoxMarca, dtMarcas, "Marca");
@@ -54,6 +54,10 @@ namespace FrbaCrucero.AbmCrucero
             superTabla.Enabled = false;
             llblAnterior.Hide();
             lblCodigoAlerta.Hide();
+
+            cBoxMarca.DropDownStyle = ComboBoxStyle.DropDownList;
+            cBoxModelo.DropDownStyle = ComboBoxStyle.DropDownList;
+
         }
         private void AddItem(string descripcionCabina)
         {
@@ -246,6 +250,8 @@ namespace FrbaCrucero.AbmCrucero
                     }
                     debugger.log(log);
                 }
+                MessageBox.Show(string.Format("El crucero '{0}' se ha creado con exito", textBox1.Text), "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
             }
             else
                 MessageBox.Show(string.Format("Ya existe:{0}", textBox1.Text), "FRBACruceros", MessageBoxButtons.OK, MessageBoxIcon.Error);

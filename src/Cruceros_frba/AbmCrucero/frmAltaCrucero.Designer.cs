@@ -51,7 +51,7 @@
             // 
             this.dateTimePicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePicker1.Location = new System.Drawing.Point(110, 359);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker1.TabIndex = 0;
@@ -60,10 +60,10 @@
             // 
             this.cBoxMarca.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cBoxMarca.FormattingEnabled = true;
-            this.cBoxMarca.Location = new System.Drawing.Point(462, 14);
-            this.cBoxMarca.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cBoxMarca.Location = new System.Drawing.Point(422, 14);
+            this.cBoxMarca.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxMarca.Name = "cBoxMarca";
-            this.cBoxMarca.Size = new System.Drawing.Size(160, 24);
+            this.cBoxMarca.Size = new System.Drawing.Size(200, 24);
             this.cBoxMarca.TabIndex = 1;
             this.cBoxMarca.SelectedIndexChanged += new System.EventHandler(this.cBoxMarca_SelectedIndexChanged);
             // 
@@ -71,10 +71,10 @@
             // 
             this.cBoxModelo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cBoxModelo.FormattingEnabled = true;
-            this.cBoxModelo.Location = new System.Drawing.Point(462, 47);
-            this.cBoxModelo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cBoxModelo.Location = new System.Drawing.Point(422, 47);
+            this.cBoxModelo.Margin = new System.Windows.Forms.Padding(4);
             this.cBoxModelo.Name = "cBoxModelo";
-            this.cBoxModelo.Size = new System.Drawing.Size(160, 24);
+            this.cBoxModelo.Size = new System.Drawing.Size(200, 24);
             this.cBoxModelo.TabIndex = 2;
             this.cBoxModelo.SelectedIndexChanged += new System.EventHandler(this.cBoxModelo_SelectedIndexChanged);
             // 
@@ -82,7 +82,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(398, 17);
+            this.label1.Location = new System.Drawing.Point(367, 17);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 17);
@@ -93,7 +93,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(398, 50);
+            this.label2.Location = new System.Drawing.Point(367, 50);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 17);
@@ -154,7 +154,7 @@
             this.superTabla.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.superTabla.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.superTabla.Location = new System.Drawing.Point(12, 80);
-            this.superTabla.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.superTabla.Margin = new System.Windows.Forms.Padding(4);
             this.superTabla.Name = "superTabla";
             this.superTabla.RowCount = 1;
             this.superTabla.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -165,7 +165,7 @@
             // 
             this.btnAceptar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAceptar.Location = new System.Drawing.Point(524, 368);
-            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(100, 28);
             this.btnAceptar.TabIndex = 16;
@@ -177,7 +177,7 @@
             // 
             this.btnLimpiar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLimpiar.Location = new System.Drawing.Point(416, 368);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(100, 28);
             this.btnLimpiar.TabIndex = 17;
@@ -188,7 +188,7 @@
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(77, 17);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(123, 22);
             this.textBox1.TabIndex = 18;
@@ -264,10 +264,10 @@
             this.Controls.Add(this.cBoxModelo);
             this.Controls.Add(this.cBoxMarca);
             this.Controls.Add(this.dateTimePicker1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(562, 392);
             this.Name = "frmAltaCrucero";
-            this.Text = "frm";
+            this.Text = "Alta Crucero";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -23,8 +23,9 @@ namespace FrbaCrucero.GeneracionViaje
 
         private void frmGenerarViaje_Load(object sender, EventArgs e)
         {
-            this.Width = 1530;
             this.CenterToParent();
+            this.Width = 1500;
+            
             
             dtpFechaInicio.Format = DateTimePickerFormat.Custom;
             dtpFechaInicio.CustomFormat = "dd-MM-yyyy hh:mm:ss";
@@ -67,12 +68,12 @@ namespace FrbaCrucero.GeneracionViaje
             if (dtpFechaInicio.Value <= Coneccion.getFechaSistema())
             {
                 MessageBox.Show("La fecha de inicio del viaje debe ser mayor que la fecha actual.\nLa fecha actual es: " + Coneccion.getFechaSistema().ToString()
-                    , "Fechas incorrectas", MessageBoxButtons.OK);
+                    , "Fechas incorrectas", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (dtpFechaFin.Value <= dtpFechaInicio.Value)
             {
                 MessageBox.Show("La fecha de finalización del viaje debe ser mayor que la fecha inicial."
-                    , "Fechas incorrectas", MessageBoxButtons.OK);
+                    , "Fechas incorrectas", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (dataGridCruceros.SelectedRows.Count < 1 || cmbRecorrido.SelectedItem == null)
             {

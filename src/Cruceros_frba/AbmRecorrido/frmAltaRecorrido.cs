@@ -130,6 +130,7 @@ namespace FrbaCrucero.AbmRecorrido
                     abm.agregarTramoAUnRecorrido(t.origen, t.destino, t.precio, idRecorrido);
                     debugger.log("Origen:" + t.origen + " Destino:" + t.destino + " Precio:" + t.precio + " idRecorrido:" + idRecorrido);
                 }
+                this.Close();
             }
             else if (idRecorrido == 0)
             {

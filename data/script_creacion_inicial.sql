@@ -2753,7 +2753,7 @@ AS
 BEGIN
 	DECLARE @cantidadCabinas int
 	SELECT @cantidadCabinas = COUNT(*) FROM FIDEOS_CON_TUCO.Cabina JOIN FIDEOS_CON_TUCO.Tipo_cabina ON (tipo_codigo = cabi_tipo)
-		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Balcï¿½n'
+		WHERE cabi_crucero = @codigoCrucero AND tipo_descripcion = 'Cabina Balcón'
 	RETURN @cantidadCabinas
 END
 GO

@@ -16,14 +16,17 @@ namespace FrbaCrucero.AbmCrucero
         string codigo = "";
         DataTable dt = new DataTable();
         Crucero abm = new Crucero();
+        string modelo;
+        string marca;
+
         public frmModificarCruceroSeleccionado(params object[] args)
         {
             InitializeComponent();
             btnAceptar.Enabled = false;
             codigo = args[0] as string;
             lblCodigo.Text += string.Format(" {0}", codigo);
-            cBoxMarca.Text = args[1] as string;
-            cBoxModelo.Text = args[2] as string;
+            marca = args[1] as string;
+            modelo = args[2] as string;
             Load += new EventHandler(frmModificarCruceroSeleccionado_Load);
         }
         private void frmModificarCruceroSeleccionado_Load(object sender, EventArgs e)
@@ -31,9 +34,13 @@ namespace FrbaCrucero.AbmCrucero
             this.CenterToScreen();
             DataTable dtMarcas = abm.mostrarMarcas();
             llenarCB(cBoxMarca, dtMarcas, "Marca");
+            cBoxMarca.DropDownStyle = ComboBoxStyle.DropDownList;
+            cBoxMarca.SelectedItem = marca;
 
             DataTable dtModelos = abm.mostrarModelos();
             llenarCB(cBoxModelo, dtModelos, "Modelo");
+            cBoxModelo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cBoxModelo.SelectedItem = modelo;
         }
 
         private void imprimir(List<int> c)
@@ -56,8 +63,8 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            cBoxMarca.Text = "";
-            cBoxModelo.Text = "";
+            cBoxMarca.SelectedItem = marca;
+            cBoxModelo.SelectedItem = modelo;
         }
 
         private void cBoxMarca_SelectedIndexChanged(object sender, EventArgs e)

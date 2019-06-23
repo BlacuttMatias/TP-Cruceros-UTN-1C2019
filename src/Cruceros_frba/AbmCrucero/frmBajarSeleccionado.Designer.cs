@@ -69,7 +69,7 @@
             // dtpBaja
             // 
             this.dtpBaja.Location = new System.Drawing.Point(423, 11);
-            this.dtpBaja.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpBaja.Margin = new System.Windows.Forms.Padding(4);
             this.dtpBaja.Name = "dtpBaja";
             this.dtpBaja.Size = new System.Drawing.Size(265, 22);
             this.dtpBaja.TabIndex = 2;
@@ -78,7 +78,7 @@
             // dtpAlta
             // 
             this.dtpAlta.Location = new System.Drawing.Point(423, 48);
-            this.dtpAlta.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpAlta.Margin = new System.Windows.Forms.Padding(4);
             this.dtpAlta.Name = "dtpAlta";
             this.dtpAlta.Size = new System.Drawing.Size(265, 22);
             this.dtpAlta.TabIndex = 3;
@@ -88,7 +88,7 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(113, 47);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(172, 24);
             this.comboBox1.TabIndex = 4;
@@ -97,7 +97,7 @@
             // btnAceptar
             // 
             this.btnAceptar.Location = new System.Drawing.Point(736, 379);
-            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAceptar.Margin = new System.Windows.Forms.Padding(4);
             this.btnAceptar.MaximumSize = new System.Drawing.Size(100, 28);
             this.btnAceptar.MinimumSize = new System.Drawing.Size(100, 28);
             this.btnAceptar.Name = "btnAceptar";
@@ -110,7 +110,7 @@
             // btnLimpiar
             // 
             this.btnLimpiar.Location = new System.Drawing.Point(16, 379);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(4);
             this.btnLimpiar.MaximumSize = new System.Drawing.Size(100, 28);
             this.btnLimpiar.MinimumSize = new System.Drawing.Size(100, 28);
             this.btnLimpiar.Name = "btnLimpiar";
@@ -144,7 +144,7 @@
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(20, 144);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(689, 228);
             this.dataGridView1.TabIndex = 9;
@@ -162,7 +162,7 @@
             // btnCancelarTodos
             // 
             this.btnCancelarTodos.Location = new System.Drawing.Point(723, 144);
-            this.btnCancelarTodos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCancelarTodos.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancelarTodos.Name = "btnCancelarTodos";
             this.btnCancelarTodos.Size = new System.Drawing.Size(135, 50);
             this.btnCancelarTodos.TabIndex = 11;
@@ -173,7 +173,7 @@
             // btnReemplazarCrucero
             // 
             this.btnReemplazarCrucero.Location = new System.Drawing.Point(723, 202);
-            this.btnReemplazarCrucero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnReemplazarCrucero.Margin = new System.Windows.Forms.Padding(4);
             this.btnReemplazarCrucero.Name = "btnReemplazarCrucero";
             this.btnReemplazarCrucero.Size = new System.Drawing.Size(135, 53);
             this.btnReemplazarCrucero.TabIndex = 12;
@@ -184,7 +184,7 @@
             // btnPostergarTodos
             // 
             this.btnPostergarTodos.Location = new System.Drawing.Point(723, 262);
-            this.btnPostergarTodos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPostergarTodos.Margin = new System.Windows.Forms.Padding(4);
             this.btnPostergarTodos.Name = "btnPostergarTodos";
             this.btnPostergarTodos.Size = new System.Drawing.Size(135, 55);
             this.btnPostergarTodos.TabIndex = 13;
@@ -195,7 +195,7 @@
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(697, 11);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(125, 62);
             this.button3.TabIndex = 14;
@@ -223,10 +223,10 @@
             this.Controls.Add(this.dtpBaja);
             this.Controls.Add(this.lblTipoBaja);
             this.Controls.Add(this.lblCodigo);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(406, 250);
             this.Name = "frmBajarSeleccionado";
-            this.Text = "frmBajarSeleccionado";
+            this.Text = "Baja de Crucero";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
