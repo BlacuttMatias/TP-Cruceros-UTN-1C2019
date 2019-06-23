@@ -37,9 +37,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DialogResult respuesta = MessageBox.Show("Esta seguro que desea Comprar estas cabinas?", "Comprar Cabinas", MessageBoxButtons.YesNo);
-            if (respuesta == DialogResult.Yes)
-            {
+
 
                 int cantCabinas = dataGridCabinasDisponibles.SelectedRows.Count;
                 if (cantCabinas > 0) //Me fijo si selecciono alguna cabina
@@ -60,20 +58,29 @@ namespace FrbaCrucero.CompraReservaPasaje
                         nuevaCompra.agregarPasaje(nuevoPasaje);
                         #endregion
 
-
+                        
                     }
+                    frmMedioDePago frm = new frmMedioDePago(nuevaCompra);
+                    frm.Show();
+                    frm.FormClosed += frm_FormClosed;
+                    this.Hide();
 
                 }
-                else
+                else 
                 {
-                    MessageBox.Show("Debe seleccionar almenos una cabina que desee Comprar", "Falta seleccionar cabina/s deseadas", MessageBoxButtons.OK);
+                    if (dataGridCabinasDisponibles.Rows.Count < 1)
+                    {
+                        MessageBox.Show("Atención: no existen cabinas disponibles para comprar de este viaje"
+                            , "No hay cabinas disponibles", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else {
+                        MessageBox.Show("Debe seleccionar almenos una cabina que desee Comprar", "Falta seleccionar cabina/s deseadas", MessageBoxButtons.OK);
+                    }
+                    
                 }
 
-                frmMedioDePago frm = new frmMedioDePago(nuevaCompra);
-                frm.Show();
-                frm.FormClosed += frm_FormClosed;
-                this.Hide();
-            }
+                
+            
         }
 
         void frm_FormClosed(object sender, FormClosedEventArgs e)

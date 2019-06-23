@@ -931,8 +931,7 @@ CREATE TABLE [FIDEOS_CON_TUCO].[Crucero](
 	[cruc_marca] int NOT NULL,
 	[cruc_modelo] int NOT NULL,
 	[cruc_fecha_de_alta] [datetime],		/*???CREO QUE ESTE CAMPO AL FINAL NO VA*/
-	[cruc_cantidad_cabinas] int NOT NULL,
-	[cruc_esta_habilitado] [bit] NOT NULL)
+	[cruc_cantidad_cabinas] int NOT NULL)
 GO
 
 ALTER TABLE [FIDEOS_CON_TUCO].[Crucero] ADD CONSTRAINT PK_CRUCERO 
@@ -1316,10 +1315,10 @@ GO
 /**********************************Carga de Cruceros**************************************************************************/
 
 
-INSERT INTO [FIDEOS_CON_TUCO].[Crucero](cruc_codigo, cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado)
+INSERT INTO [FIDEOS_CON_TUCO].[Crucero](cruc_codigo, cruc_marca, cruc_modelo, cruc_cantidad_cabinas)
 SELECT M1.CRUCERO_IDENTIFICADOR, marc_codigo, mode_codigo
 , (SELECT COUNT(*) FROM (SELECT DISTINCT M2.CRUCERO_IDENTIFICADOR, M2.CABINA_NRO, M2.CABINA_PISO FROM gd_esquema.Maestra M2 
-	WHERE M1.CRUCERO_IDENTIFICADOR = M2.CRUCERO_IDENTIFICADOR) AS cabinas), 1
+	WHERE M1.CRUCERO_IDENTIFICADOR = M2.CRUCERO_IDENTIFICADOR) AS cabinas)
 FROM gd_esquema.Maestra M1
 JOIN [FIDEOS_CON_TUCO].[Marca] ON (M1.CRU_FABRICANTE = marc_descripcion)
 JOIN [FIDEOS_CON_TUCO].[Modelo] ON (M1.CRUCERO_MODELO = mode_descripcion)
@@ -2237,7 +2236,7 @@ GO
 
 /************************** ACTUALIZACION de cruceros habilitados *******************************************/
 --se llama al comienzo de la App para actualizar el campo cruc_esta_habilitado de los cruceros cuya fecha de alta en la baja ya se cumplio
-
+/*
 CREATE PROCEDURE FIDEOS_CON_TUCO.actualizarCrucerosHabilitados @fechaSistema datetime
 AS
 BEGIN
@@ -2245,7 +2244,7 @@ BEGIN
 		WHERE FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 AND cruc_esta_habilitado = 0
 END
 GO
-
+*/
 
 
 /************************** CREACION de tipos de baja de los cruceros *******************************************/
@@ -2272,8 +2271,8 @@ BEGIN
 	SELECT @codigoModelo = mode_codigo FROM FIDEOS_CON_TUCO.Modelo WHERE mode_descripcion = @cruceroModelo
 	IF NOT EXISTS(SELECT cruc_codigo FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @cruceroCodigo)
 		BEGIN
-		INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo,cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_esta_habilitado, cruc_fecha_de_alta) 
-			VALUES (@cruceroCodigo,@codigoMarca, @codigoModelo, @cantidadCabinas, 1, @fecha) 
+		INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo,cruc_marca, cruc_modelo, cruc_cantidad_cabinas, cruc_fecha_de_alta) 
+			VALUES (@cruceroCodigo,@codigoMarca, @codigoModelo, @cantidadCabinas, @fecha) 
 		SET @resultado = 1
 		END
 	ELSE
@@ -2305,7 +2304,7 @@ BEGIN
 END
 GO
 /*************************** MOSTRAR CRUCEROS ***************************/
-CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCruceros
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCruceros @fechaSistema datetime
 AS
 BEGIN
 	SELECT [cruc_codigo] as Codigo, 
@@ -2316,7 +2315,7 @@ BEGIN
 	FROM [FIDEOS_CON_TUCO].[Crucero]
 	JOIN [FIDEOS_CON_TUCO].[Marca] on ([cruc_marca]=marc_codigo)
 	JOIN [FIDEOS_CON_TUCO].[Modelo] on ([cruc_modelo]=mode_codigo)
-	WHERE cruc_esta_habilitado=1
+	WHERE FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema)=1
 END
 GO
 /*************************** MODIFICAR CRUCEROS ***************************/
@@ -2592,8 +2591,8 @@ BEGIN
 	SELECT @marca = cruc_marca, @modelo = cruc_modelo, @cantidadCabinas = cruc_cantidad_cabinas FROM FIDEOS_CON_TUCO.Crucero 
 		WHERE cruc_codigo = @codigoCruceroAnterior
 
-	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo, cruc_modelo, cruc_marca, cruc_cantidad_cabinas, cruc_esta_habilitado, cruc_fecha_de_alta)
-		VALUES (@codigoNuevoCrucero, @modelo, @marca, @cantidadCabinas, 1, @fechaAltaCruceroNuevo)
+	INSERT INTO FIDEOS_CON_TUCO.Crucero(cruc_codigo, cruc_modelo, cruc_marca, cruc_cantidad_cabinas, cruc_fecha_de_alta)
+		VALUES (@codigoNuevoCrucero, @modelo, @marca, @cantidadCabinas, @fechaAltaCruceroNuevo)
 
 	INSERT INTO FIDEOS_CON_TUCO.Cabina(cabi_crucero, cabi_numero, cabi_piso, cabi_tipo)
 		SELECT @codigoNuevoCrucero, cabi_numero, cabi_piso, cabi_tipo 
@@ -2685,14 +2684,12 @@ DECLARE @tipo_baja int
 BEGIN
 	if (@tipoBaja = 'Temporal')
 	BEGIN
-		UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 0 WHERE cruc_codigo = @codigo;
 		SELECT @tipo_baja = tipo_baja_codigo FROM FIDEOS_CON_TUCO.Tipo_baja WHERE tipo_baja_descripcion = 'Temporal'
 		INSERT INTO FIDEOS_CON_TUCO.Registro_baja(regi_tipo, regi_fecha_de_baja, regi_fecha_de_alta, regi_crucero)
 					VALUES (@tipo_baja, @fechaSistema, @fechaAlta, @codigo) 
 	END
 	if (@tipoBaja = 'Permanente')
 	BEGIN
-		UPDATE FIDEOS_CON_TUCO.Crucero SET cruc_esta_habilitado = 0 WHERE cruc_codigo = @codigo;
 		SELECT @tipo_baja = tipo_baja_codigo FROM FIDEOS_CON_TUCO.Tipo_baja WHERE tipo_baja_descripcion = 'Permanente'
 		INSERT INTO FIDEOS_CON_TUCO.Registro_baja(regi_tipo, regi_fecha_de_baja, regi_crucero)
 					VALUES (@tipo_baja, @fechaSistema, @codigo) 
@@ -2834,7 +2831,7 @@ BEGIN
 		BEGIN
 		SET @resultado = -1
 		END
-	ELSE IF (SELECT cruc_esta_habilitado FROM FIDEOS_CON_TUCO.Crucero WHERE cruc_codigo = @codigoCrucero) = 0
+	ELSE IF (FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(@codigoCrucero, @fechaInicio, @fechaFinalizacion) = 0)
 		BEGIN
 		SET @resultado = -2
 		END
@@ -2998,7 +2995,10 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_ciudad = @ciudadPuertoDestino)
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_puerto_origen = p1.puer_codigo AND reco_puerto_destino = p2.puer_codigo)
-		WHERE CONVERT(DATE, viaj_fecha_inicio) = @fechaInicio AND viaj_recorrido = reco_id AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		WHERE CONVERT(DATE, viaj_fecha_inicio) = @fechaInicio 
+			AND viaj_recorrido = reco_id 
+			AND reco_esta_habilitado = 1 
+			AND FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(cruc_codigo, viaj_fecha_inicio, viaj_fecha_finalizacion_estimada) = 1
 		ORDER BY 2, 3, 5
 END
 GO
@@ -3031,7 +3031,7 @@ BEGIN
 		AND v1.viaj_fecha_inicio >= @fechaSistema
 		AND v1.viaj_recorrido = reco_id 
 		AND reco_esta_habilitado = 1 
-		AND cruc_esta_habilitado = 1
+		AND FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(cruc_codigo, viaj_fecha_inicio, viaj_fecha_finalizacion_estimada) = 1
 			AND NOT EXISTS(
 				SELECT * FROM FIDEOS_CON_TUCO.Viaje v2 JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_viaje = v2.viaj_codigo)
 				WHERE NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)
@@ -3071,7 +3071,9 @@ BEGIN
 		FROM FIDEOS_CON_TUCO.Viaje v1
 		JOIN FIDEOS_CON_TUCO.Crucero ON (cruc_codigo = v1.viaj_crucero)
 		JOIN FIDEOS_CON_TUCO.Recorrido ON (reco_id = v1.viaj_recorrido)
-		WHERE v1.viaj_fecha_inicio >= @fechaSistema AND reco_esta_habilitado = 1 AND cruc_esta_habilitado = 1
+		WHERE v1.viaj_fecha_inicio >= @fechaSistema 
+		AND reco_esta_habilitado = 1 
+		AND FIDEOS_CON_TUCO.unCruceroEstaHabilitadoDurante(cruc_codigo, viaj_fecha_inicio, viaj_fecha_finalizacion_estimada) = 1
 		AND NOT EXISTS(
 				SELECT * FROM FIDEOS_CON_TUCO.Viaje v2 JOIN FIDEOS_CON_TUCO.Pasaje ON (pasa_viaje = v2.viaj_codigo)
 				WHERE NOT EXISTS(SELECT canc_pasa_codigo FROM FIDEOS_CON_TUCO.Cancelacion_pasaje WHERE canc_pasa_pasaje = pasa_codigo)
@@ -3383,7 +3385,7 @@ GO
 
 
 --TOP 5 DE LOS CRUCEROS CON MAS D�AS FUERA DE SERVICIO
-CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarLosCincoCrucerosConMasDiasFueraDeServicio @anio int, @semestre int, @fechaSistema datetime
 AS
 BEGIN
 	DECLARE @mesInicial int
@@ -3398,7 +3400,7 @@ BEGIN
 		SET @fechaFin = DATETIMEFROMPARTS(@anio, @mesFinal + 1, 1, 0, 0, 0, 0)
 
 		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
-			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
+			CASE WHEN FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 THEN 'SI'
 				ELSE 'NO'
 			END AS Habilitado, 
 			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(
@@ -3425,7 +3427,7 @@ BEGIN
 		SET @fechaFin = DATETIMEFROMPARTS(@anio+1, 1, 1, 0, 0, 0, 0)
 
 		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
-			CASE WHEN cruc_esta_habilitado = 1 THEN 'SI'
+			CASE WHEN FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 THEN 'SI'
 				ELSE 'NO'
 			END AS Habilitado, 
 			ISNULL((SELECT SUM(t1.DiasFueraDeServicio) FROM(

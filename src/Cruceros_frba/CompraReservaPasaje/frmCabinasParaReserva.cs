@@ -19,6 +19,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         public frmCabinasParaReserva(int viaje, int cliente)
         {
             InitializeComponent();
+            dataGridCabinasDisponibles.MultiSelect = false;
+            dataGridCabinasDisponibles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridCabinasDisponibles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridCabinasDisponibles.ReadOnly = true;
             codigoCliente = cliente;
@@ -32,12 +34,22 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void button1_Click(object sender, EventArgs e)
         {
             int cantCabinas = dataGridCabinasDisponibles.SelectedRows.Count;
-            if (cantCabinas != 1)
+            if (cantCabinas > 1)
             {
                 MessageBox.Show("Hubo un error con la seleccion de la cabina deseada, intente otra vez.", "Error en seleccion de cabina", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
-            {
+            else if (cantCabinas < 1) {
+                if (dataGridCabinasDisponibles.Rows.Count < 1)
+                {
+                    MessageBox.Show("Atención: no existen cabinas disponibles para reservar de este viaje"
+                        , "No hay cabinas disponibles", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar almenos una cabina que desee Comprar", "Falta seleccionar cabina/s deseadas", MessageBoxButtons.OK);
+                }
+            }
+            else{
                 #region Creacion de Pasaje
                 Pasaje nuevoPasaje = new Pasaje();
                 int codigoCabina = (int)(dataGridCabinasDisponibles.SelectedRows[0].Cells[0].Value);
@@ -52,7 +64,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 int codigoPasaje = Coneccion.ejecutarSPR("generarPasaje","@codigoPasaje","@codigoCLiente", codigoCliente, "@codigoViaje", codigoViaje, "@codigoCabina", codigoCabina);
                 DateTime fechaSistema = Coneccion.getFechaSistema();
                 int codigoReserva = Coneccion.ejecutarSPR("generarReservaDeUnPasaje", "@codigoReserva", "@codigoPasaje", codigoPasaje, "@fechaSistema", fechaSistema);
-                DialogResult respuesta = MessageBox.Show("Su codigo de reserva es: " + codigoReserva.ToString() + "\nEste código se le requerirá para" +
+                DialogResult respuesta = MessageBox.Show("Su codigo de reserva es: " + codigoReserva.ToString() + "\nEste código se le requerirá para " +
                     "poder pagar su reserva.\nRecuerde que su reserva vence si el pago no es efectuado en los proximos 3 días.\n" +
                     "Desea realizar otra reserva?", "Reserva Generada", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
