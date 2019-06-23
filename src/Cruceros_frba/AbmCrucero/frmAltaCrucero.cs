@@ -40,6 +40,7 @@ namespace FrbaCrucero.AbmCrucero
 
             DataTable dtModelos = abm.mostrarModelos();
             llenarCB(cBoxModelo, dtModelos, "Modelo");
+            cBoxMarca.Enabled = false;
             cBoxModelo.Enabled = false;
 
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
