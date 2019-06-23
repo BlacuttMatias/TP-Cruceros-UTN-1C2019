@@ -116,7 +116,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(14, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 13;
             this.label2.Text = "Codigo";
             // 
@@ -137,7 +137,7 @@
             this.lblFiltroDestino.AutoSize = true;
             this.lblFiltroDestino.Location = new System.Drawing.Point(14, 62);
             this.lblFiltroDestino.Name = "lblFiltroDestino";
-            this.lblFiltroDestino.Size = new System.Drawing.Size(67, 13);
+            this.lblFiltroDestino.Size = new System.Drawing.Size(77, 13);
             this.lblFiltroDestino.TabIndex = 9;
             this.lblFiltroDestino.Text = "Filtro Modelo";
             // 
@@ -146,7 +146,7 @@
             this.lblFiltroOrigen.AutoSize = true;
             this.lblFiltroOrigen.Location = new System.Drawing.Point(303, 20);
             this.lblFiltroOrigen.Name = "lblFiltroOrigen";
-            this.lblFiltroOrigen.Size = new System.Drawing.Size(62, 13);
+            this.lblFiltroOrigen.Size = new System.Drawing.Size(68, 13);
             this.lblFiltroOrigen.TabIndex = 8;
             this.lblFiltroOrigen.Text = "Filtro Marca";
             // 
@@ -179,6 +179,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnAceptar);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(816, 513);
             this.Name = "frmModificacionCrucero";
             this.Text = "ABM Crucero";

@@ -100,18 +100,18 @@
             // 
             // tbModelo
             // 
-            this.tbModelo.Location = new System.Drawing.Point(546, 20);
+            this.tbModelo.Location = new System.Drawing.Point(551, 17);
             this.tbModelo.Name = "tbModelo";
-            this.tbModelo.Size = new System.Drawing.Size(186, 20);
+            this.tbModelo.Size = new System.Drawing.Size(186, 22);
             this.tbModelo.TabIndex = 20;
             this.tbModelo.TextChanged += new System.EventHandler(this.tbModelo_TextChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(498, 23);
+            this.label5.Location = new System.Drawing.Point(498, 20);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 13);
+            this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 19;
             this.label5.Text = "Modelo";
             // 
@@ -119,7 +119,7 @@
             // 
             this.tbMarca.Location = new System.Drawing.Point(296, 17);
             this.tbMarca.Name = "tbMarca";
-            this.tbMarca.Size = new System.Drawing.Size(186, 20);
+            this.tbMarca.Size = new System.Drawing.Size(186, 22);
             this.tbMarca.TabIndex = 15;
             this.tbMarca.TextChanged += new System.EventHandler(this.tbMarca_TextChanged);
             // 
@@ -128,7 +128,7 @@
             this.lblMarca.AutoSize = true;
             this.lblMarca.Location = new System.Drawing.Point(250, 20);
             this.lblMarca.Name = "lblMarca";
-            this.lblMarca.Size = new System.Drawing.Size(37, 13);
+            this.lblMarca.Size = new System.Drawing.Size(38, 13);
             this.lblMarca.TabIndex = 14;
             this.lblMarca.Text = "Marca";
             // 
@@ -137,7 +137,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(14, 20);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 13;
             this.label2.Text = "Codigo";
             // 
@@ -158,7 +158,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 57);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 13);
+            this.label1.Size = new System.Drawing.Size(114, 13);
             this.label1.TabIndex = 11;
             this.label1.Text = "Cruceros Habilitados";
             // 
@@ -167,7 +167,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 258);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 12;
             this.label3.Text = "Bajas Registradas";
             // 
@@ -191,7 +191,8 @@
             this.Controls.Add(this.gBoxFiltros);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnAceptar);
-            this.MinimumSize = new System.Drawing.Size(816, 513);
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MinimumSize = new System.Drawing.Size(816, 532);
             this.Name = "frmBajaCrucero";
             this.Text = "ABM Crucero";
             this.Activated += new System.EventHandler(this.frmModificacionCrucero_Load);

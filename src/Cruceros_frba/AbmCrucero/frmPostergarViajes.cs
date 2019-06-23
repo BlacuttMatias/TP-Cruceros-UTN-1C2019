@@ -28,7 +28,9 @@ namespace FrbaCrucero.AbmCrucero
             lblFecha.Text = "A partir de:" + alta.ToString();
             int diasBaja = ((TimeSpan)(fechaAlta - fechaBaja)).Days;
             int ejemploCantidadDeDiasMovidos = 1 + diasBaja;
-            lblInfoDiasCorridos.Text = "Por defecto se correrán " + diasBaja.ToString() + " dias los viajes. El número que ingrese se sumara a estos dias.\nEjemplo: si ingresa 1 se correran " + ejemploCantidadDeDiasMovidos.ToString() + " dias los viajes";
+            lblInfoDiasCorridos.Text = "Por defecto se correrán " + diasBaja.ToString() + " dias los viajes.";
+            label1.Text = "El número que ingrese se sumara a estos dias.";
+            label2.Text = "Ejemplo: si ingresa 1 se correran " + ejemploCantidadDeDiasMovidos.ToString() + " dias los viajes";
             btnAceptar.Enabled = false;
         }
 
