@@ -2399,11 +2399,11 @@ GO
 CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarCrucerosSinBajaPermanente @fechaSistema DateTime
 AS
 BEGIN
-	SELECT cruc_codigo AS Codigo_crucero
+	SELECT cruc_codigo AS Codigo
 		, marc_descripcion AS Marca
 		, mode_descripcion AS Modelo
-		, cruc_cantidad_cabinas AS Cantidad_cabinas
-		, cruc_fecha_de_alta AS Fecha_de_alta
+		, cruc_cantidad_cabinas AS 'Cantidad de Cabinas'
+		, cruc_fecha_de_alta AS 'Fecha de Alta'
 	FROM FIDEOS_CON_TUCO.Crucero 
 	JOIN FIDEOS_CON_TUCO.Marca ON (marc_codigo = cruc_marca)
 	JOIN FIDEOS_CON_TUCO.Modelo ON (mode_codigo = cruc_modelo)
@@ -3399,7 +3399,7 @@ BEGIN
 		SET @fechaInicio = DATETIMEFROMPARTS(@anio, @mesInicial, 1, 0, 0, 0, 0)
 		SET @fechaFin = DATETIMEFROMPARTS(@anio, @mesFinal + 1, 1, 0, 0, 0, 0)
 
-		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
+		SELECT TOP 5 cruc_codigo AS Codigo_crucero, marc_descripcion AS Marca, mode_descripcion AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
 			CASE WHEN FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 THEN 'SI'
 				ELSE 'NO'
 			END AS Habilitado, 
@@ -3417,7 +3417,9 @@ BEGIN
 				) AS t1
 			), 0) AS Dias_fuera_de_servicio
 		FROM FIDEOS_CON_TUCO.Crucero
-		ORDER BY 5 DESC
+		JOIN FIDEOS_CON_TUCO.Marca ON (marc_codigo = cruc_marca)
+		JOIN FIDEOS_CON_TUCO.Modelo ON (mode_codigo = cruc_modelo)
+		ORDER BY 6 DESC, 1 ASC
 		END
 	IF @semestre = 2
 		BEGIN
@@ -3426,7 +3428,7 @@ BEGIN
 		SET @fechaInicio = DATETIMEFROMPARTS(@anio, @mesInicial, 1, 0, 0, 0, 0)
 		SET @fechaFin = DATETIMEFROMPARTS(@anio+1, 1, 1, 0, 0, 0, 0)
 
-		SELECT TOP 5 cruc_codigo AS Codigo_crucero, cruc_marca AS Marca, cruc_modelo AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
+		SELECT TOP 5 cruc_codigo AS Codigo_crucero, marc_descripcion AS Marca, mode_descripcion AS Modelo, cruc_cantidad_cabinas AS Cantidad_cabinas,
 			CASE WHEN FIDEOS_CON_TUCO.unCruceroEstaHabilitado(cruc_codigo, @fechaSistema) = 1 THEN 'SI'
 				ELSE 'NO'
 			END AS Habilitado, 
@@ -3445,7 +3447,9 @@ BEGIN
 			), 0) AS Dias_fuera_de_servicio
 
 		FROM FIDEOS_CON_TUCO.Crucero
-		ORDER BY 5 DESC
+		JOIN FIDEOS_CON_TUCO.Marca ON (marc_codigo = cruc_marca)
+		JOIN FIDEOS_CON_TUCO.Modelo ON (mode_codigo = cruc_modelo)
+		ORDER BY 6 DESC, 1 ASC
 		END
 END
 GO

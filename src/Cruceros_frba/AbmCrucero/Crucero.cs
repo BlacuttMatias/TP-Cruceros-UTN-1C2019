@@ -35,6 +35,10 @@ namespace FrbaCrucero.AbmCrucero
             return Coneccion.ejecutarSP("mostrarBajas");
         }
 
+        public DataTable mostrarCrucerosSinBajaPermanenteHastaElMomento() {
+            return Coneccion.ejecutarSP("mostrarCrucerosSinBajaPermanente", "@fechaSistema", Coneccion.getFechaSistema());
+        }
+
         public DataTable mostrarCruceros()
         {
             return Coneccion.ejecutarSP("mostrarCruceros", "@fechaSistema", Coneccion.getFechaSistema());

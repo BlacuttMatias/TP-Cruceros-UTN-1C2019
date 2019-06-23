@@ -40,7 +40,7 @@ namespace FrbaCrucero.AbmCrucero
         private void frmModificacionCrucero_Load(object sender, EventArgs e)
         {
             this.CenterToScreen();
-            dtCruceros = abm.mostrarCruceros();
+            dtCruceros = abm.mostrarCrucerosSinBajaPermanenteHastaElMomento();
             dgvCruceros.DataSource = dtCruceros;
             dtBajas = abm.mostrarBajas();
             dgvBajas.DataSource = dtBajas;
