@@ -21,7 +21,7 @@ namespace FrbaCrucero.ListadoEstadistico
         }
         public DataTable mostrarLosCincoCrucerosConMasDiasFueraDeServicio(int anio, int semestre) {
             return Coneccion.ejecutarSP("mostrarLosCincoCrucerosConMasDiasFueraDeServicio"
-                , "@anio", anio, "@semestre", semestre);
+                , "@anio", anio, "@semestre", semestre, "@fechaSistema", Coneccion.getFechaSistema());
         }
     }
 }

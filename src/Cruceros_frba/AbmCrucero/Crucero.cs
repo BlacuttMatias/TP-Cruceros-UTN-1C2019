@@ -37,7 +37,7 @@ namespace FrbaCrucero.AbmCrucero
 
         public DataTable mostrarCruceros()
         {
-            return Coneccion.ejecutarSP("mostrarCruceros");
+            return Coneccion.ejecutarSP("mostrarCruceros", "@fechaSistema", Coneccion.getFechaSistema());
         }
         public DataTable mostrarMarcas()
         {

@@ -44,7 +44,7 @@ namespace FrbaCrucero
 
         private void frmInicio_Load(object sender, EventArgs e)
         {
-            Coneccion.ejecutarSPV("actualizarCrucerosHabilitados", "@fechaSistema", Coneccion.getFechaSistema());
+            
         }
     }
 }
