@@ -278,7 +278,6 @@
             this.MinimumSize = new System.Drawing.Size(816, 504);
             this.Name = "frmABMRecorridoModificarSeleccionado";
             this.Text = "ABM Recorrido Modificar Seleccionado";
-            this.Activated += new System.EventHandler(this.FrmABMRecorridoModificarSeleccionado_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);

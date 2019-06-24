@@ -122,6 +122,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            btnModificar.Enabled = false;
             if (dataGridView1.Rows.Count > listaViejos.Count)
             {
                 foreach (DataGridViewRow r in dataGridView1.Rows)
@@ -227,13 +228,12 @@ namespace FrbaCrucero.AbmRecorrido
             tramo = new TramoElegido(0, txtBoxFiltroOrigen.Text, "", 0);
             frmNuevoTramo nuevoTramo = new frmNuevoTramo(ref tramo);
             nuevoTramo.Show();
+            nuevoTramo.FormClosing += NuevoTramo_FormClosing;
             this.Enabled = false;
-            nuevoTramo.FormClosing += NuevoTramo_FormClosing; ;
         }
 
         private void NuevoTramo_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Enabled = true;
             if (tramo.origen != "" && tramo.destino != "" && tramo.precio != 0)
             {
                 listBox2.Items.Add(tramo.origen + "-" + tramo.destino); //DIZ NUTTZ
@@ -243,8 +243,16 @@ namespace FrbaCrucero.AbmRecorrido
                 Precio += tramo.precio;
                 lblPrecio.Text = "Precio:" + Precio;
                 filtroOrigen = tramo.destino;
-                nuevosTramos = abm.mostrarTramosExistentes();
+                //nuevosTramos = abm.mostrarTramosExistentes();
             }
+            this.Enabled = true;
+            nuevosTramos = abm.mostrarTramosExistentes();
+            dataGridView1.DataSource = nuevosTramos;
+            TramoElegido Ultimotramo = listaTramos.Last();
+            txtBoxFiltroOrigen.Text = Ultimotramo.destino;
+            filtroOrigen = Ultimotramo.destino;
+            filtroElProceso = true;
+            actualizarFiltro();
         }
 
         private void listBox2_SelectedIndexChanged(object sender, MouseEventArgs e)
