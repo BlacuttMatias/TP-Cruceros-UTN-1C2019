@@ -138,13 +138,7 @@ namespace FrbaCrucero.AbmRecorrido
         #region mostrarTramosExistentes
         public DataTable mostrarTramosExistentes()
         {
-            string SLCT = "SELECT tram_codigo as Codigo, P1.puer_ciudad as Origen, P2.puer_ciudad as Destino, tram_precio as Precio";
-            SLCT += " FROM " + Tramo.tabla + " join " + Puerto.tabla + " as P1 on (" + Tramo.origen + " = P1." + Puerto.codigo + ")";
-            SLCT += " join " + Puerto.tabla + " as P2" + " on(" + Tramo.destino + " = P2." + Puerto.codigo + ")";
-            object[] ARGUMENT = {  SLCT };
-            DataTable dt;
-            dt = Coneccion.ejecutarSelect(ARGUMENT);
-            return dt;
+            return Coneccion.ejecutarSP("mostrarTramosHabilitados");
         }
         #endregion
         

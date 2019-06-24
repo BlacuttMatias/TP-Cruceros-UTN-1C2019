@@ -576,6 +576,11 @@ GO
  drop procedure [FIDEOS_CON_TUCO].[mostrarCrucerosSinBajaPermanente]
  GO
 
+ if exists (select * from dbo.sysobjects where id=
+ object_id(N'[FIDEOS_CON_TUCO].[mostrarTramosHabilitados]') and OBJECTPROPERTY(id, N'IsProcedure')=1)
+ drop procedure [FIDEOS_CON_TUCO].[mostrarTramosHabilitados]
+ GO
+
 /************************************************************************************************************/
 /*********************************** ELIMINO LAS TABLAS SI YA EXISTEN ***************************************/
 
@@ -2184,6 +2189,20 @@ BEGIN
 		JOIN FIDEOS_CON_TUCO.Puerto puertoOrigen ON (puertoOrigen.puer_codigo = tram_puerto_origen)
 		JOIN FIDEOS_CON_TUCO.Puerto puertoDestino ON (puertoDestino.puer_codigo = tram_puerto_destino)
 		WHERE tram_codigo = tram_por_reco_tramo
+END
+GO
+
+/************************** LISTADO Tramos Habilitados *******************************************/
+
+CREATE PROCEDURE FIDEOS_CON_TUCO.mostrarTramosHabilitados 
+AS
+BEGIN
+	SELECT tram_codigo AS Codigo, p1.puer_ciudad AS Origen, p2.puer_ciudad AS Destino, tram_precio AS Precio
+	FROM FIDEOS_CON_TUCO.Tramo
+	JOIN FIDEOS_CON_TUCO.Puerto p1 ON (p1.puer_codigo = tram_puerto_origen)
+	JOIN FIDEOS_CON_TUCO.Puerto p2 ON (p2.puer_codigo = tram_puerto_destino)
+	WHERE p1.puer_esta_habilitado = 1 AND p2.puer_esta_habilitado = 1
+	ORDER BY p1.puer_ciudad, p2.puer_ciudad
 END
 GO
 
