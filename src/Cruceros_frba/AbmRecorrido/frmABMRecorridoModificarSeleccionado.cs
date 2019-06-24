@@ -101,22 +101,32 @@ namespace FrbaCrucero.AbmRecorrido
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             Recorrido abm = new Recorrido();
-            if (listaViejos.Count > 0)
+           /* if (listaViejos.Count > 0)
             {
                 foreach (TramoElegido t in listaViejos)
                     abm.eliminarTramoDeUnRecorrido(t.origen, t.destino, ID);
-            }
+            }*/
             if (listaTramos.Count > 0)
             {
+                foreach (TramoElegido t in listaViejos)
+                    abm.eliminarTramoDeUnRecorrido(t.origen, t.destino, ID);
                 abm.modificarRecorrido(ID, listaTramos.ElementAt(0).origen, listaTramos.ElementAt(listaTramos.Count - 1).destino, Precio);
                 foreach (TramoElegido t in listaTramos)
                     abm.agregarTramoAUnRecorrido(t.origen, t.destino, t.precio, ID);
-                this.Close();
             }
+            int resultado = 1;
             if (checkBox1.Checked)
-                abm.habilitarRecorrido(ID);
-            else
+            {
+                resultado = abm.habilitarRecorrido(ID);
+                if (resultado == 0)
+                {
+                    MessageBox.Show("No se pudo habilitar el recorrido porque contiene puertos que estan deshabilitados"
+                        , "Error al habilitar el puerto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else {
                 abm.deshabilitarRecorrido(ID);
+            }   
             this.Close();
         }
 

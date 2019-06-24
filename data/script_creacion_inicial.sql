@@ -2971,7 +2971,7 @@ BEGIN
 	SELECT @codigoPuertoSiguienteDestino = tram_puerto_destino FROM FIDEOS_CON_TUCO.Tramo 
 		JOIN FIDEOS_CON_TUCO.Tramos_por_recorrido ON (tram_por_reco_recorrido = @idRecorrido) 
 		WHERE tram_codigo = tram_por_reco_tramo AND tram_puerto_origen = @codigoPuertoDestino
-	RETURN @ciudadPuertoDestino + '-' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoSiguienteDestino)
+	RETURN @ciudadPuertoDestino + ' - ' + FIDEOS_CON_TUCO.stringDestinos(@idRecorrido, @codigoPuertoSiguienteDestino)
 END
 GO
 
